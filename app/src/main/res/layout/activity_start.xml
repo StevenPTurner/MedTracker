@@ -43,7 +43,8 @@
             android:text="Create Account"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/button_login_online"/>
+            android:layout_below="@id/button_login_online"
+            android:onClick="createAccountActivity"/>
     </RelativeLayout>
 
 </LinearLayout>
