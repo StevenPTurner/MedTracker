@@ -1,5 +1,7 @@
 package com.medtracker.database;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
 /**
@@ -17,6 +19,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_LAST_NAME = "last_name";
         public static final String COLUMN_NAME_PIN = "pin";
         public static final String COLUMN_NAME_GOOGLE_ACCOUNT = "google_account";
+
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_NAME_EMAIL + " TEXT PRIMARY KEY," +
@@ -24,6 +27,7 @@ public final class MedTrackerContract {
                 COLUMN_NAME_LAST_NAME + " TEXT," +
                 COLUMN_NAME_PIN + " INT" +
                 COLUMN_NAME_GOOGLE_ACCOUNT + " BOOLEAN )";
+
     }
 
     public static class Medication implements BaseColumns {}
