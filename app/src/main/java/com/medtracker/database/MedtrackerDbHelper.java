@@ -30,7 +30,7 @@ public class MedtrackerDbHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertContact (String email, String firstName, String lastName, int pin, boolean googleAccount) {
+    public boolean createUser (String email, String firstName, String lastName, int pin, boolean googleAccount) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(User.COLUMN_NAME_EMAIL, email);

@@ -27,7 +27,6 @@ public final class MedTrackerContract {
                 COLUMN_NAME_LAST_NAME + " TEXT," +
                 COLUMN_NAME_PIN + " INT" +
                 COLUMN_NAME_GOOGLE_ACCOUNT + " BOOLEAN )";
-
     }
 
     public static class Medication implements BaseColumns {}
