@@ -81,7 +81,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_ALARM_ID = "alarm_id";
         public static final String COLUMN_NAME_MEDICATION_NAME = "medication_name";
         public static final String COLUMN_NAME_SLEEP_TIMER = "sleep_timer";
-        public static final String COLUMN_NAME_SLEEP_BEFORE_SKIP = "sleep_before_skip;";
+        public static final String COLUMN_NAME_SLEEP_BEFORE_SKIP = "sleep_before_skip";
         public static final String COLUMN_NAME_DATE_TIME = "date_time";
 
         public static final String SQL_CREATE_TABLE =
@@ -104,7 +104,7 @@ public final class MedTrackerContract {
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_CURRENT_ALARM + " TEXT," +
-                        COLUMN_NAME_TOTAL_ALARM + " INTEGER, )";
+                        COLUMN_NAME_TOTAL_ALARM + " INTEGER )";
     }
 
     public static class Glossary implements BaseColumns {

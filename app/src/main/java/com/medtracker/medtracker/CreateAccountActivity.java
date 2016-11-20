@@ -32,9 +32,8 @@ public class CreateAccountActivity extends Activity {
 
         db.createUser(email, firstName, lastName, pin, 0);
         db.close();
-        //intent.putExtra(EXTRA_MESSAGE, message);
-        //startActivity(intent);
-        //TextView text = (TextView) findViewById(R.id.textview_register_account);
-        //text.setText("yay!");
+
+        TextView text = (TextView) findViewById(R.id.textview_register_account);
+        text.setText("yay!");
     }
 }

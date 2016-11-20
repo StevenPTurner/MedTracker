@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Debug;
 
 import static com.medtracker.database.MedTrackerContract.*;
 
@@ -51,6 +52,7 @@ public class MedtrackerDbHelper extends SQLiteOpenHelper {
         db.execSQL(AlarmManager.SQL_CREATE_TABLE);
         db.execSQL(Glossary.SQL_CREATE_TABLE);
         db.execSQL(Pharmacies.SQL_CREATE_TABLE);
+        System.out.println("Created Database sucesfully!");
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
