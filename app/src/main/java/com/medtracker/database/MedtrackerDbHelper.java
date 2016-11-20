@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import static com.medtracker.database.MedTrackerContract.User;
+import static com.medtracker.database.MedTrackerContract.*;
 
 /**
  * Created by home on 18/11/2016.
@@ -22,7 +22,7 @@ public class MedtrackerDbHelper extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(User.SQL_CREATE_TABLE_USER);
+        createTables(db);
     }
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
@@ -40,6 +40,17 @@ public class MedtrackerDbHelper extends SQLiteOpenHelper {
         contentValues.put(User.COLUMN_NAME_GOOGLE_ACCOUNT, googleAccount);
         db.insert(User.TABLE_NAME, null, contentValues);
         return true;
+    }
+
+    private void createTables(SQLiteDatabase db) {
+        db.execSQL(User.SQL_CREATE_TABLE);
+        db.execSQL(Medication.SQL_CREATE_TABLE);
+        db.execSQL(Prescription.SQL_CREATE_TABLE);
+        db.execSQL(Record.SQL_CREATE_TABLE);
+        db.execSQL(Alarm.SQL_CREATE_TABLE);
+        db.execSQL(AlarmManager.SQL_CREATE_TABLE);
+        db.execSQL(Glossary.SQL_CREATE_TABLE);
+        db.execSQL(Pharmacies.SQL_CREATE_TABLE);
     }
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {

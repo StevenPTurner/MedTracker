@@ -20,7 +20,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_PIN = "pin";
         public static final String COLUMN_NAME_GOOGLE_ACCOUNT = "google_account";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                 COLUMN_NAME_EMAIL + " TEXT PRIMARY KEY," +
                 COLUMN_NAME_FIRST_NAME + " TEXT," +
@@ -36,7 +36,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_DOSAGE = "dosage";
         public static final String COLUMN_NAME_HAS_PRESCRIPTION = "has_prescription";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_INSTRUCTUIONS + " TEXT," +
@@ -53,7 +53,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_DOSE_PER_DAY = "dose_per_day";
         public static final String COLUMN_NAME_NEXT_ALARM = "next_alarm";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_DOSE_PER_PRESCRIPTION + " INTEGER," +
@@ -69,7 +69,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_DATE_TIME = "date_time";
         public static final String COLUMN_NAME_DOSE = "dose";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_DATE_TIME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT," +
@@ -84,7 +84,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_SLEEP_BEFORE_SKIP = "sleep_before_skip;";
         public static final String COLUMN_NAME_DATE_TIME = "date_time";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_ALARM_ID + " INTEGER," +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT," +
@@ -100,7 +100,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_CURRENT_ALARM = "current_alarm";
         public static final String COLUMN_NAME_TOTAL_ALARM = "total_alarm";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_CURRENT_ALARM + " TEXT," +
@@ -112,7 +112,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_DESCRIPTION = "description";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_DESCRIPTION + " TEXT )";
@@ -124,7 +124,7 @@ public final class MedTrackerContract {
         public static final String COLUMN_NAME_LOCATION = "location";
         public static final String COLUMN_NAME_ADDRESS = "address";
 
-        public static final String SQL_CREATE_TABLE_USER =
+        public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
                         COLUMN_NAME_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_LOCATION + " TEXT," +
