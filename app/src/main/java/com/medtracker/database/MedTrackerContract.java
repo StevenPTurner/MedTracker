@@ -25,8 +25,8 @@ public final class MedTrackerContract {
                 COLUMN_NAME_EMAIL + " TEXT PRIMARY KEY," +
                 COLUMN_NAME_FIRST_NAME + " TEXT," +
                 COLUMN_NAME_LAST_NAME + " TEXT," +
-                COLUMN_NAME_PIN + " INT" +
-                COLUMN_NAME_GOOGLE_ACCOUNT + " BOOLEAN )";
+                COLUMN_NAME_PIN + " INTEGER," +
+                COLUMN_NAME_GOOGLE_ACCOUNT + " INTEGER )";
     }
 
     public static class Medication implements BaseColumns {}

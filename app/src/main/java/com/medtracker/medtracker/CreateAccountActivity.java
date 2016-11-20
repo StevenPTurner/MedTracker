@@ -23,15 +23,18 @@ public class CreateAccountActivity extends Activity {
         EditText editTextFirstName = (EditText) findViewById(R.id.edittext_firstname);
         EditText editTextLastName = (EditText) findViewById(R.id.edittext_lastname);
         EditText editTextEmail = (EditText) findViewById(R.id.edittext_email);
+        EditText editTextPin = (EditText) findViewById(R.id.edittext_pin);
 
         String email = editTextEmail.getText().toString();
         String firstName = editTextFirstName.getText().toString();
         String lastName = editTextLastName.getText().toString();
+        int pin = Integer.parseInt(editTextPin.getText().toString());
 
-        db.createUser(email, firstName, lastName, 1111, false);
+        db.createUser(email, firstName, lastName, pin, 0);
+        db.close();
         //intent.putExtra(EXTRA_MESSAGE, message);
         //startActivity(intent);
-        TextView text = (TextView) findViewById(R.id.textview_register_account);
-        text.setText("yay!");
+        //TextView text = (TextView) findViewById(R.id.textview_register_account);
+        //text.setText("yay!");
     }
 }
