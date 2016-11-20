@@ -38,9 +38,9 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_MEDICATION_NAME + " TEXT," +
+                        COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_INSTRUCTUIONS + " TEXT," +
-                        COLUMN_NAME_DOSAGE + " TEXT," +
+                        COLUMN_NAME_DOSAGE + " INTEGER," +
                         COLUMN_NAME_HAS_PRESCRIPTION + " INTEGER )";
     }
 
@@ -55,9 +55,9 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_MEDICATION_NAME + " TEXT," +
-                        COLUMN_NAME_DOSE_PER_PRESCRIPTION + " TEXT," +
-                        COLUMN_NAME_DOSE_LEFT + " TEXT," +
+                        COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
+                        COLUMN_NAME_DOSE_PER_PRESCRIPTION + " INTEGER," +
+                        COLUMN_NAME_DOSE_LEFT + " INTEGER," +
                         COLUMN_NAME_EXPECTED_DURATION + " INTEGER," +
                         COLUMN_NAME_DOSE_PER_DAY + " INTEGER," +
                         COLUMN_NAME_NEXT_ALARM + " TEXT )";
@@ -71,9 +71,9 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
+                        COLUMN_NAME_DATE_TIME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT," +
-                        COLUMN_NAME_DATE_TIME + " TEXT," +
-                        COLUMN_NAME_DOSE + " TEXT )";
+                        COLUMN_NAME_DOSE + " INTEGER )";
     }
 
     public static class Alarm implements BaseColumns {
@@ -86,11 +86,12 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_ALARM_ID + " TEXT," +
+                        COLUMN_NAME_ALARM_ID + " INTEGER," +
                         COLUMN_NAME_MEDICATION_NAME + " TEXT," +
-                        COLUMN_NAME_SLEEP_TIMER + " TEXT," +
+                        COLUMN_NAME_SLEEP_TIMER + " INTEGER," +
                         COLUMN_NAME_SLEEP_BEFORE_SKIP + " INTEGER," +
-                        COLUMN_NAME_DATE_TIME + " INTEGER )";
+                        COLUMN_NAME_DATE_TIME + " TEXT," +
+                        " PRIMARY KEY (" + COLUMN_NAME_ALARM_ID + "," +  COLUMN_NAME_MEDICATION_NAME + "))";
     }
 
     public static class AlarmManager implements BaseColumns {
@@ -101,9 +102,9 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_MEDICATION_NAME + " TEXT," +
+                        COLUMN_NAME_MEDICATION_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_CURRENT_ALARM + " TEXT," +
-                        COLUMN_NAME_TOTAL_ALARM + " TEXT, )";
+                        COLUMN_NAME_TOTAL_ALARM + " INTEGER, )";
     }
 
     public static class Glossary implements BaseColumns {
@@ -113,7 +114,7 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_NAME + " TEXT," +
+                        COLUMN_NAME_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_DESCRIPTION + " TEXT )";
     }
 
@@ -125,7 +126,7 @@ public final class MedTrackerContract {
 
         public static final String SQL_CREATE_TABLE_USER =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_NAME_NAME + " TEXT," +
+                        COLUMN_NAME_NAME + " TEXT PRIMARY KEY," +
                         COLUMN_NAME_LOCATION + " TEXT," +
                         COLUMN_NAME_ADDRESS + " TEXT )";
     }
