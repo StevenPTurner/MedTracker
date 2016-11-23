@@ -1,10 +1,8 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-
 
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.1"
     defaultConfig {
         applicationId "com.medtracker.medtracker"
         minSdkVersion 21
@@ -28,5 +26,9 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
     testCompile 'junit:junit:4.12'
-    compile 'com.google.android.gms:play-services-auth:9.0.0'
+    //should be version 10.0.0 but emmulator hasn't been updated by google yet to support it
+    compile 'com.google.android.gms:play-services-auth:9.8.0'
+
 }
+
+apply plugin: 'com.google.gms.google-services'
