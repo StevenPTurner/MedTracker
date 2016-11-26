@@ -22,6 +22,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 //Tutorial here was used
 //https://developers.google.com/identity/sign-in/android/sign-in
@@ -159,6 +161,7 @@ public class StartActivity extends FragmentActivity implements
                 firebaseAuthWithGoogle(account);
                 String personName = account.getDisplayName();
                 text.setText(personName);
+                testDatabase();
             } else {
                 text.setText("Success");
             }
@@ -179,4 +182,13 @@ public class StartActivity extends FragmentActivity implements
             // ...
         }
     }
+
+    public void testDatabase() {
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue("Hello, World!2");
+    }
+
 }
