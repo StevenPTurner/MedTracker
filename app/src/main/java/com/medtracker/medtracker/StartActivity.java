@@ -159,9 +159,11 @@ public class StartActivity extends FragmentActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
+                Intent intent = new Intent(this, DataBaseTestActivity.class);
+                startActivity(intent);
                 String personName = account.getDisplayName();
                 text.setText(personName);
-                testDatabase();
+                //testDatabase();
             } else {
                 text.setText("Success");
             }
@@ -178,17 +180,12 @@ public class StartActivity extends FragmentActivity implements
         switch (v.getId()) {
             case R.id.button_signinwithgoogle:
                 signIn();
+
                 break;
             // ...
         }
     }
 
-    public void testDatabase() {
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!2");
-    }
 
 }

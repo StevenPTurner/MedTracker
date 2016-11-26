@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "158688842223-9b8st2kg84p7d6f291fdm5jbri1qquq2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.medtracker.medtracker",
+            "certificate_hash": "4FBFB1602CB433095C2BA55D213005EFD86029F4"
+          }
+        },
+        {
           "client_id": "158688842223-f609v1vnm06fk2rkuhhcqqm9ti55gtb3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

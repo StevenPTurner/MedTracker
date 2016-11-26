@@ -11,6 +11,17 @@
     android:background="@drawable/startbackground"
     tools:context="com.medtracker.medtracker.DataBaseTestActivity">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:hint="message"
+        android:ems="10"
+        android:layout_above="@+id/button_insert_to_database"
+        android:layout_alignStart="@+id/button_insert_to_database"
+        android:layout_marginBottom="15dp"
+        android:id="@+id/edittext_to_insert"
+        android:layout_alignEnd="@+id/button_insert_to_database" />
 
     <Button
         android:text="Insert To Database"
@@ -19,18 +30,27 @@
         android:layout_marginBottom="106dp"
         android:id="@+id/button_insert_to_database"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="updateDatabase"/>
 
-    <EditText
+    <TextView
+        android:text="USER: none"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:hint="what to insert"
-        android:ems="10"
-        android:layout_above="@+id/button_insert_to_database"
-        android:layout_alignStart="@+id/button_insert_to_database"
-        android:layout_marginBottom="15dp"
-        android:id="@+id/editText3"
-        android:layout_alignEnd="@+id/button_insert_to_database" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="55dp"
+        android:id="@+id/textView_user"
+        android:textSize="36sp" />
+
+    <TextView
+        android:text="Message: none"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="43dp"
+        android:id="@+id/textView_message"
+        android:textSize="36sp"
+        android:layout_below="@+id/textView_user"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
