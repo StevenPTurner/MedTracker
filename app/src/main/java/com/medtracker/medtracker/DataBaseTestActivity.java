@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -20,12 +22,22 @@ public class DataBaseTestActivity extends Activity {
 
     private DatabaseReference database;
     TextView textViewMessage;
+    TextView textViewUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data_base_test);
+
         database = FirebaseDatabase.getInstance().getReference();
         textViewMessage = (TextView) findViewById(R.id.textView_message);
+        textViewUser = (TextView) findViewById(R.id.textView_user);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            textViewUser.setText("User: " + user.getDisplayName());
+        } else {
+            textViewUser.setText("User: ERROR");
+        }
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -50,10 +62,6 @@ public class DataBaseTestActivity extends Activity {
     }
 
     public void updateDatabase(View view) {
-//        // Write a message to the database
-//        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//
           EditText editTextValue = (EditText) findViewById(R.id.edittext_to_insert);
           String value = editTextValue.getText().toString();
           database.child("message").setValue(value);
@@ -62,19 +70,3 @@ public class DataBaseTestActivity extends Activity {
 
 }
 
-//    // Read from the database
-//    myRef.addValueEventListener(new ValueEventListener() {
-//        @Override
-//        public void onDataChange(DataSnapshot dataSnapshot) {
-//                // This method is called once with the initial value and again
-//                // whenever data at this location is updated.
-//                String value = dataSnapshot.getValue(String.class);
-//                Log.d(TAG, "Value is: " + value);
-//        }
-//
-//        @Override
-//        public void onCancelled(DatabaseError error) {
-//            // Failed to read value
-//            Log.w(TAG, "Failed to read value.", error.toException());
-//        }
-//    });
