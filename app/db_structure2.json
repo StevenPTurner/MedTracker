@@ -1,0 +1,124 @@
+{
+  "users": {
+    "a35sYfQ9Y1XENEsuoyKmU49t8z93": {
+      "email": "spt10pd@gmail.co.uk",
+      "display_name": "Steven Turner",
+      "pin": 1111
+    },
+    "19goNyDGFVdwXbrv1jDVhJI7BO03": {
+      "email": "kat.prus@gmail.com",
+      "display_name": "Kate Prus",
+      "pin": 1111
+    }
+  },
+  "medications": {
+    "a35sYfQ9Y1XENEsuoyKmU49t8z93": {
+      "sodium_valproate": {
+        "medication_name": "Sodium Valproate",
+        "instructions": "Take three times daily.",
+        "dosage": 500,
+        "has_perscription": true
+      },
+      "propanalol": {
+        "medication_name": "Propanalol",
+        "instructions": "Take once daily.",
+        "dosage": 80,
+        "has_perscription": true
+      }
+    }
+  },
+  "prescriptions": {
+    "sodium_valproate": {
+      "medication_name": "Sodium Valproate",
+      "doses_per_prescription": 90,
+      "dose_left": 90,
+      "expected_duration": 30,
+      "dose_per_day": 3,
+      "next_alarm": "10/10/2016-10:10:10"
+    },
+    "propanalol": {
+      "medication_name": "Propanalol",
+      "doses_per_prescription": 30,
+      "dose_left": 30,
+      "expected_duration": 30,
+      "dose_per_day": 1,
+      "next_alarm": "10/10/2016-10:10:10"
+    }
+  },
+  "records": {
+    "a35sYfQ9Y1XENEsuoyKmU49t8z93": {
+      "11-11-2016_10:10:10": {
+        "date_time": "10/11/2016-10:10:10",
+        "medication_name": "Sodium Valproate",
+        "dose": 500
+      },
+      "11-11-2016-10:11:10": {
+        "date_time": "10/11/2016-10:11:10",
+        "medication_name": "Propanalol",
+        "dose": 580
+      },
+      "11-11-2016_15:10:10": {
+        "date_time": "10/11/2016-15:10:10",
+        "medication_name": "Sodium Valproate",
+        "dose": 500
+      },
+      "11-11-2016_22:10:10": {
+        "date_time": "10/11/2016-12:10:10",
+        "medication_name": "Sodium Valproate",
+        "dose": 500
+      }
+    }
+  },
+  "alarms":{
+    "a35sYfQ9Y1XENEsuoyKmU49t8z93": {
+      "sodium_valproate1": {
+        "alarm_id": 1,
+        "medication_name": "sodium_valproate",
+        "date_time": "11/11/11-10:10:10"
+      },
+      "sodium_valproate2": {
+        "alarm_id": 2,
+        "medication_name": "sodium_valproate",
+        "date_time": "11/11/11-14:10:10"
+      },
+      "sodium_valproate3": {
+        "alarm_id": 3,
+        "medication_name": "sodium_valproate",
+        "date_time": "11/11/11-17:10:10"
+      },
+      "propanalol1": {
+        "alarm_id": 1,
+        "medication_name": "propanalol",
+        "date_time": "11/11/11-10:10:10"
+      }
+    }
+  },
+  "alarm_manager": {
+    "a35sYfQ9Y1XENEsuoyKmU49t8z93": {
+      "sodium_valproate": {
+        "medication_name": "sodium_valproate",
+        "current_alarm": 2,
+        "total alarm": 3,
+        "sleep_timer": 5,
+        "sleep_before_skip": 3
+      },
+      "propanalol": {
+        "medication_name": "propanalol",
+        "current_alarm": 1,
+        "totalalarm": 1,
+        "sleep_timer": 5,
+        "sleep_before_skip": 3
+      }
+    }
+  },
+  "glossary": {
+    "take_once": "Medication you take once a day"
+  },
+  "pharmacies": {
+    "1": {
+      "name":"name",
+      "address":"address",
+      "location":"location"
+    }
+  }
+}
