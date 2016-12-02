@@ -17,13 +17,13 @@
         "medication_name": "Sodium Valproate",
         "instructions": "Take three times daily.",
         "dosage": 500,
-        "has_perscription": true
+        "has_prescription": true
       },
       "propanalol": {
         "medication_name": "Propanalol",
         "instructions": "Take once daily.",
         "dosage": 80,
-        "has_perscription": true
+        "has_prescription": true
       }
     }
   },

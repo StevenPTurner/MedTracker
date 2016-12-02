@@ -1,7 +1,7 @@
 package com.medtracker.models;
 
 /**
- * Created by home on 02/12/2016.
+ * Created by spt10 on 02/12/2016.
  */
 
 public class Medication {
@@ -13,9 +13,9 @@ public class Medication {
     public Medication() {
     }
 
-    public Medication(String medication_name, String instructions, boolean has_prescription, int dosage) {
-        this.medication_name = medication_name;
+    public Medication(String instructions, String medication_name, boolean has_prescription, int dosage) {
         this.instructions = instructions;
+        this.medication_name = medication_name;
         this.has_prescription = has_prescription;
         this.dosage = dosage;
     }

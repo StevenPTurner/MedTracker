@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void updateUI(String displayName, String email) {
+    private void updateUI(String displayName, String email) {
         TextView textViewDisplayName = (TextView) findViewById(R.id.textView_name);
         TextView textViewEmail = (TextView) findViewById(R.id.textView_email);
 
