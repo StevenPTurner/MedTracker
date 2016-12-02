@@ -42,6 +42,8 @@ public class StartActivity extends FragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
         // Configure sign-in to request the user's ID, email address, and basic
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -134,20 +136,6 @@ public class StartActivity extends FragmentActivity implements
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-
-//    private void handleSignInResult(GoogleSignInResult result) {
-//        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-//        TextView text = (TextView) findViewById(R.id.textview_title);
-//
-//        if (result.isSuccess()) {
-//            // Signed in successfully, show authenticated UI.
-//            GoogleSignInAccount acct = result.getSignInAccount();
-//            String personName = acct.getDisplayName();
-//            text.setText(personName);
-//        } else {
-//            text.setText("Success");
-//        }
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

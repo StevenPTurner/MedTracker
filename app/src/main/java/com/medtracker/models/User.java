@@ -6,15 +6,17 @@ package com.medtracker.models;
 
 public class User {
     private String email;
-    private String displayName;
+    private String display_name;
     private int pin;
 
     public User() {
+
     }
 
-    public User(String email, String displayName, int pin) {
+    public User(String email, String display_name, int pin) {
+
         this.email = email;
-        this.displayName = displayName;
+        this.display_name = display_name;
         this.pin = pin;
     }
 
@@ -26,12 +28,12 @@ public class User {
         this.email = email;
     }
 
-    public String getDisplayName() {
-        return displayName;
+    public String getDisplay_name() {
+        return display_name;
     }
 
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public void setDisplay_name(String display_name) {
+        this.display_name = display_name;
     }
 
     public int getPin() {
