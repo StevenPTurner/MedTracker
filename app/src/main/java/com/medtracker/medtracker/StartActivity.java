@@ -159,13 +159,10 @@ public class StartActivity extends FragmentActivity implements
             if (result.isSuccess()) {
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
-                Intent intent = new Intent(this, DataBaseTestActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
-                String personName = account.getDisplayName();
-                text.setText(personName);
-                //testDatabase();
             } else {
-                text.setText("Success");
+                Log.d(TAG, "Failed to authenticate");
             }
         }
     }

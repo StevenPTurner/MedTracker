@@ -16,7 +16,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".CreateAccountActivity" />
-        <activity android:name=".DataBaseTestActivity"></activity>
+        <activity android:name=".DataBaseTestActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".MedicationsActivity"></activity>
     </application>
 
 </manifest>
