@@ -4,16 +4,16 @@ package com.medtracker.models;
  * Created by home on 02/12/2016.
  */
 
-public class medication {
+public class Medication {
     private String medication_name;
     private String instructions;
     private boolean has_prescription;
     private int dosage;
 
-    public medication() {
+    public Medication() {
     }
 
-    public medication(String medication_name, String instructions, boolean has_prescription, int dosage) {
+    public Medication(String medication_name, String instructions, boolean has_prescription, int dosage) {
         this.medication_name = medication_name;
         this.instructions = instructions;
         this.has_prescription = has_prescription;

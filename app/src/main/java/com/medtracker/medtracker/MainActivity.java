@@ -31,7 +31,8 @@ public class MainActivity extends Activity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(userUID);
 
         ValueEventListener userListener = new ValueEventListener() {
             @Override
@@ -48,7 +49,7 @@ public class MainActivity extends Activity {
     }
 
     public void medicationsActivity(View view) {
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, MedicationsActivity.class);
         startActivity(intent);
     }
 
