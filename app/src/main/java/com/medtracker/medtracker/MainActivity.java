@@ -27,25 +27,25 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        userUID = mFirebaseUser.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(userUID);
-
-        ValueEventListener userListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                updateUI(user.getDisplay_name(),user.getEmail());
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-            }
-        };
-        mDatabase.addListenerForSingleValueEvent(userListener);
+//
+//        mFirebaseAuth = FirebaseAuth.getInstance();
+//        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+//        userUID = mFirebaseUser.getUid();
+//        mDatabase = FirebaseDatabase.getInstance().getReference()
+//                .child("users").child(userUID);
+//
+//        ValueEventListener userListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                User user = dataSnapshot.getValue(User.class);
+//                updateUI(user.getDisplay_name(),user.getEmail());
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+//            }
+//        };
+//        mDatabase.addListenerForSingleValueEvent(userListener);
     }
 
     public void medicationsActivity(View view) {
