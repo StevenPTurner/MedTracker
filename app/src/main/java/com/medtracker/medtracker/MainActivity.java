@@ -3,10 +3,14 @@ package com.medtracker.medtracker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -56,6 +60,11 @@ public class MainActivity extends Activity {
         };
         mDatabase.addListenerForSingleValueEvent(userListener);
   }
+
+    private void signOut() {
+        // Firebase sign out
+        mFirebaseAuth.signOut();
+    }
 
     public void medicationsActivity(View view) {
         Intent intent = new Intent(this, MedicationsActivity.class);

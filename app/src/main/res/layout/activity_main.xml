@@ -27,19 +27,19 @@
         android:text="Profile Information"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView_title"
         android:textSize="32sp"
         android:textStyle="normal|bold"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
+        android:layout_marginTop="40dp"
+        android:id="@+id/text_title" />
 
     <TextView
         android:id="@+id/textView_name"
         android:text="Name:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView_title"
+        android:layout_below="@+id/text_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="85dp"
         android:textSize="24sp" />
@@ -53,5 +53,15 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="22dp"
         android:textSize="24sp" />
+
+    <Button
+        android:text="Sign Out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_sign_out"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="41dp"
+        android:onClick="signOut"/>
 
 </RelativeLayout>
