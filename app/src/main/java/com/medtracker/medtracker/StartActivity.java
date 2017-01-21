@@ -32,10 +32,12 @@ public class StartActivity extends FragmentActivity implements
 
     private static final String TAG = "LogSignInActivity";
     private static final int RC_SIGN_IN = 9001;
+    private Intent mainActivityIntent;
 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
 
 
     @Override
@@ -50,14 +52,13 @@ public class StartActivity extends FragmentActivity implements
                 .requestEmail()
                 .build();
 
-
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-
+        mainActivityIntent = new Intent(this, MainActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -66,6 +67,7 @@ public class StartActivity extends FragmentActivity implements
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    startActivity(mainActivityIntent);
                 } else {
                     // User is signed out
                     Log.d(TAG, "onAuthStateChanged:signed_out");
@@ -103,7 +105,6 @@ public class StartActivity extends FragmentActivity implements
             case R.id.button_signinwithgoogle:
                 signIn();
                 break;
-            // ...
         }
     }
 
@@ -125,6 +126,7 @@ public class StartActivity extends FragmentActivity implements
             Log.d(TAG, "was a success");
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
+
         } else {
             // Signed out, show unauthenticated UI.
             Log.d(TAG, "was a failure");
@@ -150,13 +152,12 @@ public class StartActivity extends FragmentActivity implements
                                     Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        // An unresolvable error has occurred and Google APIs (including Sign-In) will not
-        // be available.
         Log.d(TAG, "onConnectionFailed:" + connectionResult);
     }
 

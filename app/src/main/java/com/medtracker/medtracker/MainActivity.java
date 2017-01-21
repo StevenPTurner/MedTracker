@@ -17,7 +17,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.models.User;
 
 public class MainActivity extends Activity {
-    private static final String TAG = "MainActivity";
+    private static final String TAG = "LogMainActivity";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -27,26 +27,35 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//
-//        mFirebaseAuth = FirebaseAuth.getInstance();
-//        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-//        userUID = mFirebaseUser.getUid();
-//        mDatabase = FirebaseDatabase.getInstance().getReference()
-//                .child("users").child(userUID);
-//
-//        ValueEventListener userListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                updateUI(user.getDisplay_name(),user.getEmail());
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-//            }
-//        };
-//        mDatabase.addListenerForSingleValueEvent(userListener);
-    }
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        userUID = mFirebaseUser.getUid();
+        Log.d(TAG, userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(userUID);
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    updateUI(user.getDisplay_name(),user.getEmail());
+                } else {
+                    User user = new User(mFirebaseUser.getEmail(),
+                            mFirebaseUser.getDisplayName(),
+                            1111);
+                    mDatabase.setValue(user);
+                    updateUI(user.getDisplay_name(),user.getEmail());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        };
+        mDatabase.addListenerForSingleValueEvent(userListener);
+  }
 
     public void medicationsActivity(View view) {
         Intent intent = new Intent(this, MedicationsActivity.class);
