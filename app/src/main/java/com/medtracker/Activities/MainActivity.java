@@ -64,10 +64,10 @@ public class MainActivity extends Activity {
         mFirebaseAuth.signOut();
     }
 
-    public void medicationsActivity(View view) {
-        Intent intent = new Intent(this, DataBaseTestActivity.MedicationsActivity.class);
-        startActivity(intent);
-    }
+//    public void medicationsActivity(View view) {
+//        Intent intent = new Intent(this, DataBaseTestActivity.MedicationsActivity.class);
+//        startActivity(intent);
+//    }
 
     private void updateUI(String displayName, String email) {
         TextView textViewDisplayName = (TextView) findViewById(R.id.textView_name);
