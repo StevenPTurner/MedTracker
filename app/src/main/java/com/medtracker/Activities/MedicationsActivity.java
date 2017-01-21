@@ -1,4 +1,4 @@
-package com.medtracker.medtracker;
+package com.medtracker.Activities;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.medtracker.medtracker.R;
 import com.medtracker.models.Medication;
 
 import java.util.ArrayList;

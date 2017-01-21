@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/startbackground"
-    tools:context="com.medtracker.medtracker.MainActivity">
+    tools:context="com.medtracker.medtracker.com.medtracker.Activities.MainActivity">
 
     <Button
         android:id="@+id/button_medications_activity"

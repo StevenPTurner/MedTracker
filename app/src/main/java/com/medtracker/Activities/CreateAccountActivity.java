@@ -1,4 +1,4 @@
-package com.medtracker.medtracker;
+package com.medtracker.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.medtracker.database.MedtrackerDbHelper;
+import com.medtracker.medtracker.R;
 
 public class CreateAccountActivity extends Activity {
 

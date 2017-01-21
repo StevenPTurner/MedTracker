@@ -1,4 +1,4 @@
-package com.medtracker.medtracker;
+package com.medtracker.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -22,8 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.medtracker.R;
 
 //Tutorial here was used
 //https://developers.google.com/identity/sign-in/android/sign-in
@@ -33,18 +30,15 @@ public class StartActivity extends FragmentActivity implements
     private static final String TAG = "LogSignInActivity";
     private static final int RC_SIGN_IN = 9001;
     private Intent mainActivityIntent;
-
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        findViewById(R.id.button_signinwithgoogle).setOnClickListener(this);
+        findViewById(R.id.button_sign_in_with_google).setOnClickListener(this);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -53,11 +47,12 @@ public class StartActivity extends FragmentActivity implements
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this /* FragmentActivity */, this /* OnConnectionFailedListener */)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        //set up firebase objects and listener
         mainActivityIntent = new Intent(this, MainActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -76,15 +71,12 @@ public class StartActivity extends FragmentActivity implements
         };
     }
 
-    // [START on_start_add_listener]
     @Override
     public void onStart() {
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
     }
-    // [END on_start_add_listener]
 
-    // [START on_stop_remove_listener]
     @Override
     public void onStop() {
         super.onStop();
@@ -92,17 +84,17 @@ public class StartActivity extends FragmentActivity implements
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    // [END on_stop_remove_listener]
 
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
+    //monitors for button clicks
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.button_signinwithgoogle:
+            case R.id.button_sign_in_with_google:
                 signIn();
                 break;
         }
@@ -126,16 +118,14 @@ public class StartActivity extends FragmentActivity implements
             Log.d(TAG, "was a success");
             GoogleSignInAccount account = result.getSignInAccount();
             firebaseAuthWithGoogle(account);
-
         } else {
-            // Signed out, show unauthenticated UI.
+            //error logging
             Log.d(TAG, "was a failure");
         }
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {

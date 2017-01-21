@@ -2,50 +2,52 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_start"
-    android:background="@drawable/startbackground"
+    android:background="@drawable/image_start_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.medtracker.medtracker.StartActivity">
+    tools:context="com.medtracker.medtracker.com.medtracker.Activities.StartActivity">
 
     <TextView
-        android:id="@+id/textview_title"
-        android:text="@string/app_name"
+        android:id="@+id/text_title"
+        android:text="@string/title_app_name"
+        android:textColor="#FFFFFF"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/button_signinwithgoogle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="27dp"
-        android:textSize="36sp" />
+        android:textSize="50sp"
+        android:fontFamily="san-serif-medium"
+        android:textStyle="normal|bold"
+        android:layout_marginBottom="37dp"
+        android:layout_above="@+id/button_sign_in_with_google"
+        android:layout_centerHorizontal="true" />
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/button_signinwithgoogle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_login"
-        android:layout_alignStart="@+id/button_login"
-        android:layout_alignEnd="@+id/button_login" />
-
-    <Button
-        android:id="@+id/button_login"
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/button_create_account"
-        android:layout_alignEnd="@+id/button_create_account"
-        android:layout_alignStart="@+id/button_create_account" />
-
-    <Button
-        android:id="@+id/button_create_account"
-        android:text="Create Account"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="createAccountActivity"
-        android:layout_marginBottom="177dp"
-        android:layout_alignParentBottom="true"
+        android:id="@+id/button_sign_in_with_google"
+        android:layout_height="50dp"
+        android:layout_width="200dp"
+        android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
+
+    <!--<Button-->
+        <!--android:id="@+id/button_login"-->
+        <!--android:text="Login"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_above="@+id/button_create_account"-->
+        <!--android:layout_alignEnd="@+id/button_create_account"-->
+        <!--android:layout_alignStart="@+id/button_create_account" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/button_create_account"-->
+        <!--android:text="Create Account"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:onClick="createAccountActivity"-->
+        <!--android:layout_marginBottom="177dp"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-package com.medtracker.medtracker;
+package com.medtracker.Activities;
 
 import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.medtracker.medtracker.R;
 
 import static com.google.android.gms.internal.zzs.TAG;
 
