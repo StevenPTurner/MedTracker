@@ -15,10 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.medtracker.Activities.CreateAccountActivity" />
-        <activity android:name="com.medtracker.Activities.DataBaseTestActivity" />
+        <activity android:name="com.medtracker.TestingClasses.CreateAccountActivity" />
+        <activity android:name="com.medtracker.TestingClasses.DataBaseTestActivity" />
         <activity android:name="com.medtracker.Activities.MainActivity" />
-        <activity android:name="com.medtracker.Activities.MedicationsActivity"></activity>
+        <activity android:name="com.medtracker.TestingClasses.DataBaseTestActivity$MedicationsActivity"></activity>
     </application>
 
 </manifest>

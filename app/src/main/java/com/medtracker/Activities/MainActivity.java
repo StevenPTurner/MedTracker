@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.medtracker.TestingClasses.DataBaseTestActivity;
 import com.medtracker.medtracker.R;
 import com.medtracker.models.User;
 
@@ -64,7 +65,7 @@ public class MainActivity extends Activity {
     }
 
     public void medicationsActivity(View view) {
-        Intent intent = new Intent(this, MedicationsActivity.class);
+        Intent intent = new Intent(this, DataBaseTestActivity.MedicationsActivity.class);
         startActivity(intent);
     }
 
