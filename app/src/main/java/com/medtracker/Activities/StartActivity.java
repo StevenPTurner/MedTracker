@@ -27,7 +27,7 @@ import com.medtracker.medtracker.R;
 public class StartActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
-    private static final String TAG = "LogSignInActivity";
+    private static final String TAG = "LogStartActivity";
     private static final int RC_SIGN_IN = 9001;
     private Intent mainActivityIntent;
     private GoogleApiClient mGoogleApiClient;
