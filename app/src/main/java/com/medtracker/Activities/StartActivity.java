@@ -100,9 +100,6 @@ public class StartActivity extends FragmentActivity implements
             case R.id.button_sign_in_with_google:
                 signInWithGoogle();
                 break;
-            case R.id.button_login:
-                signInEmail();
-                break;
         }
     }
 
@@ -112,7 +109,8 @@ public class StartActivity extends FragmentActivity implements
     }
 
     private void signInEmail() {
-
+        Intent signInWithEmailIntent = new Intent(this, SignInActivity.class);
+        startActivityForResult(signInWithEmailIntent, RC_SIGN_IN_EMAIL);
     }
 
     public void createAccountEmail(View view) {

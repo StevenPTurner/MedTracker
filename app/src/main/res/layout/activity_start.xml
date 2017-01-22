@@ -37,20 +37,21 @@
         android:text="Create Account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button_login"
-        android:layout_alignStart="@+id/button_login"
-        android:layout_alignEnd="@+id/button_login"
+        android:layout_below="@+id/button_Sign_In"
+        android:layout_alignStart="@+id/button_Sign_In"
+        android:layout_alignEnd="@+id/button_Sign_In"
         android:textAllCaps="false"
         android:onClick="createAccountEmail"/>
 
     <Button
-        android:id="@+id/button_login"
-        android:text="Login"
+        android:id="@+id/button_Sign_In"
+        android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_sign_in_with_google"
         android:layout_alignStart="@+id/button_sign_in_with_google"
         android:layout_alignEnd="@+id/button_sign_in_with_google"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:onClick="signInWithEmail"/>
 
 </RelativeLayout>
