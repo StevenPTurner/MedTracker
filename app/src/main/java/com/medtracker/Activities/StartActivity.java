@@ -85,9 +85,17 @@ public class StartActivity extends FragmentActivity implements
         }
     }
 
-    private void signIn() {
+    private void signInWithGoogle() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private void signInEmail() {
+
+    }
+
+    private void createAccountEmail() {
+
     }
 
     //monitors for button clicks
@@ -95,7 +103,13 @@ public class StartActivity extends FragmentActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_sign_in_with_google:
-                signIn();
+                signInWithGoogle();
+                break;
+            case R.id.button_login:
+                signInEmail();
+                break;
+            case R.id.button_create_account:
+                createAccountEmail();
                 break;
         }
     }

@@ -31,23 +31,23 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button_login"-->
-        <!--android:text="Login"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_above="@+id/button_create_account"-->
-        <!--android:layout_alignEnd="@+id/button_create_account"-->
-        <!--android:layout_alignStart="@+id/button_create_account" />-->
+    <Button
+        android:id="@+id/button_create_account"
+        android:text="Create Account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="createAccountActivity"
+        android:layout_below="@+id/button_login"
+        android:layout_alignStart="@+id/button_login"
+        android:layout_alignEnd="@+id/button_login" />
 
-    <!--<Button-->
-        <!--android:id="@+id/button_create_account"-->
-        <!--android:text="Create Account"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:onClick="createAccountActivity"-->
-        <!--android:layout_marginBottom="177dp"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true" />-->
+    <Button
+        android:id="@+id/button_login"
+        android:text="Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_sign_in_with_google"
+        android:layout_alignStart="@+id/button_sign_in_with_google"
+        android:layout_alignEnd="@+id/button_sign_in_with_google" />
 
 </RelativeLayout>
