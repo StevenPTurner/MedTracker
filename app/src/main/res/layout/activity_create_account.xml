@@ -29,16 +29,26 @@
         android:textAlignment="center" />
 
     <EditText
-        android:id="@+id/edit_password"
-        android:hint="Password"
-        android:layout_width="wrap_content"
+        android:id="@+id/edit_forename"
+        android:hint="Forename"
         android:layout_height="wrap_content"
+        android:layout_width="match_parent"
         android:textAlignment="center"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        android:inputType="textEmailAddress" />
+        android:inputType="text|textEmailAddress" />
 
+    <EditText
+        android:id="@+id/edit_surname"
+        android:hint="Surname"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/edit_email"
@@ -46,8 +56,21 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textAlignment="center"
-        android:textSize="24sp"
-        android:textColorHint="#FFFFFF"/>
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:inputType="textEmailAddress" />
+
+    <EditText
+        android:id="@+id/edit_password"
+        android:hint="Password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:inputType="textPassword" />
 
     <Button
         android:id="@+id/button_register"

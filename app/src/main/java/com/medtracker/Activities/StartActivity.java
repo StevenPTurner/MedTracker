@@ -20,11 +20,14 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.medtracker.Utilities.RC;
 import com.medtracker.medtracker.R;
 
-//Tutorial here was used
+//Tutorial here was used and from various soruces for the firebase authentication
 //https://developers.google.com/identity/sign-in/android/sign-in
+//https://firebase.google.com/docs/auth/android/password-auth
+//https://firebase.google.com/docs/auth/android/google-signin
 public class StartActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
@@ -36,6 +39,7 @@ public class StartActivity extends FragmentActivity implements
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String displayName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class StartActivity extends FragmentActivity implements
                 if (user != null) {
                     // User is signed in
                     Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    mainActivityIntent.putExtra("displayName",displayName);
                     startActivity(mainActivityIntent);
                 } else {
                     // User is signed out
@@ -130,6 +135,7 @@ public class StartActivity extends FragmentActivity implements
         if (requestCode == RC_CREATE_ACCOUNT_EMAIL) {
             String email = data.getStringExtra("email");
             String password = data.getStringExtra("password");
+            displayName = data.getStringExtra("displayName");
             firebaseRegisterAccountWithEmail(email, password);
         }
     }
@@ -140,25 +146,13 @@ public class StartActivity extends FragmentActivity implements
             // Signed in successfully, show authenticated UI.
             Log.d(TAG, "was a success");
             GoogleSignInAccount account = result.getSignInAccount();
+            displayName = account.getDisplayName();
             firebaseAuthWithGoogle(account);
         } else {
             //error logging
             Log.d(TAG, "was a failure");
         }
     }
-
-//    private void handleRegisterAccountResult(String email, String password) {
-//        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-//        if (result.isSuccess()) {
-//            // Signed in successfully, show authenticated UI.
-//            Log.d(TAG, "was a success");
-//            GoogleSignInAccount account = result.getSignInAccount();
-//            firebaseAuthWithGoogle(account);
-//        } else {
-//            //error logging
-//            Log.d(TAG, "was a failure");
-//        }
-//    }
 
     private void firebaseRegisterAccountWithEmail(String email, String password) {
         Log.d(TAG, "createAccount:" + email);
@@ -199,6 +193,8 @@ public class StartActivity extends FragmentActivity implements
 
                 });
     }
+
+
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
