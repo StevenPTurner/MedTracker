@@ -26,6 +26,7 @@
 
     <com.google.android.gms.common.SignInButton
         android:id="@+id/button_sign_in_with_google"
+        android:text="Sign in with Google"
         android:layout_height="50dp"
         android:layout_width="200dp"
         android:layout_centerVertical="true"
@@ -39,7 +40,8 @@
         android:onClick="createAccountActivity"
         android:layout_below="@+id/button_login"
         android:layout_alignStart="@+id/button_login"
-        android:layout_alignEnd="@+id/button_login" />
+        android:layout_alignEnd="@+id/button_login"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/button_login"
@@ -48,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/button_sign_in_with_google"
         android:layout_alignStart="@+id/button_sign_in_with_google"
-        android:layout_alignEnd="@+id/button_sign_in_with_google" />
+        android:layout_alignEnd="@+id/button_sign_in_with_google"
+        android:textAllCaps="false" />
 
 </RelativeLayout>
