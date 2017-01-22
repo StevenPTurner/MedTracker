@@ -33,7 +33,7 @@ public class CreateAccountActivity extends Activity {
         editSurname = (EditText) findViewById(R.id.edit_surname);
     }
 
-    public void RegisterAccountDetails(View view) {
+    public void registerAccountDetails(View view) {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
         displayName = editForename.getText().toString() + " " + editSurname.getText().toString();
