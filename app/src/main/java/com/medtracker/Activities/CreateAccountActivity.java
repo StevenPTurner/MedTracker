@@ -12,6 +12,7 @@ import com.medtracker.medtracker.R;
 
 public class CreateAccountActivity extends Activity {
 
+    private static final String TAG = "LogCreateAccountActivity";
     private EditText editEmail;
     private EditText editPassword;
     String email;

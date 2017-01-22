@@ -37,11 +37,11 @@
         android:text="Create Account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="createAccountActivity"
         android:layout_below="@+id/button_login"
         android:layout_alignStart="@+id/button_login"
         android:layout_alignEnd="@+id/button_login"
-        android:textAllCaps="false"/>
+        android:textAllCaps="false"
+        android:onClick="createAccountEmail"/>
 
     <Button
         android:id="@+id/button_login"
