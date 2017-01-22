@@ -108,7 +108,7 @@ public class StartActivity extends FragmentActivity implements
         startActivityForResult(signInWithGoogleIntent, RC_SIGN_IN_GOOGLE);
     }
 
-    private void signInEmail() {
+    public void signInEmail(View view) {
         Intent signInWithEmailIntent = new Intent(this, SignInActivity.class);
         startActivityForResult(signInWithEmailIntent, RC_SIGN_IN_EMAIL);
     }
@@ -128,9 +128,11 @@ public class StartActivity extends FragmentActivity implements
         if (requestCode == RC_SIGN_IN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleGoogleSignInResult(result);
-        }
-
-        if (requestCode == RC_CREATE_ACCOUNT_EMAIL) {
+        } else if(requestCode == RC_SIGN_IN_EMAIL) {
+            String email = data.getStringExtra("email");
+            String password = data.getStringExtra("password");
+            firebaseSignInWithEmail(email, password);
+        } else if(requestCode == RC_CREATE_ACCOUNT_EMAIL) {
             String email = data.getStringExtra("email");
             String password = data.getStringExtra("password");
             displayName = data.getStringExtra("displayName");
@@ -150,24 +152,6 @@ public class StartActivity extends FragmentActivity implements
             //error logging
             Log.d(TAG, "was a failure");
         }
-    }
-
-    private void firebaseRegisterAccountWithEmail(String email, String password) {
-        Log.d(TAG, "createAccount:" + email);
-
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified
-                        if (!task.isSuccessful()) {
-                            Toast.makeText(StartActivity.this, R.string.auth_failed,
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
     }
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
@@ -192,7 +176,41 @@ public class StartActivity extends FragmentActivity implements
                 });
     }
 
+    private void firebaseSignInWithEmail(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
 
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(StartActivity.this, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
+
+    private void firebaseRegisterAccountWithEmail(String email, String password) {
+        Log.d(TAG, "createAccount:" + email);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(StartActivity.this, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+    }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {

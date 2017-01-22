@@ -52,6 +52,6 @@
         android:layout_alignStart="@+id/button_sign_in_with_google"
         android:layout_alignEnd="@+id/button_sign_in_with_google"
         android:textAllCaps="false"
-        android:onClick="signInWithEmail"/>
+        android:onClick="signInEmail"/>
 
 </RelativeLayout>

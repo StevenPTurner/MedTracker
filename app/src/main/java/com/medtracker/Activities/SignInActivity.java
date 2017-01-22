@@ -3,6 +3,7 @@ package com.medtracker.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.View;
 import android.widget.EditText;
 
 import com.medtracker.medtracker.R;
@@ -25,7 +26,7 @@ public class SignInActivity extends Activity {
         editPassword = (EditText) findViewById(R.id.edit_password);
     }
 
-    public void signInDetails() {
+    public void signInDetails(View view) {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
 
