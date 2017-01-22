@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.medtracker.Utilities.RC;
 import com.medtracker.medtracker.R;
 
 //Tutorial here was used
@@ -28,7 +29,9 @@ public class StartActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
     private static final String TAG = "LogStartActivity";
-    private static final int RC_SIGN_IN = 9001;
+    private static final int RC_SIGN_IN_GOOGLE = RC.SIGN_IN_GOOGLE;
+    private static final int RC_SIGN_IN_EMAIL = RC.SIGN_IN_EMAIL;
+    private static final int RC_CREATE_ACCOUNT_EMAIL = RC.CREATE_ACCOUNT_EMAIL;
     private Intent mainActivityIntent;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth mAuth;
@@ -86,16 +89,33 @@ public class StartActivity extends FragmentActivity implements
     }
 
     private void signInWithGoogle() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+        Intent signInWithGoogleIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInWithGoogleIntent, RC_SIGN_IN_GOOGLE);
     }
 
     private void signInEmail() {
-
+        Intent createAccountWithEmailIntent = new Intent(this, CreateAccountActivity.class);
+        startActivityForResult(createAccountWithEmailIntent, RC_CREATE_ACCOUNT_EMAIL);
     }
 
     private void createAccountEmail() {
+        
 
+//        Log.d(TAG, "createAccount:" + email);
+//
+//        mAuth.createUserWithEmailAndPassword(email, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+//                        // If sign in fails, display a message to the user. If sign in succeeds
+//                        // the auth state listener will be notified
+//                        if (!task.isSuccessful()) {
+//                            Toast.makeText(StartActivity.this, R.string.auth_failed,
+//                                    Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                });
     }
 
     //monitors for button clicks
@@ -119,7 +139,7 @@ public class StartActivity extends FragmentActivity implements
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == RC_SIGN_IN_GOOGLE) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
         }

@@ -1,4 +1,4 @@
-package com.medtracker.TestingClasses;
+package com.medtracker.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
