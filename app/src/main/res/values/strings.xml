@@ -3,4 +3,12 @@
     <string name="sign_in">Sign In</string>
     <string name="auth_failed">ERROR:Password or Email not recognised</string>
     <string name="title_activity_sign_in">SignInActivity</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string-array name="menu_titles_array">
+        <item>Medications</item>
+        <item>Records</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
