@@ -1,4 +1,4 @@
-package com.medtracker.models;
+package com.medtracker.Models;
 
 /**
  * Created by spt10 on 02/12/2016.

@@ -60,7 +60,7 @@ public class StartActivity extends FragmentActivity implements
                 .build();
 
         //set up firebase objects and listener
-        mainActivityIntent = new Intent(this, MainActivity.class);
+        mainActivityIntent = new Intent(this, HomeActivity.class);
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

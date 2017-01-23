@@ -1,4 +1,4 @@
-package com.medtracker.models;
+package com.medtracker.Models;
 
 /**
  * Created by home on 01/12/2016.

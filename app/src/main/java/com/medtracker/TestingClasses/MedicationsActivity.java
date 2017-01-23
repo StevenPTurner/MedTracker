@@ -14,7 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.medtracker.R;
-import com.medtracker.models.Medication;
+import com.medtracker.Models.Medication;
 
 import java.util.ArrayList;
 import java.util.List;
