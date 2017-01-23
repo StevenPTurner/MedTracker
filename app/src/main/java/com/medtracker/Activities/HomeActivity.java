@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.medtracker.Fragments.MedicationListFragment;
 import com.medtracker.medtracker.R;
 
 public class HomeActivity extends Activity {
@@ -44,20 +45,19 @@ public class HomeActivity extends Activity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         // Create a new fragment and specify the planet to show based on position
-        Fragment fragment;
+        Fragment fragment = new Fragment();
         FragmentManager fragmentManager = getFragmentManager();
         Bundle args = new Bundle();
 
         switch(position) {
             case 0:
-                //fragment = new Medications();
-                //args.putInt(PlanetFragment.ARG_PLANET_NUMBER, position);
+                fragment = new MedicationListFragment();
+                //args.putInt(MedicationListFragment.ARG_PLANET_NUMBER, position);
                 break;
             case 1:
                 //fragment = new MyFragment2();
                 break;
         }
-
 
         fragment.setArguments(args);
         // Insert the fragment by replacing any existing fragment
@@ -71,10 +71,10 @@ public class HomeActivity extends Activity {
         mDrawerLayout.closeDrawer(mDrawerList);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        mTitle = title;
-        getActionBar().setTitle(mTitle);
-    }
+//    @Override
+//    public void setTitle(CharSequence title) {
+//        mTitle = title;
+//        getActionBar().setTitle(mTitle);
+//    }
 
 }
