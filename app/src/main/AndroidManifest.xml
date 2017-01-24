@@ -18,7 +18,7 @@
         <activity android:name="com.medtracker.Activities.CreateAccountActivity" />
         <activity android:name="com.medtracker.TestingClasses.DataBaseTestActivity" />
         <activity android:name="com.medtracker.Activities.MainActivity" />
-        <activity android:name="com.medtracker.TestingClasses.DataBaseTestActivity$MedicationsActivity" />
+        <activity android:name="com.medtracker.TestingClasses.MedicationsActivity" />
         <activity
             android:name="com.medtracker.Activities.SignInActivity"
             android:label="@string/title_activity_sign_in" />

@@ -2,7 +2,13 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Material.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="android:colorAccent">@color/medtracker_light_blue</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:colorPrimary">@color/medtracker_light_blue</item>
+        <item name="android:colorPrimaryDark">@color/medtracker_dark_blue</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector</item>
     </style>
+
+
 
 </resources>
