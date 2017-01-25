@@ -3,7 +3,8 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303f9f</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="highlight"></color>
+    <color name="navigationDrawerHighlight">#DCDCDC</color>
+    <color name="navigationDrawerSelected">#B0B0B0</color>
     <color name="textDark">#111111</color>
-    <color name="textLight"></color>
+    <color name="textLight">#ffffff</color>
 </resources>
