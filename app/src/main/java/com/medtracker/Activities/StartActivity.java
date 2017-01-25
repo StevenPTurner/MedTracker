@@ -28,6 +28,9 @@ import com.medtracker.medtracker.R;
 //https://developers.google.com/identity/sign-in/android/sign-in
 //https://firebase.google.com/docs/auth/android/password-auth
 //https://firebase.google.com/docs/auth/android/google-signin
+//This is the starting class that handles all authentications to the database using the firebase
+//api, it also makes very heavy use of google apis as well for google sign in too.
+// is a bit resource heavy and will be refactored to use fragments if i have time
 public class StartActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
@@ -103,16 +106,19 @@ public class StartActivity extends FragmentActivity implements
         }
     }
 
+    //starts intent for google signing
     private void signInWithGoogle() {
         Intent signInWithGoogleIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInWithGoogleIntent, RC_SIGN_IN_GOOGLE);
     }
 
+    //starts intent to gather user input for e-mail sign in
     public void signInEmail(View view) {
         Intent signInWithEmailIntent = new Intent(this, SignInActivity.class);
         startActivityForResult(signInWithEmailIntent, RC_SIGN_IN_EMAIL);
     }
 
+    //starts intent to gather user input for email create an account
     public void createAccountEmail(View view) {
         Log.d(TAG, "creatingAccount");
         Intent createAccountWithEmailIntent = new Intent(this, CreateAccountActivity.class);

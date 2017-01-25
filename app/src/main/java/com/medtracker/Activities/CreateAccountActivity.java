@@ -5,13 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.medtracker.database.MedtrackerDbHelper;
 import com.medtracker.medtracker.R;
 
+//used to get user input for creating an account and returing it to the starting activity
+//  user for e-mail accounts
 public class CreateAccountActivity extends Activity {
-
     private static final String TAG = "LogCreateAccountActivity";
     private EditText editEmail;
     private EditText editPassword;
@@ -33,6 +32,8 @@ public class CreateAccountActivity extends Activity {
         editSurname = (EditText) findViewById(R.id.edit_surname);
     }
 
+    //when the user submits values this handles and returns them to the start activity to be
+    // processed
     public void registerAccountDetails(View view) {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();

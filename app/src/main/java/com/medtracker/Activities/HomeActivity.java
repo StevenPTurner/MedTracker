@@ -1,7 +1,5 @@
 package com.medtracker.Activities;
 
-import java.util.Locale;
-
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -12,15 +10,13 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -28,11 +24,17 @@ import com.medtracker.Fragments.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.medtracker.R;
 
+//Home avtivity used to switch between fragments that house functioanlity, also used to manage
+// the navigation bar and navigation drawer along with action bar.
+//These docs were used to help the creation of this app:
+//  https://developer.android.com/training/implementing-navigation/nav-drawer.html
 public class HomeActivity extends Activity {
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
+    private LinearLayout mDrawerLinearLayout;
 
+    //Used to hold titles of menu items
     private String[] mMenuTitles;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -45,7 +47,8 @@ public class HomeActivity extends Activity {
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_titles_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.drawer_list_view);
+        mDrawerLinearLayout = (LinearLayout) findViewById(R.id.left_drawer);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer_list);
 
         // set a custom shadow that overlays the main content when the drawer opens
         mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -96,7 +99,7 @@ public class HomeActivity extends Activity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerLinearLayout);
         menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -160,7 +163,7 @@ public class HomeActivity extends Activity {
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
         setTitle(mMenuTitles[position]);
-        mDrawerLayout.closeDrawer(mDrawerList);
+        mDrawerLayout.closeDrawer(mDrawerLinearLayout);
     }
 
     @Override

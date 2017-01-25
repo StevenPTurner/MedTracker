@@ -27,6 +27,8 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
+//used to list fragments and some basic details that the user can click to get more info
+    //mainly used to house a listView
 public class MedicationListFragment extends Fragment {
 
     private static final String TAG = "MedicationListFragment";
