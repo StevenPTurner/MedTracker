@@ -24,13 +24,26 @@
             android:layout_width="match_parent"
             android:layout_height="160dp"
             android:background="@drawable/image_nav_header"
-            android:orientation="vertical">
+            android:paddingLeft="15dp"
+            android:orientation="vertical"
+            android:layout_gravity="bottom">
 
             <TextView
-                android:id="@+id/text_view"
+                android:id="@+id/text_display_name"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:text="please god work"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/textLight"
+                android:paddingTop="110dp"
+                android:textStyle="bold"
+                android:text="Display Name"/>
+
+            <TextView
+                android:id="@+id/text_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textLight"
+                android:text="Email"/>
+
 
         </LinearLayout>
 
