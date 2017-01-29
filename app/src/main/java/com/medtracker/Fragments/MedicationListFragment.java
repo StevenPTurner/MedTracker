@@ -76,7 +76,7 @@ public class MedicationListFragment extends Fragment {
         super.onStart();
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, medicationID);
+                (getActivity().getApplicationContext(), R.layout.list_item_medication, medicationID);
 
         listView.setAdapter(adapter);
 
@@ -87,7 +87,7 @@ public class MedicationListFragment extends Fragment {
                 Medication medication = dataSnapshot.getValue(Medication.class);
                 String medicationInfo = "Name: " + medication.getMedication_name() + "\n" +
                         "Info: " + medication.getInstructions() + "\n" +
-                        "Dose: " + medication.getDosage() + "mg\n";
+                        "Dose: " + medication.getDosage() + "mg";
                 medications.add(medication);
                 medicationID.add(medicationInfo);
                 adapter.notifyDataSetChanged();

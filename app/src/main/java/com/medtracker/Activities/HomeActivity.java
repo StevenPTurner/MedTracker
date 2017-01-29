@@ -34,7 +34,7 @@ import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Models.User;
 import com.medtracker.medtracker.R;
 
-//Home avtivity used to switch between fragments that house functioanlity, also used to manage
+//Home activity used to switch between fragments that house functioanlity, also used to manage
 // the navigation bar and navigation drawer along with action bar.
 //These docs were used to help the creation of this app:
 //  https://developer.android.com/training/implementing-navigation/nav-drawer.html
