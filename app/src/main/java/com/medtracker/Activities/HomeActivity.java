@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,10 +19,19 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
+import com.medtracker.Models.User;
 import com.medtracker.medtracker.R;
 
 //Home avtivity used to switch between fragments that house functioanlity, also used to manage
@@ -29,6 +39,15 @@ import com.medtracker.medtracker.R;
 //These docs were used to help the creation of this app:
 //  https://developer.android.com/training/implementing-navigation/nav-drawer.html
 public class HomeActivity extends Activity {
+    private static final String TAG = "LogHomeActivity";
+
+    //user details
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private String userUID;
+
+    //navigation bar
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -43,6 +62,32 @@ public class HomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        //get instance of firebase user and their ID for database calls
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        userUID = mFirebaseUser.getUid();
+        Log.w(TAG, "User Uid: " + userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(userUID);
+
+        ValueEventListener userListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    User user = dataSnapshot.getValue(User.class);
+                    updateSideBar(user.getDisplay_name(),user.getEmail());
+                } else {
+                    User user = createUser();
+                    mDatabase.setValue(user);
+                    updateSideBar(user.getDisplay_name(),user.getEmail());
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
+            }
+        };
 
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_titles_array);
@@ -82,6 +127,7 @@ public class HomeActivity extends Activity {
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mDatabase.addListenerForSingleValueEvent(userListener);
 
         if (savedInstanceState == null) {
             selectItem(0);
@@ -186,5 +232,20 @@ public class HomeActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    private User createUser() {
+        Intent lastIntent = getIntent();
+        User user = new User(mFirebaseUser.getEmail(),
+                lastIntent.getStringExtra("displayName"),
+                1111);
+        return user;
+    }
+
+    private void updateSideBar(String displayName, String email) {
+        TextView textViewDisplayName = (TextView) findViewById(R.id.text_display_name);
+        TextView textViewEmail = (TextView) findViewById(R.id.text_email);
+
+        textViewDisplayName.setText(displayName);
+        textViewEmail.setText(email);
+    }
 
 }
