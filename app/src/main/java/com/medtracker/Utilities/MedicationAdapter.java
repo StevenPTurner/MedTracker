@@ -10,7 +10,9 @@ import android.widget.TextView;
 import com.medtracker.Models.Medication;
 import com.medtracker.medtracker.R;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by spt10 on 30/01/2017.
@@ -38,7 +40,7 @@ public class MedicationAdapter extends ArrayAdapter<Medication> {
 
         // Populate the data into the template view using the data object
         medicationName.setText(medication.getMedication_name());
-        medicationDosage.setText(medication.getDosage());
+        medicationDosage.setText(String.valueOf(medication.getDosage()));
         medicationInstructions.setText(medication.getInstructions());
 
         // Return the completed view to render on screen

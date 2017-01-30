@@ -19,10 +19,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.MedicationAdapter;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
-import java.util.List;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,8 +37,8 @@ public class MedicationListFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String userUID;
-    private List<String> medicationID = new ArrayList<>();
-    private List<Medication> medications = new ArrayList<>();
+    private ArrayList<String> medicationID = new ArrayList<>();
+    private ArrayList<Medication> medications = new ArrayList<>();
     private ListView listView;
 
     public MedicationListFragment() {
@@ -75,8 +76,13 @@ public class MedicationListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity().getApplicationContext(), R.layout.list_item_medication, medicationID);
+        final MedicationAdapter adapter = new MedicationAdapter
+                (getActivity().getApplicationContext(),
+                medications);
+//        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
+//                (getActivity().getApplicationContext(),
+//                        R.layout.list_item_medication,
+//                        medicationID);
 
         listView.setAdapter(adapter);
 
