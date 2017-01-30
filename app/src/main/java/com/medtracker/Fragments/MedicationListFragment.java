@@ -122,9 +122,12 @@ public class MedicationListFragment extends Fragment {
             }
         };
         mDatabase.addChildEventListener(childEventListener);
-
-
-
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
 
 }
