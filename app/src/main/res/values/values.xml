@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="accent_medtracker">#003c99</color>
-    <color name="medtracker_light_blue">#004bd7</color>
-    <color name="medtracker_dark_blue">#003c99</color>
+    <color name="medtracker_light_blue">#1976d2</color>
+    <color name="medtracker_dark_blue">#1565c0</color>
 </resources>

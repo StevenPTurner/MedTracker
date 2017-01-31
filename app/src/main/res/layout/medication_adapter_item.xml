@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/textDark"
         android:text="name"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="20dp"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/textDark"
         android:text="0mg"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/medication_name" />
 
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textColor="@color/textDark"
         android:text="Instructions"
-        android:textSize="20dp"
+        android:textSize="18dp"
         android:layout_below="@+id/medication_name"
         android:layout_alignStart="@+id/medication_name"
         android:layout_marginBottom="5dp"/>
@@ -44,6 +44,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_chevron_right_black_48dp"
         android:layout_alignBottom="@+id/medication_instructions"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:tint="@color/navigationDrawerSelected"/>
 
 </RelativeLayout>

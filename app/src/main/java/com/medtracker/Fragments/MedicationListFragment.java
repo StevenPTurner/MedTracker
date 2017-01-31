@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.design.widget.FloatingActionButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +43,7 @@ public class MedicationListFragment extends Fragment {
     private ArrayList<String> medicationID = new ArrayList<>();
     private ArrayList<Medication> medications = new ArrayList<>();
     private ListView listView;
+    private ImageView addMedication;
 
     public MedicationListFragment() {
         // Required empty public constructor
@@ -64,6 +68,21 @@ public class MedicationListFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("medications").child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
+
+//        addMedication = (ImageView) getView().findViewById(R.id.button_add_medication);
+//        addMedication.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Log.d(TAG, "button pressed");
+//            }
+//        });
+
+//        //floating action button
+//        addMedication = (FloatingActionButton)  getView().findViewById(R.id.button_add_medication);
+//        addMedication.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Log.d(TAG, "button pressed");
+//            }
+//        });
 
         if(listView == null) {
             Log.d(TAG, "ListView is null");
@@ -128,6 +147,4 @@ public class MedicationListFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
     }
-
-
 }
