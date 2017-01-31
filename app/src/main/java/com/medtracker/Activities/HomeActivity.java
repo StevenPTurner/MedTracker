@@ -248,4 +248,12 @@ public class HomeActivity extends Activity {
         textViewEmail.setText(email);
     }
 
+    @Override
+    public void onBackPressed() {
+        if (getFragmentManager().getBackStackEntryCount() > 0) {
+            getFragmentManager().popBackStack();
+        } else {
+            super.onBackPressed();
+        }
+    }
 }
