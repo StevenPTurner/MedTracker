@@ -4,11 +4,13 @@ package com.medtracker.Fragments;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -31,14 +33,14 @@ import java.util.ArrayList;
  */
 //used to list fragments and some basic details that the user can click to get more info
     //mainly used to house a listView
-public class MedicationListFragment extends Fragment {
+public class MedicationListFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "MedicationListFragment";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String userUID;
-    private ArrayList<String> medicationID = new ArrayList<>();
+//    private ArrayList<String> medicationID = new ArrayList<>();
     private ArrayList<Medication> medications = new ArrayList<>();
     private ListView listView;
     private Button addMedication;
@@ -86,6 +88,8 @@ public class MedicationListFragment extends Fragment {
         } else {
             Log.d(TAG, "ListVIew is not null");
         }
+
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -107,11 +111,11 @@ public class MedicationListFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Medication medication = dataSnapshot.getValue(Medication.class);
-                String medicationInfo = "Name: " + medication.getMedication_name() + "\n" +
-                        "Info: " + medication.getInstructions() + "\n" +
-                        "Dose: " + medication.getDosage() + "mg";
+//                String medicationInfo = "Name: " + medication.getMedication_name() + "\n" +
+//                        "Info: " + medication.getInstructions() + "\n" +
+//                        "Dose: " + medication.getDosage() + "mg";
                 medications.add(medication);
-                medicationID.add(medicationInfo);
+                //medicationID.add(medicationInfo);
                 adapter.notifyDataSetChanged();
             }
 
@@ -139,6 +143,24 @@ public class MedicationListFragment extends Fragment {
         };
         mDatabase.addChildEventListener(childEventListener);
     }
+
+    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+        //Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
+        // Then you start a new Activity via Intent
+        Fragment medicationEditFragment = new MedicationEditFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Bundle args = new Bundle();
+
+        Medication current = adapter.getItem(position);
+        args.putString("medicationID", current.getMedication_name());
+        medicationEditFragment.setArguments(args);
+        transaction.replace(R.id.content_frame, medicationEditFragment);
+        transaction.addToBackStack(null);
+        Log.d(TAG, "starting edit medications fragment");
+        transaction.commit();
+    }
+
+
 
     //when the user returns to this fragment from another
     @Override
