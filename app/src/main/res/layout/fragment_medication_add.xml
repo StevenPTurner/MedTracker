@@ -29,7 +29,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="31dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:layout_width="match_parent"
@@ -54,7 +54,7 @@
             android:layout_below="@+id/edit_name"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/edit_dose"
@@ -66,7 +66,8 @@
             android:layout_marginLeft="11dp"
             android:layout_alignTop="@+id/text_dose"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="15dp"
+            android:inputType="number" />
 
         <TextView
             android:text="Instructions"
@@ -79,7 +80,7 @@
             android:layout_alignParentStart="true"
             android:layout_marginTop="31dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginBottom="8dp"/>
+            android:layout_marginBottom="12dp"/>
 
         <EditText
             android:layout_width="match_parent"

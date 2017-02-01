@@ -2,21 +2,26 @@ package com.medtracker.Fragments;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.Models.Medication;
 import com.medtracker.medtracker.R;
 
 /**
  * A simple {@link Fragment} subclass.
+ * user for adding new medications to the database
  */
 public class MedicationAddFragment extends Fragment {
     private static final String TAG = "MedicationAddFragment";
@@ -24,6 +29,7 @@ public class MedicationAddFragment extends Fragment {
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String userUID;
+    private Button saveMedication;
 
     public MedicationAddFragment() {
         // Required empty public constructor
@@ -42,12 +48,50 @@ public class MedicationAddFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
+        //Get logged in user info
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
+        //get database object
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("medications").child(userUID);
+        Log.d(TAG, "Setup complete");
+
+        //button listener to preform actions when pressed
+        saveMedication = (Button) getView().findViewById(R.id.button_save_medication);
+        saveMedication.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            Log.d(TAG, "Save medication button pressed");
+            addToDatabase(buildMedication());
+            }
+        });
+    }
+
+    //gathers all the user input and builds a medication object with it
+    private Medication buildMedication() {
+        //gathers user input
+        EditText editName = (EditText) getView().findViewById(R.id.edit_name);;
+        EditText editDose = (EditText) getView().findViewById(R.id.edit_dose);;
+        EditText editInstructions = (EditText) getView().findViewById(R.id.edit_instructions);
+
+        //formats it correctly
+        String medicationName = editName.getText().toString();
+        String medicationDoseText = editDose.getText().toString();
+        String medicationInstructions = editInstructions.getText().toString();
+        int medicationDoseValue = Integer.parseInt(medicationDoseText);
+
+        //builds and returns user object
+        Medication medication = new Medication(
+                medicationInstructions, medicationName, false, medicationDoseValue);
+        Log.d(TAG, "Medication has been built");
+        return medication;
+    }
+
+    //adds medication to database
+    private void addToDatabase(Medication medication) {
+        mDatabase.child(medication.getMedication_name()).setValue(medication);
+        Log.d(TAG, "Medication added to database");
     }
 
 }
