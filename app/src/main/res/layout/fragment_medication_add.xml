@@ -25,7 +25,7 @@
             android:id="@+id/text_name"
             android:textSize="16sp"
             android:textColor="@color/textDark"
-            android:layout_below="@+id/heading_image"
+            android:layout_below="@+id/text_title"
             android:layout_alignParentStart="true"
             android:layout_marginTop="31dp"
             android:layout_marginStart="16dp"
@@ -104,7 +104,18 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true" />
 
-    </RelativeLayout>
+        <TextView
+            android:text="Add Medication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_title"
+            android:textSize="30sp"
+            android:textColor="@color/textDark"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/heading_image"
+            android:layout_centerHorizontal="true" />
 
+    </RelativeLayout>
 
 </FrameLayout>

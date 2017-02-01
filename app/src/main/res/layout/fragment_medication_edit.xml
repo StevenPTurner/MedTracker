@@ -4,10 +4,118 @@
     android:layout_height="match_parent"
     tools:context="com.medtracker.Fragments.MedicationEditFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:src="@drawable/ic_pill_black_48dp"
+            android:id="@+id/heading_image"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:text="Name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_name"
+            android:textSize="16sp"
+            android:textColor="@color/textDark"
+            android:layout_below="@+id/text_title"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="31dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medication Name"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:id="@+id/edit_name"
+            android:layout_marginStart="11dp"
+            android:layout_alignTop="@+id/text_name"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="18dp" />
+
+        <TextView
+            android:text="Dose (mg)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_dose"
+            android:textSize="16sp"
+            android:textColor="@color/textDark"
+            android:layout_marginTop="31dp"
+            android:layout_below="@+id/edit_name"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="12dp"/>
+
+        <EditText
+            android:id="@+id/edit_dose"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Medication dose in mg"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="11dp"
+            android:layout_alignTop="@+id/text_dose"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="18dp"
+            android:inputType="number" />
+
+        <TextView
+            android:text="Instructions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_instructions"
+            android:textSize="16sp"
+            android:textColor="@color/textDark"
+            android:layout_below="@+id/edit_dose"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="31dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="50dp"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_instructions"
+            android:hint="(ex.Take once daily)"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"
+            android:layout_marginStart="11dp"
+            android:layout_alignTop="@+id/text_instructions"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="18dp"/>
+
+        <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:id="@+id/button_edit_medication"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit"
+            android:textColor="@color/textLight"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:text="Edit Medication"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_title"
+            android:textSize="30sp"
+            android:textColor="@color/textDark"
+            android:textStyle="bold"
+            android:layout_marginTop="25dp"
+            android:layout_below="@+id/heading_image"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+
 
 </FrameLayout>
