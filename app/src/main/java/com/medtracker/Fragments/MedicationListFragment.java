@@ -42,6 +42,8 @@ public class MedicationListFragment extends Fragment {
     private ArrayList<Medication> medications = new ArrayList<>();
     private ListView listView;
     private Button addMedication;
+    private MedicationAdapter adapter;
+
 
     public MedicationListFragment() {
         // Required empty public constructor
@@ -79,7 +81,6 @@ public class MedicationListFragment extends Fragment {
             }
         });
 
-
         if(listView == null) {
             Log.d(TAG, "ListView is null");
         } else {
@@ -91,7 +92,7 @@ public class MedicationListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        final MedicationAdapter adapter = new MedicationAdapter
+        adapter = new MedicationAdapter
                 (getActivity().getApplicationContext(),
                 medications);
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
@@ -139,6 +140,14 @@ public class MedicationListFragment extends Fragment {
         mDatabase.addChildEventListener(childEventListener);
     }
 
+    //when the user returns to this fragment from another
+    @Override
+    public void onResume() {
+        Log.d(TAG, "Fragment resumed");
+        adapter.clear();
+        super.onResume();
+
+    }
     @Override
     public void onDetach() {
         super.onDetach();
