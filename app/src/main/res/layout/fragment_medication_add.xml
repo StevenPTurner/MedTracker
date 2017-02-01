@@ -28,23 +28,23 @@
             android:layout_below="@+id/heading_image"
             android:layout_alignParentStart="true"
             android:layout_marginTop="31dp"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="12dp"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Medication Name"
+            android:hint="Medication Name"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
             android:id="@+id/edit_name"
-            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
             android:layout_alignTop="@+id/text_name"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp" />
+            android:layout_marginTop="18dp" />
 
         <TextView
-            android:text="Dose"
+            android:text="Dose (mg)"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/text_dose"
@@ -53,20 +53,20 @@
             android:layout_marginTop="31dp"
             android:layout_below="@+id/edit_name"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
             android:layout_marginBottom="12dp"/>
 
         <EditText
             android:id="@+id/edit_dose"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Medication dose in mg"
+            android:hint="Medication dose in mg"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
             android:layout_alignTop="@+id/text_dose"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="18dp"
             android:inputType="number" />
 
         <TextView
@@ -79,33 +79,30 @@
             android:layout_below="@+id/edit_dose"
             android:layout_alignParentStart="true"
             android:layout_marginTop="31dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="50dp"/>
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/edit_instructions"
-            android:text="(Take once daily"
+            android:hint="(ex.Take once daily)"
             android:textSize="20sp"
             android:textColor="@color/colorAccent"
-            android:layout_marginLeft="11dp"
+            android:layout_marginStart="11dp"
             android:layout_alignTop="@+id/text_instructions"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="18dp"/>
 
         <Button
             style="@style/Widget.AppCompat.Button.Colored"
             android:id="@+id/button_save_medication"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:text="Save"
             android:textColor="@color/textLight"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true" />
-
-
 
     </RelativeLayout>
 

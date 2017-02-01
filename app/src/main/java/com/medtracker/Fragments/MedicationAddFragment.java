@@ -64,6 +64,7 @@ public class MedicationAddFragment extends Fragment {
             public void onClick(View v) {
             Log.d(TAG, "Save medication button pressed");
             addToDatabase(buildMedication());
+            getFragmentManager().popBackStackImmediate();
             }
         });
     }
@@ -90,7 +91,11 @@ public class MedicationAddFragment extends Fragment {
 
     //adds medication to database
     private void addToDatabase(Medication medication) {
-        mDatabase.child(medication.getMedication_name()).setValue(medication);
+        //correct json formatting for keys
+        String medicationKey = medication.getMedication_name().toLowerCase();
+        Log.d(TAG, "Database Key:" + medicationKey);
+
+        mDatabase.child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication added to database");
     }
 
