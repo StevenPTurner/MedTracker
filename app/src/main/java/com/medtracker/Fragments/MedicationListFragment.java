@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.MedicationAdapter;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -145,14 +146,19 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
-        //Log.i("HelloListView", "You clicked Item: " + id + " at position:" + position);
-        // Then you start a new Activity via Intent
+        Log.d(TAG, "starting edit medications fragment");
         Fragment medicationEditFragment = new MedicationEditFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
         Bundle args = new Bundle();
 
         Medication current = adapter.getItem(position);
-        args.putString("medicationID", current.getMedication_name());
+        String medicationKey = Utility.parseKey(current.getMedication_name());
+
+        args.putString("medicationKey", medicationKey);
+        args.putString("medicationName", current.getMedication_name());
+        args.putString("medicationDose", Integer.toString(current.getDosage()));
+        args.putString("medicationInstructions", current.getInstructions());
+
         medicationEditFragment.setArguments(args);
         transaction.replace(R.id.content_frame, medicationEditFragment);
         transaction.addToBackStack(null);
@@ -168,8 +174,8 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         Log.d(TAG, "Fragment resumed");
         adapter.clear();
         super.onResume();
-
     }
+
     @Override
     public void onDetach() {
         super.onDetach();

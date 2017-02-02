@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 /**
@@ -71,8 +72,8 @@ public class MedicationAddFragment extends Fragment {
     //gathers all the user input and builds a medication object with it
     private Medication buildMedication() {
         //gathers user input
-        EditText editName = (EditText) getView().findViewById(R.id.edit_name);;
-        EditText editDose = (EditText) getView().findViewById(R.id.edit_dose);;
+        EditText editName = (EditText) getView().findViewById(R.id.edit_name);
+        EditText editDose = (EditText) getView().findViewById(R.id.edit_dose);
         EditText editInstructions = (EditText) getView().findViewById(R.id.edit_instructions);
 
         //formats it correctly
@@ -91,9 +92,8 @@ public class MedicationAddFragment extends Fragment {
     //adds medication to database
     private void addToDatabase(Medication medication) {
         //correct json formatting for keys
-        String medicationKey = medication.getMedication_name().toLowerCase();
+        String medicationKey = Utility.parseKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
-
         mDatabase.child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication added to database");
     }
