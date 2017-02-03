@@ -29,9 +29,10 @@ import com.medtracker.medtracker.R;
 //https://firebase.google.com/docs/auth/android/password-auth
 //https://firebase.google.com/docs/auth/android/google-signin
 //
+//
 //This is the starting class that handles all authentications to the database using the firebase
-//api, it also makes very heavy use of google apis as well for google sign in too.
-// is a bit resource heavy and will be refactored to use fragments if i have time
+//api, it also makes very heavy use of google apis as well for google sign in too. It is a bit
+// resource heavy and will be refactored to use fragments if I have time
 public class StartActivity extends FragmentActivity implements
         GoogleApiClient.OnConnectionFailedListener, View.OnClickListener{
 
