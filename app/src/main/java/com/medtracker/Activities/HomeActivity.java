@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Models.User;
+import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
 //Home activity used to switch between fragments that house functioanlity, also used to manage
@@ -39,9 +40,9 @@ import com.medtracker.medtracker.R;
 //These docs were used to help the creation of this app:
 //  https://developer.android.com/training/implementing-navigation/nav-drawer.html
 public class HomeActivity extends Activity {
-    private static final String TAG = "LogHomeActivity";
+    private final String TAG = LogTag.homeActivity;
 
-    //user details
+    //user details objects & database
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -63,7 +64,7 @@ public class HomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        //get instance of firebase user and their ID for database calls
+        //get instance of firebase user and their ID for database calls and set up database object
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
@@ -71,16 +72,20 @@ public class HomeActivity extends Activity {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(userUID);
 
+        //set up event listener to detect user account changes
         ValueEventListener userListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //if it exists pull data and update side bar
                 if(dataSnapshot.exists()){
                     User user = dataSnapshot.getValue(User.class);
                     updateSideBar(user.getDisplay_name(),user.getEmail());
                 } else {
+                    //if not create user account and update side bar
                     User user = createUser();
                     mDatabase.setValue(user);
                     updateSideBar(user.getDisplay_name(),user.getEmail());
+                    Log.w(TAG, "new user " + userUID + "created");
                 }
             }
             @Override
@@ -89,6 +94,7 @@ public class HomeActivity extends Activity {
             }
         };
 
+        //setting up navigation drawer objects
         mTitle = mDrawerTitle = getTitle();
         mMenuTitles = getResources().getStringArray(R.array.menu_titles_array);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,7 +163,7 @@ public class HomeActivity extends Activity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle action buttons
+        // Handle action buttons on menu top left of screen
         switch(item.getItemId()) {
             case R.id.action_websearch:
                 // create intent to perform web search for this planet
@@ -185,7 +191,7 @@ public class HomeActivity extends Activity {
 
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
-        // Create a new fragment and specify the planet to show based on position
+        // Create a new fragment and specify the fragment to show
         Fragment fragment = new Fragment();
         FragmentManager fragmentManager = getFragmentManager();
         Bundle args = new Bundle();
@@ -193,10 +199,11 @@ public class HomeActivity extends Activity {
         switch(position) {
             case 0:
                 fragment = new MedicationListFragment();
-                //args.putInt(MedicationListFragment.ARG_PLANET_NUMBER, position);
+                Log.w(TAG, "Medications fragment selected");
                 break;
             case 1:
                 fragment = new PrescriptionListFragment();
+                Log.w(TAG, "Prescription fragment selected");
                 break;
         }
 
@@ -232,6 +239,7 @@ public class HomeActivity extends Activity {
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
+    //creates a new user
     private User createUser() {
         Intent lastIntent = getIntent();
         User user = new User(mFirebaseUser.getEmail(),
@@ -240,6 +248,7 @@ public class HomeActivity extends Activity {
         return user;
     }
 
+    //updates sidebar display
     private void updateSideBar(String displayName, String email) {
         TextView textViewDisplayName = (TextView) findViewById(R.id.text_display_name);
         TextView textViewEmail = (TextView) findViewById(R.id.text_email);
@@ -248,6 +257,7 @@ public class HomeActivity extends Activity {
         textViewEmail.setText(email);
     }
 
+    //used to overall manage back stack of fragments propperly
     @Override
     public void onBackPressed() {
         if (getFragmentManager().getBackStackEntryCount() > 0) {
