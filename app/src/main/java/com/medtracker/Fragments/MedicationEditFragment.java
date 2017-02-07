@@ -42,6 +42,7 @@ public class MedicationEditFragment extends Fragment {
     private EditText editDose;
     private EditText editInstructions;
     private Button applyEdit;
+    private Button deleteMedication;
 
     public MedicationEditFragment() {
         // Required empty public constructor
@@ -96,6 +97,15 @@ public class MedicationEditFragment extends Fragment {
                 getFragmentManager().popBackStackImmediate();
             }
         });
+
+        deleteMedication = (Button) getView().findViewById(R.id.button_delete_medication);
+        deleteMedication.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d(TAG, "delete medication button pressed");
+                deleteMedication(medicationKey);
+                getFragmentManager().popBackStackImmediate();
+            }
+        });
     }
 
 
@@ -126,10 +136,17 @@ public class MedicationEditFragment extends Fragment {
     }
 
     //updates medication in database
-    private void updateDatabase(Medication medication, String medicationID) {
+    private void updateDatabase(Medication medication, String medicationKey) {
         Log.d(TAG, "Database Key:" + medicationKey);
         mDatabase.child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication updated in the database");
+    }
+
+    //deletes medication
+    private void deleteMedication(String medicationKey) {
+        Log.d(TAG, "Database Key:" + medicationKey);
+        mDatabase.child(medicationKey).removeValue();
+        Log.d(TAG, "Medication deleted from the database");
     }
 
 
