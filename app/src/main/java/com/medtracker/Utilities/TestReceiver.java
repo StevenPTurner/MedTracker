@@ -1,4 +1,4 @@
-package com.medtracker;
+package com.medtracker.Utilities;
 
 import android.app.Notification;
 import android.app.NotificationManager;

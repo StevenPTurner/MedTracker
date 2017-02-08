@@ -29,7 +29,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.medtracker.Fragments.MedicationListFragment;
+import com.medtracker.Fragments.AlarmListFragment;
+import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Models.User;
 import com.medtracker.Utilities.LogTag;
@@ -206,8 +207,13 @@ public class HomeActivity extends Activity {
                 Log.w(TAG, "Prescription fragment selected");
                 break;
             case 2:
+                fragment = new AlarmListFragment();
+                Log.w(TAG, "Alarms fragment selected");
+                break;
+            case 3:
                 Intent testActivityIntent = new Intent(this, TestActivity.class);
                 startActivity(testActivityIntent);
+                break;
         }
 
         // Insert the fragment by replacing any existing fragment

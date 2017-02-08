@@ -11,6 +11,7 @@
     <string-array name="menu_titles_array">
         <item>Medications</item>
         <item>Prescriptions</item>
+        <item>Alarms</item>
         <item>Testing</item>
     </string-array>
 

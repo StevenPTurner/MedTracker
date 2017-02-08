@@ -9,13 +9,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 
-import com.medtracker.TestReceiver;
+import com.medtracker.Utilities.TestReceiver;
 import com.medtracker.medtracker.R;
+
+import java.util.Calendar;
 
 //http://www.vogella.com/tutorials/AndroidNotifications/article.html
 //https://gist.github.com/BrandonSmith/6679223
@@ -24,6 +25,7 @@ public class TestActivity extends Activity implements View.OnClickListener {
     Button fiveSecondsButton;
     Button tenSecondsButton;
     Button fifthteenSecondsButton;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +41,16 @@ public class TestActivity extends Activity implements View.OnClickListener {
         fifthteenSecondsButton.setOnClickListener(this);
     }
 
-    private void scheduleNotification(Notification notification, int delay) {
+    private void scheduleNotification(Notification notification) {
         Intent notificationIntent = new Intent(this, TestReceiver.class);
         notificationIntent.putExtra(TestReceiver.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(TestReceiver.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        long futureInMillis = SystemClock.elapsedRealtime() + delay;
+        //long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+        alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
+        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
     private Notification getNotification(String content) {
@@ -61,13 +64,15 @@ public class TestActivity extends Activity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_5_seconds:
-                scheduleNotification(getNotification("5 second delay"), 5000);
+                calendar = Calendar.getInstance();
+                calendar.set(Calendar.MINUTE, (calendar.get(Calendar.MINUTE) + 1));
+                scheduleNotification(getNotification("5 second delay"));
                 break;
             case R.id.button_10_seconds:
-                scheduleNotification(getNotification("10 second delay"), 10000);
+                scheduleNotification(getNotification("10 second delay"));
                 break;
             case R.id.button_15_seconds:
-                scheduleNotification(getNotification("15 second delay"), 15000);
+                scheduleNotification(getNotification("15 second delay"));
                 break;
         }
     }

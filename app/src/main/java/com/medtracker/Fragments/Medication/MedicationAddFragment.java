@@ -1,4 +1,4 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Medication;
 
 
 import android.app.Fragment;
@@ -84,7 +84,7 @@ public class MedicationAddFragment extends Fragment {
 
         //builds and returns user object
         Medication medication = new Medication(
-                medicationInstructions, medicationName, false, medicationDoseValue);
+                medicationInstructions, medicationName, false, false, medicationDoseValue);
         Log.d(TAG, "Medication has been built");
         return medication;
     }

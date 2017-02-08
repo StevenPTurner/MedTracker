@@ -29,7 +29,7 @@
             android:label="@string/title_activity_test" />
 
         <receiver
-            android:name="com.medtracker.TestReceiver"
+            android:name="com.medtracker.Utilities.TestReceiver"
             android:enabled="true"
             android:exported="true"></receiver>
     </application>

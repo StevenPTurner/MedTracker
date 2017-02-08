@@ -1,10 +1,8 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Medication;
 
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,7 +39,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private String userUID;
-//    private ArrayList<String> medicationID = new ArrayList<>();
+
     private ArrayList<Medication> medications = new ArrayList<>();
     private ListView listView;
     private Button addMedication;
