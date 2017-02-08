@@ -205,6 +205,9 @@ public class HomeActivity extends Activity {
                 fragment = new PrescriptionListFragment();
                 Log.w(TAG, "Prescription fragment selected");
                 break;
+            case 2:
+                Intent testActivityIntent = new Intent(this, TestActivity.class);
+                startActivity(testActivityIntent);
         }
 
         // Insert the fragment by replacing any existing fragment

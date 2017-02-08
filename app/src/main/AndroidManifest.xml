@@ -11,6 +11,7 @@
         <activity android:name="com.medtracker.Activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -22,7 +23,15 @@
         <activity
             android:name="com.medtracker.Activities.HomeActivity"
             android:label="@string/title_activity_home"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="com.medtracker.Activities.TestActivity"
+            android:label="@string/title_activity_test" />
+
+        <receiver
+            android:name="com.medtracker.TestReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
     </application>
 
 </manifest>
