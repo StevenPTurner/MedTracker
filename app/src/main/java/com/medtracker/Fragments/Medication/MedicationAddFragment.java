@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
@@ -54,8 +55,7 @@ public class MedicationAddFragment extends Fragment {
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
         //get database object
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("medications").child(userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         Log.d(TAG, "Setup complete");
 
         //button listener to preform actions when pressed
@@ -89,13 +89,22 @@ public class MedicationAddFragment extends Fragment {
         return medication;
     }
 
+    private AlarmManager getNewManager(String medicationKey) {
+        AlarmManager alarmManager = new AlarmManager(medicationKey, false, "none", 0, 0);
+        return alarmManager;
+    }
+
     //adds medication to database
     private void addToDatabase(Medication medication) {
         //correct json formatting for keys
         String medicationKey = Utility.parseKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
-        mDatabase.child(medicationKey).setValue(medication);
+        mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication added to database");
+        mDatabase.child("alarm_manager").child(userUID).child(medicationKey)
+                .setValue(getNewManager(medicationKey));
+        Log.d(TAG, "Alarm manager added to database");
+
     }
 
 }
