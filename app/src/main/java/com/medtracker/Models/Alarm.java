@@ -11,18 +11,20 @@ public class Alarm {
     private int month;
     private int year;
     private int id;
+    private String medicationKey;
 
     public Alarm() {
 
     }
 
-    public Alarm(int id, int minute, int hour, int day, int month, int year) {
+    public Alarm(int id, int minute, int hour, int day, int month, int year, String medicationKey) {
         this.id = id;
         this.minute = minute;
         this.hour = hour;
         this.day = day;
         this.month = month;
         this.year = year;
+        this.medicationKey = medicationKey;
     }
 
     public int getMinute() {
@@ -71,6 +73,14 @@ public class Alarm {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getMedicationKey() {
+        return medicationKey;
+    }
+
+    public void setMedicationKey(String medicationKey) {
+        this.medicationKey = medicationKey;
     }
 
 }

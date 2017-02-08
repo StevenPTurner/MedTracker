@@ -65,13 +65,17 @@ public class TestActivity extends Activity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.button_5_seconds:
                 calendar = Calendar.getInstance();
-                calendar.set(Calendar.MINUTE, (calendar.get(Calendar.MINUTE) + 1));
+                calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 5));
                 scheduleNotification(getNotification("5 second delay"));
                 break;
             case R.id.button_10_seconds:
+                calendar = Calendar.getInstance();
+                calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 10));
                 scheduleNotification(getNotification("10 second delay"));
                 break;
             case R.id.button_15_seconds:
+                calendar = Calendar.getInstance();
+                calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 15));
                 scheduleNotification(getNotification("15 second delay"));
                 break;
         }
