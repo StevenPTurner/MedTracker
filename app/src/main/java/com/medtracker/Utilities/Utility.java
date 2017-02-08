@@ -6,11 +6,26 @@ package com.medtracker.Utilities;
 
 public class Utility {
 
-    public static String parseKey(String toParse) {
-        toParse = toParse.toLowerCase();
-        toParse = toParse.replaceAll(" ","_");
+    public static String nameToKey(String name) {
+        String key = name.toLowerCase();
+        key = key.replaceAll(" ","_");
 
-        return toParse;
+        return key;
     }
+
+    public static String keyToName(String key) {
+        String name = "";
+        String[] toUpCase = key.split("_");
+
+        for (int i=0; i< toUpCase.length; i++) {
+            name = name +  toUpCase[i].substring(0,1).toUpperCase() +
+                    toUpCase[i].substring(1).toLowerCase() +
+                    " ";
+        }
+        name = name.trim();
+        return name;
+    }
+
+
 
 }

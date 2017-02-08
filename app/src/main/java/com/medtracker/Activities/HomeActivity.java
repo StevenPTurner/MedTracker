@@ -34,6 +34,7 @@ import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Models.User;
 import com.medtracker.Utilities.LogTag;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 //Home activity used to switch between fragments that house functioanlity, also used to manage
@@ -209,6 +210,7 @@ public class HomeActivity extends Activity {
             case 2:
                 fragment = new AlarmListFragment();
                 Log.w(TAG, "Alarms fragment selected");
+                Log.w(TAG, Utility.keyToName("sodium_valproate"));
                 break;
             case 3:
                 Intent testActivityIntent = new Intent(this, TestActivity.class);

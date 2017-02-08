@@ -1,4 +1,4 @@
-package com.medtracker.Utilities;
+package com.medtracker.Utilities.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -20,7 +20,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
-import com.medtracker.Utilities.MedicationAdapter;
+import com.medtracker.Utilities.Adapters.MedicationAdapter;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
@@ -150,7 +150,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         Bundle args = new Bundle();
 
         Medication current = adapter.getItem(position);
-        String medicationKey = Utility.parseKey(current.getMedication_name());
+        String medicationKey = Utility.nameToKey(current.getMedication_name());
 
         args.putString("medicationKey", medicationKey);
         args.putString("medicationName", current.getMedication_name());

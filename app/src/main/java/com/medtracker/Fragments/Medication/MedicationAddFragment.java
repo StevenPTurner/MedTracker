@@ -2,7 +2,6 @@ package com.medtracker.Fragments.Medication;
 
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -97,7 +96,7 @@ public class MedicationAddFragment extends Fragment {
     //adds medication to database
     private void addToDatabase(Medication medication) {
         //correct json formatting for keys
-        String medicationKey = Utility.parseKey(medication.getMedication_name());
+        String medicationKey = Utility.nameToKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
         mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication added to database");

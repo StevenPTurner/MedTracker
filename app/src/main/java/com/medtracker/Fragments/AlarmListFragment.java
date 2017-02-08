@@ -16,7 +16,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.LogTag;
