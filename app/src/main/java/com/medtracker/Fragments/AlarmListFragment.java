@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Alarm;
+import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
@@ -60,7 +61,7 @@ public class AlarmListFragment extends Fragment {
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("alarms").child(userUID);
+                .child("alarm_manager").child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
         if(listView == null) {
@@ -88,11 +89,11 @@ public class AlarmListFragment extends Fragment {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Alarm alarm = dataSnapshot.getValue(Alarm.class);
-//                String medicationInfo = "Name: " + medication.getMedication_name() + "\n" +
-//                        "Info: " + medication.getInstructions() + "\n" +
-//                        "Dose: " + medication.getDosage() + "mg";
-                alarms.add(Integer.toString(alarm.getId()));
+                AlarmManager alarm = dataSnapshot.getValue(AlarmManager.class);
+                String alarmInfo = "Medication name: " + alarm.getMedication_key() + "\n" +
+                        "Alarm count: " + alarm.getMax_count() + "\n" +
+                        "Has alarms: " + alarm.isHas_alarm();
+                alarms.add(alarmInfo);
                 //medicationID.add(medicationInfo);
                 adapter.notifyDataSetChanged();
             }

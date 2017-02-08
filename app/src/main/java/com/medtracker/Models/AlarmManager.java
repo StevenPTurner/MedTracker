@@ -5,38 +5,38 @@ package com.medtracker.Models;
  */
 
 public class AlarmManager {
-    private String medicationKey;
+    private String medication_key;
     private boolean has_alarm;
-    private String currentAlarm;
-    private int maxCount;
-    private int currentCount;
+    private String current_alarm;
+    private int max_count;
+    private int current_count;
 
     public AlarmManager() {
 
     }
 
-    public AlarmManager(String medicationKey, boolean has_alarm, String currentAlarm, int maxCount, int currentCount) {
-        this.medicationKey = medicationKey;
+    public AlarmManager(String medication_key, boolean has_alarm, String current_alarm, int max_count, int current_count) {
+        this.medication_key = medication_key;
         this.has_alarm = has_alarm;
-        this.currentAlarm = currentAlarm;
-        this.maxCount = maxCount;
-        this.currentCount = currentCount;
+        this.current_alarm = current_alarm;
+        this.max_count = max_count;
+        this.current_count = current_count;
     }
 
-    public int getCurrentCount() {
-        return currentCount;
+    public int getCurrent_count() {
+        return current_count;
     }
 
-    public void setCurrentCount(int currentCount) {
-        this.currentCount = currentCount;
+    public void setCurrent_count(int current_count) {
+        this.current_count = current_count;
     }
 
-    public String getMedicationKey() {
-        return medicationKey;
+    public String getMedication_key() {
+        return medication_key;
     }
 
-    public void setMedicationKey(String medicationKey) {
-        this.medicationKey = medicationKey;
+    public void setMedication_key(String medication_key) {
+        this.medication_key = medication_key;
     }
 
     public boolean isHas_alarm() {
@@ -47,20 +47,20 @@ public class AlarmManager {
         this.has_alarm = has_alarm;
     }
 
-    public String getCurrentAlarm() {
-        return currentAlarm;
+    public String getCurrent_alarm() {
+        return current_alarm;
     }
 
-    public void setCurrentAlarm(String currentAlarm) {
-        this.currentAlarm = currentAlarm;
+    public void setCurrent_alarm(String current_alarm) {
+        this.current_alarm = current_alarm;
     }
 
-    public int getMaxCount() {
-        return maxCount;
+    public int getMax_count() {
+        return max_count;
     }
 
-    public void setMaxCount(int maxCount) {
-        this.maxCount = maxCount;
+    public void setMax_count(int max_count) {
+        this.max_count = max_count;
     }
 
 
