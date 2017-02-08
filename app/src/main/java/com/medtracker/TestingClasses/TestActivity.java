@@ -1,4 +1,4 @@
-package com.medtracker.Activities;
+package com.medtracker.TestingClasses;
 
 import android.app.AlarmManager;
 import android.app.Notification;
@@ -13,6 +13,7 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 
+import com.medtracker.Activities.HomeActivity;
 import com.medtracker.Utilities.TestReceiver;
 import com.medtracker.medtracker.R;
 

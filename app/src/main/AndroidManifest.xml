@@ -25,7 +25,7 @@
             android:label="@string/title_activity_home"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name="com.medtracker.Activities.TestActivity"
+            android:name="com.medtracker.TestingClasses.TestActivity"
             android:label="@string/title_activity_test" />
 
         <receiver

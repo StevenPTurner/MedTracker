@@ -1,11 +1,13 @@
 package com.medtracker.Fragments;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -16,9 +18,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.Fragments.Medication.MedicationEditFragment;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.LogTag;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -26,7 +30,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlarmListFragment extends Fragment {
+public class AlarmListFragment extends Fragment implements AdapterView.OnItemClickListener{
     private static final String TAG = LogTag.alarmListFragment;
 
     private FirebaseAuth mFirebaseAuth;
@@ -68,6 +72,8 @@ public class AlarmListFragment extends Fragment {
         } else {
             Log.d(TAG, "ListVIew is not null");
         }
+
+        listView.setOnItemClickListener(this);
     }
 
     @Override
@@ -120,6 +126,26 @@ public class AlarmListFragment extends Fragment {
             }
         };
         mDatabase.addChildEventListener(childEventListener);
+    }
+
+    public void onItemClick(AdapterView<?> l, View v, int position, long id) {
+        Log.d(TAG, "starting alarms fragment");
+        Fragment alarmFragment = new AlarmMedicationFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+//        Bundle args = new Bundle();
+//        AlarmManager current = adapter.getItem(position);
+//        String medicationKey = Utility.nameToKey(current.getMedication_name());
+//
+//        args.putString("medicationKey", medicationKey);
+//        args.putString("medicationName", current.getMedication_name());
+//        args.putString("medicationDose", Integer.toString(current.getDosage()));
+//        args.putString("medicationInstructions", current.getInstructions());
+//
+//        alarmFragment.setArguments(args);
+        transaction.replace(R.id.content_frame, alarmFragment);
+        transaction.addToBackStack(null);
+        Log.d(TAG, "starting single alarm fragment");
+        transaction.commit();
     }
 
 }
