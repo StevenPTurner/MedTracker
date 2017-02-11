@@ -21,8 +21,8 @@ import java.util.List;
 
 public class MedicationAdapter extends ArrayAdapter<Medication> {
 
-    public MedicationAdapter(Context context, ArrayList<Medication> users) {
-        super(context, 0, users);
+    public MedicationAdapter(Context context, ArrayList<Medication> medications) {
+        super(context, 0, medications);
     }
 
     @Override

@@ -32,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.AlarmListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
+import com.medtracker.Fragments.RecordListFragment;
 import com.medtracker.Models.User;
 import com.medtracker.TestingClasses.TestActivity;
 import com.medtracker.Utilities.LogTag;
@@ -214,6 +215,10 @@ public class HomeActivity extends Activity {
                 Log.w(TAG, Utility.keyToName("sodium_valproate"));
                 break;
             case 3:
+                fragment = new RecordListFragment();
+                Log.w(TAG, "Records fragment selected");
+                break;
+            case 4:
                 Intent testActivityIntent = new Intent(this, TestActivity.class);
                 startActivity(testActivityIntent);
                 break;
