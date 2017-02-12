@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 /**
  * Created by spt10 on 12/02/2017.
+ * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
 public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
