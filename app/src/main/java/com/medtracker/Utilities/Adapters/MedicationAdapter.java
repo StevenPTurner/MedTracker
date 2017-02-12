@@ -10,9 +10,7 @@ import android.widget.TextView;
 import com.medtracker.Models.Medication;
 import com.medtracker.medtracker.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by spt10 on 30/01/2017.
@@ -31,7 +29,7 @@ public class MedicationAdapter extends ArrayAdapter<Medication> {
         Medication medication = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.medication_adapter_item, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_medication, parent, false);
         }
         // Lookup view for data population
         TextView medicationName = (TextView) convertView.findViewById(R.id.medication_name);

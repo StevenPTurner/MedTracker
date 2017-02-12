@@ -46,7 +46,7 @@ public class RecordListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_record_list, container, false);
     }
 

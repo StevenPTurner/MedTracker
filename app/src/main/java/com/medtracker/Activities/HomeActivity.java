@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.medtracker.Fragments.AlarmListFragment;
+import com.medtracker.Fragments.Alarm.AlarmListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;

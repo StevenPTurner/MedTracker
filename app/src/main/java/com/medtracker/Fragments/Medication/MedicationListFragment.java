@@ -1,6 +1,5 @@
 package com.medtracker.Fragments.Medication;
 
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -26,15 +25,14 @@ import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
 //used to list fragments and some basic details that the user can click to get more info
-    //mainly used to house a listView
+//mainly used to house a listView
 public class MedicationListFragment extends Fragment implements AdapterView.OnItemClickListener {
-
     private static final String TAG = "MedicationListFragment";
+
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -100,7 +98,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
                 medications);
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
 //                (getActivity().getApplicationContext(),
-//                        R.layout.list_item_medication,
+//                        R.adapter_item_alarm_manager.list_item_medication,
 //                        medicationID);
 
         listView.setAdapter(adapter);

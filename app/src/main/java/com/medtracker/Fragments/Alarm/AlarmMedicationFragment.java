@@ -1,4 +1,4 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Alarm;
 
 
 import android.app.Fragment;
@@ -24,7 +24,7 @@ public class AlarmMedicationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_alarm_medication, container, false);
     }
 

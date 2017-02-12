@@ -63,7 +63,7 @@ public class MedicationEditFragment extends Fragment {
         Log.d(TAG, medicationDose);
         Log.d(TAG, medicationInstructions);
 
-        // Inflate the layout for this fragment
+        // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_medication_edit, container, false);
     }
 

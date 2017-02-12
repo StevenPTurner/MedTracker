@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.medtracker.Fragments.PrescriptionListFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- TODO: Update blank fragment adapter_item_alarm_manager -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

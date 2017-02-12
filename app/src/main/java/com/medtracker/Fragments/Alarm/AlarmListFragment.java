@@ -1,4 +1,4 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Alarm;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -18,11 +18,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.medtracker.Fragments.Medication.MedicationEditFragment;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.Adapters.AlarmManagerAdapter;
 import com.medtracker.Utilities.LogTag;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -38,9 +37,9 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     private DatabaseReference mDatabase;
     private String userUID;
 
-    private ArrayList<String> alarms = new ArrayList<>();
+    private ArrayList<AlarmManager> alarmManagers = new ArrayList<>();
     private ListView listView;
-//    private ArrayAdapter adapter;
+    private ArrayAdapter adapter;
 
     public AlarmListFragment() {
         // Required empty public constructor
@@ -50,7 +49,7 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_alarm_list, container, false);
     }
 
@@ -80,39 +79,28 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     public void onStart() {
         super.onStart();
 
-//        adapter = new MedicationAdapter
-//                (getActivity().getApplicationContext(),
-//                        medications);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (getActivity().getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
-                        alarms);
-
+        adapter = new AlarmManagerAdapter(getActivity().getApplicationContext(), alarmManagers);
         listView.setAdapter(adapter);
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                AlarmManager alarm = dataSnapshot.getValue(AlarmManager.class);
-                String alarmInfo = "Medication name: " + alarm.getMedication_key() + "\n" +
-                        "Alarm count: " + alarm.getMax_count() + "\n" +
-                        "Has alarms: " + alarm.isHas_alarm();
-                alarms.add(alarmInfo);
-                //medicationID.add(medicationInfo);
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                alarmManagers.add(alarmManager);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
             }
 
             @Override
@@ -146,6 +134,19 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
         transaction.addToBackStack(null);
         Log.d(TAG, "starting single alarm fragment");
         transaction.commit();
+    }
+
+    //when the user returns to this fragment from another
+    @Override
+    public void onResume() {
+        Log.d(TAG, "Fragment resumed");
+        adapter.clear();
+        super.onResume();
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
 
 }
