@@ -108,11 +108,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Medication medication = dataSnapshot.getValue(Medication.class);
-//                String medicationInfo = "Name: " + medication.getMedication_name() + "\n" +
-//                        "Info: " + medication.getInstructions() + "\n" +
-//                        "Dose: " + medication.getDosage() + "mg";
                 medications.add(medication);
-                //medicationID.add(medicationInfo);
                 adapter.notifyDataSetChanged();
             }
 

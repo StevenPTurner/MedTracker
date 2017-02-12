@@ -38,7 +38,7 @@ public class MedicationAdapter extends ArrayAdapter<Medication> {
 
         // Populate the data into the template view using the data object
         medicationName.setText(medication.getMedication_name() + ": ");
-        medicationDosage.setText(String.valueOf(medication.getDosage()) + " mg");
+        medicationDosage.setText(String.valueOf(medication.getDosage()) + "mg");
         medicationInstructions.setText(medication.getInstructions());
 
         // Return the completed view to render on screen

@@ -3,36 +3,37 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:id="@+id/medication_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_pill_black_36dp"
+        android:tint="@color/primary_text_material_light"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"/>
+
     <TextView
         android:id="@+id/medication_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/textDark"
+        android:textColor="@color/primary_text_material_light"
         android:text="name"
-        android:textSize="18dp"
+        android:textSize="16sp"
+        android:layout_toEndOf="@+id/medication_icon"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:textStyle="bold"/>
-
-    <TextView
-        android:id="@+id/medication_dosage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textDark"
-        android:text="0mg"
-        android:textSize="18dp"
-        android:layout_marginTop="5dp"
-        android:layout_toEndOf="@+id/medication_name" />
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/medication_instructions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/textDark"
+        android:textColor="@color/secondary_text_material_light"
         android:text="Instructions"
-        android:textSize="18dp"
+        android:textSize="13sp"
         android:layout_below="@+id/medication_name"
         android:layout_alignStart="@+id/medication_name"
         android:layout_marginBottom="5dp"/>
@@ -45,5 +46,15 @@
         android:layout_alignBottom="@+id/medication_instructions"
         android:layout_alignParentEnd="true"
         android:tint="@color/navigationDrawerSelected"/>
+
+    <TextView
+        android:id="@+id/medication_dosage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/primary_text_material_light"
+        android:text="0mg"
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/medication_icon"
+        android:layout_toEndOf="@+id/medication_name" />
 
 </RelativeLayout>
