@@ -39,13 +39,16 @@ public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
         TextView alarmCount = (TextView) convertView.findViewById(R.id.no_of_alarms);
         ImageView alarmIcon = (ImageView) convertView.findViewById(R.id.alarm_icon);
 
+        //gathers raw data and convers to useable formats
         String medicationNameText = Utility.keyToName(alarmManager.getMedication_key());
         boolean hasAlarms = alarmManager.isHas_alarm();
+        String noOfAlarms = String.valueOf(alarmManager.getMax_count());
 
         // Populate the data into the template view using the data object
         medicationName.setText(medicationNameText + ": ");
-        alarmCount.setText(String.valueOf(alarmManager.getMax_count()) + " alarms set.");
+        alarmCount.setText(noOfAlarms + " alarms set.");
 
+        //sets alarm icon
         if (hasAlarms)
             alarmIcon.setColorFilter(R.color.colorPrimary);
 

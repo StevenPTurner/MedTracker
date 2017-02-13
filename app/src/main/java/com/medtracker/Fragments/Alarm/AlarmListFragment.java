@@ -19,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.AlarmManager;
-import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.Adapters.AlarmManagerAdapter;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
@@ -44,7 +43,6 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     public AlarmListFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
