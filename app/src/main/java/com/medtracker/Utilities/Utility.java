@@ -46,7 +46,7 @@ public class Utility {
     }
 
     public static String calendarToString(Calendar calendar) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MMM/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm EEE dd MMM");
         String formattedDate = sdf.format(calendar.getTime());
         return formattedDate;
     }
@@ -59,7 +59,7 @@ public class Utility {
         long hours = TimeUnit.MILLISECONDS.toHours(timeDiff);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff - (hours * 60 * 60 * 1000));
 
-        String timeTillDose = Long.toString(hours) + " Hours " + Long.toString(minutes) + " Minutes";
+        String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now" ;
         return timeTillDose;
     }
 

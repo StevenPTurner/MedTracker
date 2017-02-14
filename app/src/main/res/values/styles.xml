@@ -11,6 +11,10 @@
         <item name="android:textColorSecondary">@color/secondary_text_material_light</item>
     </style>
 
+    <style name="button_flat" parent="Theme.AppCompat.Light">
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
 
 
 </resources>
