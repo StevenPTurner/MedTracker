@@ -1,11 +1,16 @@
 package com.medtracker.Fragments.Alarm;
 
+import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,10 +20,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.Fragments.TimePickerFragment;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
+import com.medtracker.Utilities.RC;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -28,6 +35,7 @@ import java.util.ArrayList;
  */
 public class AlarmMedicationFragment extends Fragment {
     private static final String TAG = LogTag.alarmMedicationFragment;
+    private final int RC_TIME_PICKER = RC.SIGN_IN_GOOGLE;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -39,6 +47,7 @@ public class AlarmMedicationFragment extends Fragment {
     private AlarmAdapter adapter;
     private int alarmCount;
     private String medicationKey;
+    private Button addAlarm;
 
     public AlarmMedicationFragment() {
         // Required empty public constructor
@@ -67,6 +76,15 @@ public class AlarmMedicationFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference()
                 .child("alarms").child(userUID).child(medicationKey);
         listView = (ListView) getView().findViewById(R.id.listView);
+
+        addAlarm = (Button) getView().findViewById(R.id.button_add_alarm);
+        addAlarm.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                DialogFragment timePicker = new TimePickerFragment();
+                timePicker.setTargetFragment(AlarmMedicationFragment.this, RC_TIME_PICKER);
+                timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
+            }
+        });
 
         if(listView == null) {
             Log.d(TAG, "ListView is null");
@@ -118,6 +136,25 @@ public class AlarmMedicationFragment extends Fragment {
         mDatabase.addChildEventListener(childEventListener);
     }
 
+    public void onComplete(int hour, int minute) {
+        addAlarm(hour,minute);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case RC_TIME_PICKER:
+                if (resultCode == Activity.RESULT_OK) {
+                    // here the part where I get my selected date from the saved variable in the intent and the displaying it.
+                    Bundle bundle = data.getExtras();
+                    int hourOfDay = Integer.parseInt(bundle.getString("hourOfDay"));
+                    int minute = Integer.parseInt(bundle.getString("minute"));
+                    addAlarm(hourOfDay,minute);
+                }
+                break;
+        }
+    }
+
     //when the user returns to this fragment from another
     @Override
     public void onResume() {
@@ -131,7 +168,9 @@ public class AlarmMedicationFragment extends Fragment {
         super.onDetach();
     }
 
-
+    public void addAlarm(int hour, int minute) {
+        Log.d(TAG, hour + " " + minute);
+    }
 
 
 }

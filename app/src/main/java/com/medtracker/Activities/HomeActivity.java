@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -43,7 +44,7 @@ import com.medtracker.medtracker.R;
 // the navigation bar and navigation drawer along with action bar.
 //These docs were used to help the creation of this app:
 //  https://developer.android.com/training/implementing-navigation/nav-drawer.html
-public class HomeActivity extends Activity {
+public class HomeActivity extends FragmentActivity {
     private final String TAG = LogTag.homeActivity;
 
     //user details objects & database

@@ -28,6 +28,7 @@ import java.util.Calendar;
  * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
+//used to hold a list of card objects for alarms
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
     private static final String TAG = LogTag.alarmAdapter;
 
@@ -91,6 +92,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         deleteAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "delete button pressed on card");
+                //generates key and calls delete alarm method
                 String key = alarm.getMedication_key() + "_" + alarm.getId();
                 deleteAlarm(key);
             }
@@ -102,10 +104,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
     //used to delete alarms from the database
     private void deleteAlarm(String alarmKey){
-        AlarmManager alarmManager;
-        DataSnapshot dataSnap;
         Log.d(TAG, "AlarmKey to delete:" + alarmKey);
-
+        //creates database object
         mDatabase.
                 child("alarms").
                 child(userUid).
@@ -113,12 +113,15 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                 child(alarmKey).
                 removeValue();
 
+        //updates the alarm manager object
         updateAlarmManager();
 
         Log.d(TAG, "Alarm deleted from the database");
     }
 
+    //used to update the alarm manager
     private void updateAlarmManager(){
+        //reference to onject location
         final DatabaseReference databaseReference = mDatabase.
                 child("alarm_manager").
                 child(userUid).
@@ -127,7 +130,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI
+                //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
                 int maxCount = alarmManager.getMax_count();
                 maxCount = maxCount - 1;
