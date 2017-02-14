@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.medtracker.Models.Alarm;
-import com.medtracker.Models.Medication;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
@@ -22,8 +21,11 @@ import java.util.Calendar;
 
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
-    public AlarmAdapter(Context context, ArrayList<Alarm> medications) {
-        super(context, 0, medications);
+    private int alarmCount;
+
+    public AlarmAdapter(Context context, ArrayList<Alarm> alarms, int alarmCount) {
+        super(context, 0, alarms);
+        this.alarmCount = alarmCount;
     }
 
     @Override
@@ -40,19 +42,18 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         // Lookup view for data population
         TextView alarmNumber = (TextView) convertView.findViewById(R.id.alarm_number);
         TextView alarmTime = (TextView) convertView.findViewById(R.id.alarm_time);
+        TextView timeTillAlarm = (TextView) convertView.findViewById(R.id.time_till_alarm);
 
         //collects raw data and parses into useable formats
-
         Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
-        Calendar currentTime = Calendar.getInstance();
-
-
-        String medicationNameText = Utility.keyToName(alarm.getMedication_key());
         String dateToDisplay = Utility.calendarToString(alarmCalendar);
+        String timeTillAlarmText = Utility.calcTimeDif(alarmCalendar);
 
-        // Populate the data into the template view using the data object
-        medicationName.setText(medicationNameText + ": ");
+//
+//        // Populate the data into the template view using the data object
+        alarmNumber.setText("Alarm " + alarm.getId() + " of " + alarmCount);
         alarmTime.setText(dateToDisplay);
+        timeTillAlarm.setText(timeTillAlarmText + " Hours");
 
         // Return the completed view to render on screen
         return convertView;

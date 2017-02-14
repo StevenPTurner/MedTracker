@@ -38,7 +38,7 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
 
     private ArrayList<AlarmManager> alarmManagers = new ArrayList<>();
     private ListView listView;
-    private ArrayAdapter adapter;
+    private AlarmManagerAdapter adapter;
 
     public AlarmListFragment() {
         // Required empty public constructor
@@ -118,16 +118,12 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
         Log.d(TAG, "starting alarms fragment");
         Fragment alarmFragment = new AlarmMedicationFragment();
         FragmentTransaction transaction = getFragmentManager().beginTransaction();
-//        Bundle args = new Bundle();
-//        AlarmManager current = adapter.getItem(position);
-//        String medicationKey = Utility.nameToKey(current.getMedication_name());
-//
-//        args.putString("medicationKey", medicationKey);
-//        args.putString("medicationName", current.getMedication_name());
-//        args.putString("medicationDose", Integer.toString(current.getDosage()));
-//        args.putString("medicationInstructions", current.getInstructions());
-//
-//        alarmFragment.setArguments(args);
+
+        Bundle args = new Bundle();
+        AlarmManager current = adapter.getItem(position);
+        args.putInt("maxCount", current.getMax_count());
+
+        alarmFragment.setArguments(args);
         transaction.replace(R.id.content_frame, alarmFragment);
         transaction.addToBackStack(null);
         Log.d(TAG, "starting single alarm fragment");

@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by spt10 on 01/02/2017.
@@ -50,9 +51,16 @@ public class Utility {
         return formattedDate;
     }
 
-    public static Calendar calcTimeDif(Calendar alarm) {
+    public static String calcTimeDif(Calendar alarm){
         long alarmTime = alarm.getTimeInMillis();
-        return null;
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        long timeDiff = alarmTime - currentTime;
+
+        long hours = TimeUnit.MILLISECONDS.toHours(timeDiff);
+//        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+
+        String timeTillDose = Long.toString(hours);
+        return timeTillDose;
     }
 
 

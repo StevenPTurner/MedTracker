@@ -38,6 +38,7 @@ public class AlarmMedicationFragment extends Fragment {
     private ArrayList<Alarm> alarms = new ArrayList<>();
     private ListView listView;
     private AlarmAdapter adapter;
+    private int alarmCount;
 
     public AlarmMedicationFragment() {
         // Required empty public constructor
@@ -47,6 +48,9 @@ public class AlarmMedicationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        alarmCount = args.getInt("maxCount");
+
         // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_alarm_medication, container, false);
     }
@@ -76,7 +80,7 @@ public class AlarmMedicationFragment extends Fragment {
         super.onStart();
         adapter = new AlarmAdapter
                 (getActivity().getApplicationContext(),
-                        alarms);
+                        alarms, alarmCount);
 //        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
 //                (getActivity().getApplicationContext(),
 //                        android.R.layout.simple_list_item_1,
