@@ -57,9 +57,9 @@ public class Utility {
         long timeDiff = alarmTime - currentTime;
 
         long hours = TimeUnit.MILLISECONDS.toHours(timeDiff);
-//        long seconds = TimeUnit.MILLISECONDS.toSeconds(millis);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff - (hours * 60 * 60 * 1000));
 
-        String timeTillDose = Long.toString(hours);
+        String timeTillDose = Long.toString(hours) + " Hours " + Long.toString(minutes) + " Minutes";
         return timeTillDose;
     }
 

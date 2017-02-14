@@ -53,7 +53,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 //        // Populate the data into the template view using the data object
         alarmNumber.setText("Alarm " + alarm.getId() + " of " + alarmCount);
         alarmTime.setText(dateToDisplay);
-        timeTillAlarm.setText(timeTillAlarmText + " Hours");
+        timeTillAlarm.setText(timeTillAlarmText);
 
         // Return the completed view to render on screen
         return convertView;
