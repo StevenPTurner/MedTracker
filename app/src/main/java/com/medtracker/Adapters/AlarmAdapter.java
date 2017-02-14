@@ -121,7 +121,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
     //used to update the alarm manager
     private void updateAlarmManager(){
-        //reference to onject location
+        //reference to object location
         final DatabaseReference databaseReference = mDatabase.
                 child("alarm_manager").
                 child(userUid).

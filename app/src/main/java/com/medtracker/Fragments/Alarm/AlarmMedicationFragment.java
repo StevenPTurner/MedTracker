@@ -3,7 +3,6 @@ package com.medtracker.Fragments.Alarm;
 import android.app.Activity;
 import android.app.DialogFragment;
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +19,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.TimePickerFragment;
 import com.medtracker.Models.Alarm;
+import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
@@ -29,6 +30,7 @@ import com.medtracker.Utilities.RC;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -53,7 +55,6 @@ public class AlarmMedicationFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -73,8 +74,8 @@ public class AlarmMedicationFragment extends Fragment {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("alarms").child(userUID).child(medicationKey);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) getView().findViewById(R.id.listView);
 
         addAlarm = (Button) getView().findViewById(R.id.button_add_alarm);
@@ -133,11 +134,8 @@ public class AlarmMedicationFragment extends Fragment {
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
         };
-        mDatabase.addChildEventListener(childEventListener);
-    }
-
-    public void onComplete(int hour, int minute) {
-        addAlarm(hour,minute);
+        mDatabase.child("alarms").child(userUID).child(medicationKey).
+                addChildEventListener(childEventListener);
     }
 
     @Override
@@ -145,7 +143,6 @@ public class AlarmMedicationFragment extends Fragment {
         switch (requestCode) {
             case RC_TIME_PICKER:
                 if (resultCode == Activity.RESULT_OK) {
-                    // here the part where I get my selected date from the saved variable in the intent and the displaying it.
                     Bundle bundle = data.getExtras();
                     int hourOfDay = Integer.parseInt(bundle.getString("hourOfDay"));
                     int minute = Integer.parseInt(bundle.getString("minute"));
@@ -155,22 +152,74 @@ public class AlarmMedicationFragment extends Fragment {
         }
     }
 
-    //when the user returns to this fragment from another
-    @Override
-    public void onResume() {
-        Log.d(TAG, "Fragment resumed");
-        //adapter.clear();
-        super.onResume();
+    private void addAlarm(int hour, int minute) {
+        Alarm toAdd = alarmBuilder(hour,minute);
+        String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
+        mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
+                setValue(toAdd);
+        Log.d(TAG, alarmKey + " added to database");
+        updateAlarmManager();
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    private void updateAlarmManager() {
+        //reference to object location
+        final DatabaseReference databaseReference = mDatabase.
+                child("alarm_manager").
+                child(userUID).
+                child(medicationKey);
+
+        ValueEventListener postListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retreives object
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                int maxCount = alarmManager.getMax_count();
+                if (maxCount < 1)
+                    alarmManager.setHas_alarm(true);
+
+                maxCount = maxCount + 1;
+                alarmManager.setMax_count(maxCount);
+                databaseReference.setValue(alarmManager);
+            }
+
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        };
+        databaseReference.addListenerForSingleValueEvent(postListener);
+        Log.d(TAG, "alarm manager updated");
     }
 
-    public void addAlarm(int hour, int minute) {
-        Log.d(TAG, hour + " " + minute);
+    private Alarm alarmBuilder(int hour, int minute){
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+
+        if (currentHour > hour && currentMinute > minute);
+            calendar.set(Calendar.DAY_OF_MONTH, (Calendar.DAY_OF_MONTH + 1));
+
+        Alarm alarm = new Alarm(
+                alarms.size()+1,
+                minute,
+                hour,
+                Calendar.DAY_OF_MONTH,
+                Calendar.MONTH,
+                Calendar.YEAR,
+                medicationKey);
+
+        return alarm;
     }
 
+    //    //when the user returns to this fragment from another
+//    @Override
+//    public void onResume() {
+//        Log.d(TAG, "Fragment resumed");
+//        //adapter.clear();
+//        super.onResume();
+//    }
+//
+//    @Override
+//    public void onDetach() {
+//        super.onDetach();
+//    }
 
 }
