@@ -1,0 +1,174 @@
+{
+  "alarm_manager" : {
+    "S1sQ5rhesIfmNRHzooa4IYSr2xv2" : {
+      "codiene" : {
+        "current_alarm" : "none",
+        "current_count" : 0,
+        "has_alarm" : false,
+        "max_count" : 0,
+        "medication_key" : "codiene"
+      },
+      "propanalol" : {
+        "current_alarm" : "propanalol_1",
+        "current_count" : 1,
+        "has_alarm" : true,
+        "max_count" : 2,
+        "medication_key" : "propanalol"
+      },
+      "sodium_valproate" : {
+        "currentAlarm" : "none",
+        "currentCount" : 0,
+        "has_alarm" : false,
+        "maxCount" : 0,
+        "medication_key" : "sodium_valproate"
+      }
+    }
+  },
+  "alarms" : {
+    "S1sQ5rhesIfmNRHzooa4IYSr2xv2" : {
+      "propanalol" : {
+        "propanalol_1" : {
+          "day" : 16,
+          "hour" : 10,
+          "id" : 1,
+          "medication_key" : "propanalol",
+          "minute" : 0,
+          "month" : 2,
+          "year" : 2017
+        },
+        "propanalol_2" : {
+          "day" : 16,
+          "hour" : 22,
+          "id" : 2,
+          "medication_key" : "propanalol",
+          "minute" : 0,
+          "month" : 2,
+          "year" : 2017
+        }
+      }
+    }
+  },
+  "glossary" : {
+    "take_once" : "Medication you take once a day"
+  },
+  "medications" : {
+    "S1sQ5rhesIfmNRHzooa4IYSr2xv2" : {
+      "codiene" : {
+        "dosage" : 15,
+        "has_alarm" : false,
+        "has_prescription" : false,
+        "instructions" : "Take 2-4 Daily",
+        "medication_name" : "Codiene"
+      },
+      "paracetamol" : {
+        "dosage" : 500,
+        "has_alarm" : false,
+        "has_prescription" : false,
+        "instructions" : "Take as needed",
+        "medication_name" : "Paracetamol"
+      },
+      "propanalol" : {
+        "dosage" : 80,
+        "has_alarm" : false,
+        "has_prescription" : false,
+        "instructions" : "Take once daily",
+        "medication_name" : "Propanalol"
+      }
+    }
+  },
+  "pharmacies" : {
+    "address" : "address",
+    "location" : "location",
+    "name" : "name"
+  },
+  "prescriptions" : {
+    "propanalol" : {
+      "dose_left" : 30,
+      "dose_per_day" : 1,
+      "doses_per_prescription" : 30,
+      "expected_duration" : 30,
+      "medication_name" : "Propanalol",
+      "next_alarm" : "10/10/2016-10:10:10"
+    },
+    "sodium_valproate" : {
+      "dose_left" : 90,
+      "dose_per_day" : 3,
+      "doses_per_prescription" : 90,
+      "expected_duration" : 30,
+      "medication_name" : "Sodium Valproate",
+      "next_alarm" : "10/10/2016-10:10:10"
+    }
+  },
+  "records" : {
+    "S1sQ5rhesIfmNRHzooa4IYSr2xv2" : {
+      "101010-10112016" : {
+        "day" : 10,
+        "dose" : 80,
+        "hour" : 10,
+        "medication_key" : "propanalol",
+        "minute" : 10,
+        "month" : 11,
+        "second" : 10,
+        "year" : 2016
+      },
+      "101012-10112016" : {
+        "day" : 10,
+        "dose" : 500,
+        "hour" : 10,
+        "medication_key" : "sodium_valproate",
+        "minute" : 10,
+        "month" : 11,
+        "second" : 10,
+        "year" : 2016
+      },
+      "101018-10112016" : {
+        "day" : 10,
+        "dose" : 500,
+        "hour" : 12,
+        "medication_key" : "sodium_valproate",
+        "minute" : 10,
+        "month" : 11,
+        "second" : 10,
+        "year" : 2016
+      },
+      "151010-10112016" : {
+        "day" : 10,
+        "dose" : 500,
+        "hour" : 18,
+        "medication_key" : "sodium_valproate",
+        "minute" : 10,
+        "month" : 11,
+        "second" : 15,
+        "year" : 2016
+      }
+    }
+  },
+  "users" : {
+    "19goNyDGFVdwXbrv1jDVhJI7BO03" : {
+      "display_name" : "Kate Prus",
+      "email" : "kat.prus@gmail.com",
+      "pin" : 1111
+    },
+    "3ZxV6OVe5KUFXQ3xXd4dzkrdTb82" : {
+      "display_name" : "Steven urner",
+      "email" : "spt10pdlive@msn.com",
+      "pin" : 1111
+    },
+    "S1sQ5rhesIfmNRHzooa4IYSr2xv2" : {
+      "alarms_set" : false,
+      "display_name" : "steven turner",
+      "email" : "spt10pd@msn.com",
+      "pin" : 1111
+    },
+    "drhnsASdQqgu5GrpHe00NDrNcky2" : {
+      "display_name" : "Steven Turner",
+      "email" : "spt10pd@msn.com",
+      "pin" : 1111
+    },
+    "ufL1RbaQ3eS8yXYBX07numMUO5g2" : {
+      "display_name" : "Steven Turner",
+      "email" : "spt10pd@gmail.com",
+      "pin" : 1111
+    }
+  }
+}

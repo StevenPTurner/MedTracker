@@ -51,7 +51,7 @@ public class Utility {
         return formattedDate;
     }
 
-    public static String calcTimeDif(Calendar alarm){
+    public static String calcTimeDif(Calendar alarm) {
         long alarmTime = alarm.getTimeInMillis();
         long currentTime = Calendar.getInstance().getTimeInMillis();
         long timeDiff = alarmTime - currentTime;
@@ -59,9 +59,8 @@ public class Utility {
         long hours = TimeUnit.MILLISECONDS.toHours(timeDiff);
         long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff - (hours * 60 * 60 * 1000));
 
-        String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now" ;
+        String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
         return timeTillDose;
     }
-
 
 }

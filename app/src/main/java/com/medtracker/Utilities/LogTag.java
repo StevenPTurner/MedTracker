@@ -13,4 +13,6 @@ public final class LogTag {
     public static final String recordListFragment = "LogRecordListFragment";
     public static final String alarmListFragment = "LogAlarmListFragment";
     public static final String alarmMedicationFragment = "LogAlarmMedFragment";
+
+    public static final String alarmAdapter = "LogAlarmAdapter";
 }

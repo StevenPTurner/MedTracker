@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,7 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.Medication;
-import com.medtracker.Utilities.Adapters.AlarmAdapter;
+import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
@@ -39,6 +38,7 @@ public class AlarmMedicationFragment extends Fragment {
     private ListView listView;
     private AlarmAdapter adapter;
     private int alarmCount;
+    private String medicationKey;
 
     public AlarmMedicationFragment() {
         // Required empty public constructor
@@ -49,8 +49,8 @@ public class AlarmMedicationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
-        alarmCount = args.getInt("maxCount");
-
+        this.alarmCount = args.getInt("maxCount");
+        this.medicationKey = args.getString("medicationKey");
         // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_alarm_medication, container, false);
     }
@@ -65,7 +65,7 @@ public class AlarmMedicationFragment extends Fragment {
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
         mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("alarms").child(userUID);
+                .child("alarms").child(userUID).child(medicationKey);
         listView = (ListView) getView().findViewById(R.id.listView);
 
         if(listView == null) {
@@ -80,11 +80,7 @@ public class AlarmMedicationFragment extends Fragment {
         super.onStart();
         adapter = new AlarmAdapter
                 (getActivity().getApplicationContext(),
-                        alarms, alarmCount);
-//        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                (getActivity().getApplicationContext(),
-//                        android.R.layout.simple_list_item_1,
-//                        alarms);
+                        alarms, alarmCount, userUID);
 
         listView.setAdapter(adapter);
 
@@ -93,9 +89,6 @@ public class AlarmMedicationFragment extends Fragment {
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Alarm alarm = dataSnapshot.getValue(Alarm.class);
-//                String alarmInfo = "Name: " + alarm.getMedication_key() + "\n" +
-//                    "Hour: " + alarm.getHour();
-//                alarms.add(alarmInfo);
                 alarms.add(alarm);
                 adapter.notifyDataSetChanged();
             }

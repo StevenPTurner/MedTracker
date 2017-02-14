@@ -14,7 +14,6 @@ public class User {
     }
 
     public User(String email, String display_name, int pin) {
-
         this.email = email;
         this.display_name = display_name;
         this.pin = pin;

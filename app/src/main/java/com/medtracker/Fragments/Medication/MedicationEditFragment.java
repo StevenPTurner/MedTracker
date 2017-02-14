@@ -146,6 +146,8 @@ public class MedicationEditFragment extends Fragment {
     private void deleteMedication(String medicationKey) {
         Log.d(TAG, "Database Key:" + medicationKey);
         mDatabase.child(medicationKey).removeValue();
+        //delete alarms
+        //delete alarm manager
         Log.d(TAG, "Medication deleted from the database");
     }
 

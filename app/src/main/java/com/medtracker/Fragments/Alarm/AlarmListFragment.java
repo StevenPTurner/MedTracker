@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,7 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.AlarmManager;
-import com.medtracker.Utilities.Adapters.AlarmManagerAdapter;
+import com.medtracker.Adapters.AlarmManagerAdapter;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
@@ -92,13 +91,13 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
             }
 
             @Override
@@ -122,6 +121,7 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
         Bundle args = new Bundle();
         AlarmManager current = adapter.getItem(position);
         args.putInt("maxCount", current.getMax_count());
+        args.putString("medicationKey", current.getMedication_key());
 
         alarmFragment.setArguments(args);
         transaction.replace(R.id.content_frame, alarmFragment);

@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
-import com.medtracker.Utilities.Adapters.MedicationAdapter;
+import com.medtracker.Adapters.MedicationAdapter;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
