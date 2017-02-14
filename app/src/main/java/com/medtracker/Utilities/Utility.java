@@ -1,5 +1,7 @@
 package com.medtracker.Utilities;
 
+import android.util.Log;
+
 import com.medtracker.Models.Alarm;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +63,30 @@ public class Utility {
 
         String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
         return timeTillDose;
+    }
+
+    public static Alarm alarmBuilder(int hour, int minute, int currentID, String medicationKey){
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        //Log.d(TAG, "currentHour: " + currentHour + ":" + hour);
+        int currentMinute = calendar.get(Calendar.MINUTE);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        if (currentHour > hour)
+            currentDay = currentDay + 1;
+
+        Alarm alarm = new Alarm(
+                currentID+1,
+                minute,
+                hour,
+                currentDay,
+                currentMonth,
+                currentYear,
+                medicationKey);
+
+        return alarm;
     }
 
 }

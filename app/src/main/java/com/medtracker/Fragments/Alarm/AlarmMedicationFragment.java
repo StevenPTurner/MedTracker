@@ -27,6 +27,7 @@ import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.RC;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -153,13 +154,13 @@ public class AlarmMedicationFragment extends Fragment {
     }
 
     private void addAlarm(int hour, int minute) {
-        Alarm toAdd = alarmBuilder(hour,minute);
+        Alarm toAdd = Utility.alarmBuilder(hour,minute, alarms.size(),medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " added to database");
         updateAlarmManager();
-
+        listView.setAdapter(adapter);
     }
 
     private void updateAlarmManager() {
@@ -189,25 +190,7 @@ public class AlarmMedicationFragment extends Fragment {
         Log.d(TAG, "alarm manager updated");
     }
 
-    private Alarm alarmBuilder(int hour, int minute){
-        Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentMinute = calendar.get(Calendar.MINUTE);
 
-        if (currentHour > hour && currentMinute > minute);
-            calendar.set(Calendar.DAY_OF_MONTH, (Calendar.DAY_OF_MONTH + 1));
-
-        Alarm alarm = new Alarm(
-                alarms.size()+1,
-                minute,
-                hour,
-                Calendar.DAY_OF_MONTH,
-                Calendar.MONTH,
-                Calendar.YEAR,
-                medicationKey);
-
-        return alarm;
-    }
 
     //    //when the user returns to this fragment from another
 //    @Override
