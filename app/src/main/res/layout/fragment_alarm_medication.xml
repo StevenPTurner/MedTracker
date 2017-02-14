@@ -11,6 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/textDark"/>
+        android:textColor="@color/textDark"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
 </LinearLayout>

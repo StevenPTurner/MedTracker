@@ -99,7 +99,7 @@ public class AlarmMedicationFragment extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
+//                Medication medication = dataSnapshot.getValue(Medication.class);
             }
 
             @Override

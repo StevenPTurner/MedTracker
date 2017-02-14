@@ -38,13 +38,17 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         }
 
         // Lookup view for data population
-        TextView medicationName = (TextView) convertView.findViewById(R.id.medication_name);
+        TextView alarmNumber = (TextView) convertView.findViewById(R.id.alarm_number);
         TextView alarmTime = (TextView) convertView.findViewById(R.id.alarm_time);
 
         //collects raw data and parses into useable formats
+
+        Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
+        Calendar currentTime = Calendar.getInstance();
+
+
         String medicationNameText = Utility.keyToName(alarm.getMedication_key());
-        Calendar cal = Utility.alarmToCalendar(alarm);
-        String dateToDisplay = Utility.calendarToString(cal);
+        String dateToDisplay = Utility.calendarToString(alarmCalendar);
 
         // Populate the data into the template view using the data object
         medicationName.setText(medicationNameText + ": ");

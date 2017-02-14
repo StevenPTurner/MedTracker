@@ -50,6 +50,10 @@ public class Utility {
         return formattedDate;
     }
 
+    public static Calendar calcTimeDif(Calendar alarm) {
+        long alarmTime = alarm.getTimeInMillis();
+        return null;
+    }
 
 
 }
