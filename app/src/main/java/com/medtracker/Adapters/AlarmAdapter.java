@@ -31,12 +31,11 @@ import java.util.Calendar;
 //used to hold a list of card objects for alarms
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
     private static final String TAG = LogTag.alarmAdapter;
+    private AlarmAdapterCallback callback;
 
     private int alarmCount;
     private Button editAlarm;
     private Button deleteAlarm;
-    private DatabaseReference mDatabase;
-    private String userUid;
     private Alarm alarm;
 
     //constructor mainly used to get arguments passed in
@@ -44,8 +43,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                         String userUid) {
         super(context, 0, alarms);
         this.alarmCount = alarmCount;
-        this.userUid = userUid;
-        this.mDatabase = FirebaseDatabase.getInstance().getReference();
         Log.d(TAG, "adapter initialised");
     }
 
@@ -85,16 +82,13 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         editAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "edit alarm button pressed on card");
-
             }
         });
 
         deleteAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "delete button pressed on card");
-                //generates key and calls delete alarm method
-                String key = alarm.getMedication_key() + "_" + alarm.getId();
-                deleteAlarm(key);
+                callback.deleteAlarm(alarm);
             }
         });
 
@@ -102,48 +96,17 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         return convertView;
     }
 
-    //used to delete alarms from the database
-    private void deleteAlarm(String alarmKey){
-        Log.d(TAG, "AlarmKey to delete:" + alarmKey);
-        //creates database object
-        mDatabase.
-                child("alarms").
-                child(userUid).
-                child(alarm.getMedication_key()).
-                child(alarmKey).
-                removeValue();
-
-        //updates the alarm manager object
-        updateAlarmManager();
-
-        Log.d(TAG, "Alarm deleted from the database");
+    private void editAlarm(String alarmKey){
+        Log.d(TAG, "AlarmKey to edit:" + alarmKey);
     }
 
-    //used to update the alarm manager
-    private void updateAlarmManager(){
-        //reference to object location
-        final DatabaseReference databaseReference = mDatabase.
-                child("alarm_manager").
-                child(userUid).
-                child(alarm.getMedication_key());
+    public void setCallback(AlarmAdapterCallback callback){
+        this.callback = callback;
+    }
 
-        ValueEventListener postListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //retreives object updates it and sends the newly updates one back to the database
-                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
-                int maxCount = alarmManager.getMax_count();
-                maxCount = maxCount - 1;
-                alarmManager.setMax_count(maxCount);
 
-                if (maxCount < 1)
-                    alarmManager.setHas_alarm(false);
-
-                databaseReference.setValue(alarmManager);
-            }
-
-            @Override public void onCancelled(DatabaseError databaseError) {}
-        };
-        databaseReference.addListenerForSingleValueEvent(postListener);
+    public interface AlarmAdapterCallback {
+        void deleteAlarm(Alarm toDelete);
+        void editAlarm(Alarm toEdit);
     }
 }

@@ -36,9 +36,9 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlarmMedicationFragment extends Fragment {
+public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.AlarmAdapterCallback {
     private static final String TAG = LogTag.alarmMedicationFragment;
-    private final int RC_TIME_PICKER = RC.SIGN_IN_GOOGLE;
+    private final int RC_TIME_PICKER = RC.DATE_PICKER;
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -79,6 +79,7 @@ public class AlarmMedicationFragment extends Fragment {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) getView().findViewById(R.id.listView);
 
+
         addAlarm = (Button) getView().findViewById(R.id.button_add_alarm);
         addAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -87,6 +88,7 @@ public class AlarmMedicationFragment extends Fragment {
                 timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
             }
         });
+
 
         if(listView == null) {
             Log.d(TAG, "ListView is null");
@@ -101,7 +103,7 @@ public class AlarmMedicationFragment extends Fragment {
         adapter = new AlarmAdapter
                 (getActivity().getApplicationContext(),
                         alarms, alarmCount, userUID);
-
+        adapter.setCallback(this);
         listView.setAdapter(adapter);
 
         ChildEventListener childEventListener = new ChildEventListener() {
@@ -122,7 +124,7 @@ public class AlarmMedicationFragment extends Fragment {
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -159,36 +161,93 @@ public class AlarmMedicationFragment extends Fragment {
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " added to database");
-        updateAlarmManager();
+        updateAlarmManager(toAdd.getMedication_key(), "add");
         listView.setAdapter(adapter);
     }
 
-    private void updateAlarmManager() {
+//    private void updateAlarmManager() {
+//        //reference to object location
+//        final DatabaseReference databaseReference = mDatabase.
+//                child("alarm_manager").
+//                child(userUID).
+//                child(medicationKey);
+//
+//        ValueEventListener postListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                //retreives object
+//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+//                int maxCount = alarmManager.getMax_count();
+//                if (maxCount < 1)
+//                    alarmManager.setHas_alarm(true);
+//
+//                maxCount = maxCount + 1;
+//                alarmManager.setMax_count(maxCount);
+//                databaseReference.setValue(alarmManager);
+//            }
+//
+//            @Override public void onCancelled(DatabaseError databaseError) {}
+//        };
+//        databaseReference.addListenerForSingleValueEvent(postListener);
+//        Log.d(TAG, "alarm manager updated");
+//    }
+
+    @Override
+    public void editAlarm(Alarm toEdit) {
+
+    }
+
+    @Override
+    public void deleteAlarm(Alarm toDelete) {
+        Log.d(TAG, "AlarmKey to delete:" + toDelete.getMedication_key());
+        String alarmKey = toDelete.getMedication_key() + "_" + toDelete.getId();
+
+        mDatabase.child("alarms").child(userUID).child(toDelete.getMedication_key()).
+                child(alarmKey).removeValue();
+
+        updateAlarmManager(toDelete.getMedication_key(), "delete");
+        Log.d(TAG, "Alarm deleted from the database");
+//        adapter.notifyDataSetChanged();
+//        listView.setAdapter(adapter);
+    }
+
+    //used to update the alarm manager
+    private void updateAlarmManager(String medicationKey, String method){
         //reference to object location
-        final DatabaseReference databaseReference = mDatabase.
-                child("alarm_manager").
-                child(userUID).
+        final String action = method;
+        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //retreives object
+                //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
                 int maxCount = alarmManager.getMax_count();
-                if (maxCount < 1)
-                    alarmManager.setHas_alarm(true);
 
-                maxCount = maxCount + 1;
-                alarmManager.setMax_count(maxCount);
+                switch(action) {
+                    case "add":
+                        if (maxCount < 1)
+                            alarmManager.setHas_alarm(true);
+
+                        maxCount = maxCount + 1;
+                        alarmManager.setMax_count(maxCount);
+                        break;
+                    case "delete":
+                        maxCount = maxCount - 1;
+                        alarmManager.setMax_count(maxCount);
+                        if (maxCount < 1)
+                            alarmManager.setHas_alarm(false);
+
+                        break;
+                }
                 databaseReference.setValue(alarmManager);
             }
-
             @Override public void onCancelled(DatabaseError databaseError) {}
         };
         databaseReference.addListenerForSingleValueEvent(postListener);
-        Log.d(TAG, "alarm manager updated");
     }
+
 
 
 
