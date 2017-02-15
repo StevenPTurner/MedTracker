@@ -31,7 +31,7 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         Record record = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_medication, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_record, parent, false);
         }
         // Lookup view for data population
         TextView recordName = (TextView) convertView.findViewById(R.id.record_name);
@@ -40,16 +40,17 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         TextView recordDate = (TextView) convertView.findViewById(R.id.record_date);
 
         //collects and gets dates as strings for displaying
+        String medicationName = Utility.keyToName(record.getMedication_key());
         Calendar calendar = Utility.recordToCalendar(record);
         String time = Utility.calendarToTime(calendar);
         String date = Utility.calendarToSDate(calendar);
 
         // Populate the data into the template view using the data object
-        recordName.setText(record.getMedication_key());
-        recordDosage.setText(String.valueOf(record.getDose()) + " mg");
+        recordName.setText(medicationName);
+        recordDosage.setText(String.valueOf(record.getDose()));
         recordTime.setText(time);
         recordDate.setText(date);
-        
+
         // Return the completed view to render on screen
         return convertView;
     }

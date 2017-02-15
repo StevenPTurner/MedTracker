@@ -17,6 +17,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.medtracker.Adapters.RecordAdapter;
 import com.medtracker.Models.Medication;
 import com.medtracker.Models.Record;
 import com.medtracker.Utilities.LogTag;
@@ -36,7 +37,8 @@ public class RecordListFragment extends Fragment {
     private String userUID;
 
 
-    private ArrayList<String> records = new ArrayList<>();
+    private ArrayList<Record> records = new ArrayList<>();
+    private RecordAdapter adapter;
     private ListView listView;
 
     public RecordListFragment() {
@@ -76,34 +78,26 @@ public class RecordListFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-        (getActivity().getApplicationContext(),
-                android.R.layout.simple_list_item_1,
-                records);
+        adapter = new RecordAdapter(getActivity().getApplicationContext(), records);
 
         listView.setAdapter(adapter);
-
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Record record = dataSnapshot.getValue(Record.class);
-                String recordInfo = "Name: " + record.getMedication_key();
-                records.add(recordInfo);
-                //medicationID.add(medicationInfo);
+                records.add(record);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
             }
 
             @Override

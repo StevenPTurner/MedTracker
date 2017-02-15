@@ -5,15 +5,16 @@
 
     <TextView
         android:id="@+id/record_name"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_text_material_light"
         android:text="name"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginStart="10dp"/>
 
     <TextView
         android:id="@+id/record_dosage"
-        android:layout_width="wrap_content"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:textColor="@color/primary_text_material_light"
         android:text="dosage"
