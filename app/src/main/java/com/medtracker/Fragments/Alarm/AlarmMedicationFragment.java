@@ -156,41 +156,14 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     }
 
     private void addAlarm(int hour, int minute) {
-        Alarm toAdd = Utility.alarmBuilder(hour,minute, alarms.size(),medicationKey);
+        Alarm toAdd = alarmBuilder(hour,minute, alarms.size(),medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
+
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " added to database");
         updateAlarmManager(toAdd.getMedication_key(), "add");
-        listView.setAdapter(adapter);
     }
-
-//    private void updateAlarmManager() {
-//        //reference to object location
-//        final DatabaseReference databaseReference = mDatabase.
-//                child("alarm_manager").
-//                child(userUID).
-//                child(medicationKey);
-//
-//        ValueEventListener postListener = new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                //retreives object
-//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
-//                int maxCount = alarmManager.getMax_count();
-//                if (maxCount < 1)
-//                    alarmManager.setHas_alarm(true);
-//
-//                maxCount = maxCount + 1;
-//                alarmManager.setMax_count(maxCount);
-//                databaseReference.setValue(alarmManager);
-//            }
-//
-//            @Override public void onCancelled(DatabaseError databaseError) {}
-//        };
-//        databaseReference.addListenerForSingleValueEvent(postListener);
-//        Log.d(TAG, "alarm manager updated");
-//    }
 
     @Override
     public void editAlarm(Alarm toEdit) {
@@ -204,11 +177,9 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
 
         mDatabase.child("alarms").child(userUID).child(toDelete.getMedication_key()).
                 child(alarmKey).removeValue();
-
         updateAlarmManager(toDelete.getMedication_key(), "delete");
         Log.d(TAG, "Alarm deleted from the database");
-//        adapter.notifyDataSetChanged();
-//        listView.setAdapter(adapter);
+
     }
 
     //used to update the alarm manager
@@ -248,6 +219,22 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         databaseReference.addListenerForSingleValueEvent(postListener);
     }
 
+    private Alarm alarmBuilder(int hour, int minute, int currentID, String medicationKey){
+        Calendar calendar = Calendar.getInstance();
+        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYear = calendar.get(Calendar.YEAR);
+        Log.d(TAG, "currentHour: " + currentHour + ":" + hour);
+
+        if (currentHour > hour)
+            currentDay = currentDay + 1;
+
+        Alarm alarm = new Alarm(currentID+1, minute, hour, currentDay, currentMonth, currentYear,
+                medicationKey);
+
+        return alarm;
+    }
 
 
 
