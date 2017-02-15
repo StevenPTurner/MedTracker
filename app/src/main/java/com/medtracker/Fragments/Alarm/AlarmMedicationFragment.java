@@ -37,24 +37,22 @@ import java.util.Calendar;
  * A simple {@link Fragment} subclass.
  */
 public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.AlarmAdapterCallback {
+    //testing and tracking variables
     private static final String TAG = LogTag.alarmMedicationFragment;
     private final int RC_TIME_PICKER_ADD = RC.TIME_PICKER_ADD;
     private final int RC_TIME_PICKER_EDIT = RC.TIME_PICKER_EDIT;
+
     private DatabaseReference mDatabase;
-    private String userUID;
-
-    //sets up array list and it's objects
     private ArrayList<Alarm> alarms = new ArrayList<>();
-    private ListView listView;
     private AlarmAdapter adapter;
-    private int alarmCount;
+    private ListView listView;
     private String medicationKey;
+    private String userUID;
     private int currentEdit;
+    private int alarmCount;
 
 
-    public AlarmMedicationFragment() {
-        // Required empty public constructor
-    }
+    public AlarmMedicationFragment() {}
 
     @Override //sets up ui and is used to get arguments pased to fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -62,22 +60,22 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         Bundle args = getArguments();
         this.alarmCount = args.getInt("maxCount");
         this.medicationKey = args.getString("medicationKey");
-        // Inflate the adapter_item_alarm_manager for this fragment
+        // Inflate the UI
         return inflater.inflate(R.layout.fragment_alarm_medication, container, false);
     }
 
-    // This event is triggered soon after onCreateView().
-    @Override
+    @Override // This event is triggered soon after onCreateView().
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment"); //firebase setup
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
         FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
+
         listView = (ListView) getView().findViewById(R.id.listView);
 
+        //button listener
         Button addAlarm = (Button) getView().findViewById(R.id.button_add_alarm);
         addAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -86,21 +84,21 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                 timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
             }
         });
-        //checks list exists
-        if(listView == null) {
+
+        //checks list has been populated and exists
+        if(listView == null)
             Log.d(TAG, "ListView is null");
-        } else {
-            Log.d(TAG, "ListVIew is not null");
-        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        //sets up adapter and call back methods implemented from the adapter interface
         adapter = new AlarmAdapter(getActivity().getApplicationContext(),alarms, alarmCount);
         adapter.setCallback(this);
         listView.setAdapter(adapter);
 
+        //one big listener for database events to enable realtime (needs further work
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -113,13 +111,11 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-//                Medication medication = dataSnapshot.getValue(Medication.class);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -131,15 +127,14 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
-        };
-        mDatabase.child("alarms").child(userUID).child(medicationKey).
+        }; mDatabase.child("alarms").child(userUID).child(medicationKey).
                 addChildEventListener(childEventListener);
     }
 
     @Override //only really used for the time picker
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case RC_TIME_PICKER_ADD:
+            case RC_TIME_PICKER_ADD: //if the result code is add
                 if (resultCode == Activity.RESULT_OK) {
                     Bundle bundle = data.getExtras();
                     int hourOfDay = Integer.parseInt(bundle.getString("hourOfDay"));
@@ -147,7 +142,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                     addAlarm(hourOfDay,minute);
                 }
                 break;
-            case RC_TIME_PICKER_EDIT:
+            case RC_TIME_PICKER_EDIT: //if the reseult code is edit
                 if (resultCode == Activity.RESULT_OK) {
                     Bundle bundle = data.getExtras();
                     int hourOfDay = Integer.parseInt(bundle.getString("hourOfDay"));
@@ -158,25 +153,29 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         }
     }
 
+    //method to add an alarm to the database
     private void addAlarm(int hour, int minute) {
+        //increment id input by one as this is a new alarm
         Alarm toAdd = alarmBuilder(hour,minute, alarms.size()+1,medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
-
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " added to database");
+        //make sure to update the manager
         updateAlarmManager(toAdd.getMedication_key(), "add");
     }
 
     @Override
     public void editAlarm(Alarm toEdit) {
+        //interface method for editing, can't preform database read here as i need to use the
+        //time picker fragment
         currentEdit = toEdit.getId();
         DialogFragment timePicker = new TimePickerFragment();
         timePicker.setTargetFragment(AlarmMedicationFragment.this, RC_TIME_PICKER_EDIT);
         timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
     }
 
-    @Override
+    @Override //interface to editing alarms
     public void deleteAlarm(Alarm toDelete) {
         Log.d(TAG, "AlarmKey to delete:" + toDelete.getMedication_key());
         String alarmKey = toDelete.getMedication_key() + "_" + toDelete.getId();
@@ -187,10 +186,10 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         Log.d(TAG, "Alarm deleted from the database");
     }
 
+    //this method preforms the actual database edit, no need to edit alarmManager
     public void applyEdit(int hourOfDay, int minute) {
         Alarm toAdd = alarmBuilder(hourOfDay, minute, currentEdit, medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
-
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " edited");
@@ -233,6 +232,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         databaseReference.addListenerForSingleValueEvent(postListener);
     }
 
+    //used to build alarm objects
     private Alarm alarmBuilder(int hour, int minute, int id, String medicationKey){
         Calendar calendar = Calendar.getInstance();
         int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -249,20 +249,5 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
 
         return alarm;
     }
-
-
-
-    //    //when the user returns to this fragment from another
-//    @Override
-//    public void onResume() {
-//        Log.d(TAG, "Fragment resumed");
-//        //adapter.clear();
-//        super.onResume();
-//    }
-//
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//    }
 
 }
