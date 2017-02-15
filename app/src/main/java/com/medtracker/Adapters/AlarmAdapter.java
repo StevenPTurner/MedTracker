@@ -9,13 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+
 import com.medtracker.Models.Alarm;
-import com.medtracker.Models.AlarmManager;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
@@ -31,16 +26,15 @@ import java.util.Calendar;
 //used to hold a list of card objects for alarms
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
     private static final String TAG = LogTag.alarmAdapter;
-    private AlarmAdapterCallback callback;
 
+    private AlarmAdapterCallback callback;
     private int alarmCount;
     private Button editAlarm;
     private Button deleteAlarm;
     private Alarm alarm;
 
     //constructor mainly used to get arguments passed in
-    public AlarmAdapter(Context context, ArrayList<Alarm> alarms, int alarmCount,
-                        String userUid) {
+    public AlarmAdapter(Context context, ArrayList<Alarm> alarms, int alarmCount) {
         super(context, 0, alarms);
         this.alarmCount = alarmCount;
         Log.d(TAG, "adapter initialised");
@@ -82,6 +76,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         editAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "edit alarm button pressed on card");
+                callback.editAlarm(alarm);
             }
         });
 
@@ -96,15 +91,12 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         return convertView;
     }
 
-    private void editAlarm(String alarmKey){
-        Log.d(TAG, "AlarmKey to edit:" + alarmKey);
-    }
-
+    //initalises the callbacks
     public void setCallback(AlarmAdapterCallback callback){
         this.callback = callback;
     }
 
-
+    //interface used to communicate with the parent fragment
     public interface AlarmAdapterCallback {
         void deleteAlarm(Alarm toDelete);
         void editAlarm(Alarm toEdit);

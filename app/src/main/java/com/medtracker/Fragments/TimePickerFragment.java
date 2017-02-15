@@ -20,6 +20,11 @@ import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
+    String alarmKey;
+
+    public TimePickerFragment() {
+
+    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
