@@ -5,11 +5,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.medtracker.Models.Record;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by spt10 on 11/02/2017.
@@ -30,16 +33,23 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_medication, parent, false);
         }
-//        // Lookup view for data population
-//        TextView medicationName = (TextView) convertView.findViewById(R.id.medication_name);
-//        TextView medicationDosage = (TextView) convertView.findViewById(R.id.medication_dosage);
-//        TextView medicationInstructions = (TextView) convertView.findViewById(R.id.medication_instructions);
-//
-//        // Populate the data into the template view using the data object
-//        medicationName.setText(medication.getMedication_name() + ": ");
-//        medicationDosage.setText(String.valueOf(medication.getDosage()) + " mg");
-//        medicationInstructions.setText(medication.getInstructions());
+        // Lookup view for data population
+        TextView recordName = (TextView) convertView.findViewById(R.id.record_name);
+        TextView recordDosage = (TextView) convertView.findViewById(R.id.record_dosage);
+        TextView recordTime = (TextView) convertView.findViewById(R.id.record_time);
+        TextView recordDate = (TextView) convertView.findViewById(R.id.record_date);
 
+        //collects and gets dates as strings for displaying
+        Calendar calendar = Utility.recordToCalendar(record);
+        String time = Utility.calendarToTime(calendar);
+        String date = Utility.calendarToSDate(calendar);
+
+        // Populate the data into the template view using the data object
+        recordName.setText(record.getMedication_key());
+        recordDosage.setText(String.valueOf(record.getDose()) + " mg");
+        recordTime.setText(time);
+        recordDate.setText(date);
+        
         // Return the completed view to render on screen
         return convertView;
     }

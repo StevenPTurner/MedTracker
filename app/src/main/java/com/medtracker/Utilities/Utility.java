@@ -3,6 +3,7 @@ package com.medtracker.Utilities;
 import android.util.Log;
 
 import com.medtracker.Models.Alarm;
+import com.medtracker.Models.Record;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -47,8 +48,31 @@ public class Utility {
         return calendar;
     }
 
+    public static Calendar recordToCalendar(Record record) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MINUTE, record.getMinute());
+        calendar.set(Calendar.HOUR_OF_DAY, record.getHour());
+        calendar.set(Calendar.DAY_OF_MONTH, record.getDay());
+        calendar.set(Calendar.MONTH, (record.getMonth()-1));
+        calendar.set(Calendar.YEAR, record.getYear());
+        return calendar;
+    }
+
     public static String calendarToString(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm EEE dd MMM");
+        String formattedDate = sdf.format(calendar.getTime());
+        return formattedDate;
+    }
+
+    public static String calendarToTime(Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+        String formattedDate = sdf.format(calendar.getTime());
+        return formattedDate;
+    }
+
+    public static String calendarToSDate(Calendar calendar) {
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM");
         String formattedDate = sdf.format(calendar.getTime());
         return formattedDate;
     }
