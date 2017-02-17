@@ -12,7 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/medtracker_light_blue"
+            android:background="#1E88E5"
             android:paddingTop="10dp"
             android:paddingBottom="10dp">
 
@@ -61,7 +61,9 @@
             android:id="@+id/listView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:textColor="@color/primary_text_material_light"/>
+            android:textColor="@color/primary_text_material_light"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
 
     </LinearLayout>
 
