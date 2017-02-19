@@ -94,8 +94,10 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if (isChecked) {
                     Log.d(TAG, "Switch enabled");
+                    enableAlarms();
                 } else {
                     Log.d(TAG, "Switch disabled");
+                    disableAlarms();
                 }
             }
         });
@@ -217,7 +219,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
-        ValueEventListener postListener = new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
@@ -235,6 +237,8 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                     case "delete":
                         maxCount = maxCount - 1;
                         alarmManager.setMax_count(maxCount);
+//                        if(alarmManager.getCurrent_count() > maxCount)
+//                            alarmManager.setCurrent_count(0);
                         if (maxCount < 1)
                             alarmManager.setHas_alarm(false);
 
@@ -243,8 +247,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                 databaseReference.setValue(alarmManager);
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
-        };
-        databaseReference.addListenerForSingleValueEvent(postListener);
+        });
     }
 
     //used to build alarm objects
@@ -265,12 +268,48 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         return alarm;
     }
 
+    //if the user enables the alarms for a medication
     private void enableAlarms() {
+        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+                child(medicationKey);
 
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retreives object updates it and sends the newly updates one back to the database
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+
+                String current_alarm = alarmManager.getMedication_key() + "_"
+                        + alarmManager.getCurrent_count();
+
+                alarmManager.setCurrent_alarm(current_alarm);
+                databaseReference.setValue(alarmManager);
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     private void disableAlarms() {
-        
+        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+                child(medicationKey);
+
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retreives object updates it and sends the newly updates one back to the database
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+
+                String current_alarm = "none";
+
+                alarmManager.setCurrent_alarm(current_alarm);
+                databaseReference.setValue(alarmManager);
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    private AlarmManager getAlarmManagerFromDatabase() {
+        return null;
     }
 
 }
