@@ -15,23 +15,25 @@ import java.util.Calendar;
 
 /**
  * Created by spt10 on 19/02/2017.
- * //http://www.vogella.com/tutorials/AndroidNotifications/article.html
- //https://gist.github.com/BrandonSmith/6679223
+ * http://www.vogella.com/tutorials/AndroidNotifications/article.html
+ * https://gist.github.com/BrandonSmith/6679223
  */
 
 public class NotificationManager {
 
-    public static Notification getNotification(String content, Context context) {
-        Intent myIntent = new Intent(context, TakeDoseActivity.class);
-        PendingIntent intent2 = PendingIntent.getActivity(context, 1,
-                myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    public static Notification getNotification(String content, Context context, String alarmKey, String medicationKey) {
+        Intent intent = new Intent(context, TakeDoseActivity.class);
+        intent.putExtra("alarmKey", alarmKey);
+        intent.putExtra("medicationKey", medicationKey);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
         Notification.Builder builder = new Notification.Builder(context);
         builder.setContentTitle("MedTracker Alert!");
         builder.setContentText(content);
         builder.setSmallIcon(R.drawable.ic_pill_black_48dp);
         builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
         builder.setLights(Color.RED, 3000, 3000);
-        builder.setContentIntent(intent2);
+        builder.setContentIntent(pendingIntent);
         return builder.build();
     }
 
@@ -44,17 +46,19 @@ public class NotificationManager {
                 PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
-        //alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
     public static void enableNextAlarm(Alarm alarm, Context context) {
         String medicationName = Utility.keyToName(alarm.getMedication_key());
+        String alarmKey = alarm.getMedication_key() + "_" + alarm.getId();
+        String message = "Take a dose of " + medicationName;
         Calendar currentAlarm = Utility.alarmToCalendar(alarm);
-        Notification notification = getNotification("Take a dose of " + medicationName, context);
+
+        Notification notification = getNotification(message, context, alarmKey, alarm.getMedication_key());
         scheduleNotification(notification, alarm.getRCID(), context, currentAlarm);
     }
 
-    public static void cancleNotification(){
+    public static void cancelNotification(){
 
     }
 }

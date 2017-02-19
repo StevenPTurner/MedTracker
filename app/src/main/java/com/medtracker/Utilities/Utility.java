@@ -57,6 +57,18 @@ public class Utility {
         return calendar;
     }
 
+    public static Record alarmToRecord(Alarm alarm) {
+        int day = alarm.getDay();
+        int dose = 80;
+        int hour = alarm.getHour();
+        String medicationKey = alarm.getMedication_key();
+        int minute = alarm.getMinute();
+        int month = alarm.getMonth();
+        int year = alarm.getYear();
+
+        return new Record(medicationKey, dose, 0, minute, hour, day, month, year);
+    }
+
     public static String calendarToString(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm EEE dd MMM");
         String formattedDate = sdf.format(calendar.getTime());
