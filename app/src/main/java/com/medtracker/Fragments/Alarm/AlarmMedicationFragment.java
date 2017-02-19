@@ -10,7 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.Switch;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +52,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     private String userUID;
     private int currentEdit;
     private int alarmCount;
+    private Switch alarmSwitch;
 
 
     public AlarmMedicationFragment() {}
@@ -79,9 +82,21 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         Button addAlarm = (Button) getView().findViewById(R.id.button_add_alarm);
         addAlarm.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
+                Log.d(TAG, "add alarm button clicked"); //firebase setup
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.setTargetFragment(AlarmMedicationFragment.this, RC_TIME_PICKER_ADD);
                 timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
+            }
+        });
+
+        alarmSwitch = (Switch) getView().findViewById(R.id.alarm_switch);
+        alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    Log.d(TAG, "Switch enabled");
+                } else {
+                    Log.d(TAG, "Switch disabled");
+                }
             }
         });
 
@@ -248,6 +263,14 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                 medicationKey);
 
         return alarm;
+    }
+
+    private void enableAlarms() {
+
+    }
+
+    private void disableAlarms() {
+        
     }
 
 }
