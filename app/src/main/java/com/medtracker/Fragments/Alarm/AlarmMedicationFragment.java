@@ -94,12 +94,14 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         alarmSwitch = (Switch) getView().findViewById(R.id.alarm_switch);
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                if (isChecked) {
-                    Log.d(TAG, "Switch enabled");
-                    enableAlarms();
-                } else {
-                    Log.d(TAG, "Switch disabled");
-                    disableAlarms();
+                if(alarmCount > 0) {
+                    if (isChecked) {
+                        Log.d(TAG, "Switch enabled");
+                        enableAlarms();
+                    } else {
+                        Log.d(TAG, "Switch disabled");
+                        disableAlarms();
+                    }
                 }
             }
         });
@@ -299,12 +301,9 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                 //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
                 int currentCount = alarmManager.getCurrent_count();
-
-                String current_alarm = alarmManager.getMedication_key() + "_"
-                        + currentCount;
+                String current_alarm = alarmManager.getMedication_key() + "_"  + currentCount;
 
                 alarmManager.setCurrent_alarm(current_alarm);
-
                 NotificationManager.enableNextAlarm(alarms.get(currentCount-1),
                         getActivity().getApplicationContext());
                 databaseReference.setValue(alarmManager);
