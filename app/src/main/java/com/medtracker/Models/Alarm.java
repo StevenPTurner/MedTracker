@@ -12,12 +12,13 @@ public class Alarm {
     private int year;
     private int id;
     private String medication_key;
+    private int RCID;
 
     public Alarm() {
 
     }
 
-    public Alarm(int id, int minute, int hour, int day, int month, int year, String medication_key) {
+    public Alarm(int id, int minute, int hour, int day, int month, int year, String medication_key, int RCID) {
         this.id = id;
         this.minute = minute;
         this.hour = hour;
@@ -25,6 +26,7 @@ public class Alarm {
         this.month = month;
         this.year = year;
         this.medication_key = medication_key;
+        this.RCID = RCID;
     }
 
     public int getMinute() {
@@ -81,6 +83,14 @@ public class Alarm {
 
     public void setMedication_key(String medication_key) {
         this.medication_key = medication_key;
+    }
+
+    public int getRCID() {
+        return RCID;
+    }
+
+    public void setRCID(int RCID) {
+        this.RCID = RCID;
     }
 
 }

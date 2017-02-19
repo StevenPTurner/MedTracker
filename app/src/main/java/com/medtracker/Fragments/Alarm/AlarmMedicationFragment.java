@@ -28,6 +28,7 @@ import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
+import com.medtracker.Utilities.NotificationManager;
 import com.medtracker.Utilities.RC;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
@@ -53,6 +54,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     private int currentEdit;
     private int alarmCount;
     private Switch alarmSwitch;
+    private int RCID;
 
 
     public AlarmMedicationFragment() {}
@@ -100,6 +102,15 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                     disableAlarms();
                 }
             }
+        });
+
+        final DatabaseReference databaseReference = mDatabase.child("system").child("RCNOT");
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                RCID = dataSnapshot.getValue(Integer.class);
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
         });
 
         //checks list has been populated and exists
@@ -177,6 +188,8 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
+        RCID = RCID + 1;
+        mDatabase.child("system").child("RCNOT").setValue(RCID);
         Log.d(TAG, alarmKey + " added to database");
         //make sure to update the manager
         updateAlarmManager(toAdd.getMedication_key(), "add");
@@ -272,10 +285,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         if (currentHour > hour)
             currentDay = currentDay + 1;
 
-        Alarm alarm = new Alarm(id, minute, hour, currentDay, currentMonth, currentYear,
-                medicationKey);
-
-        return alarm;
+        return new Alarm(id, minute, hour, currentDay, currentMonth, currentYear, medicationKey, RCID);
     }
 
     //if the user enables the alarms for a medication
@@ -288,11 +298,15 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                int currentCount = alarmManager.getCurrent_count();
 
                 String current_alarm = alarmManager.getMedication_key() + "_"
-                        + alarmManager.getCurrent_count();
+                        + currentCount;
 
                 alarmManager.setCurrent_alarm(current_alarm);
+
+                NotificationManager.enableNextAlarm(alarms.get(currentCount-1),
+                        getActivity().getApplicationContext());
                 databaseReference.setValue(alarmManager);
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
@@ -308,18 +322,12 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
-
                 String current_alarm = "none";
-
                 alarmManager.setCurrent_alarm(current_alarm);
                 databaseReference.setValue(alarmManager);
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
-    }
-
-    private AlarmManager getAlarmManagerFromDatabase() {
-        return null;
     }
 
 }

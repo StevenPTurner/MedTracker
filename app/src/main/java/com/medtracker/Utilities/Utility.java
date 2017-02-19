@@ -1,14 +1,12 @@
 package com.medtracker.Utilities;
 
-import android.util.Log;
+
 
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.Record;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -88,5 +86,6 @@ public class Utility {
         String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
         return timeTillDose;
     }
+
 
 }
