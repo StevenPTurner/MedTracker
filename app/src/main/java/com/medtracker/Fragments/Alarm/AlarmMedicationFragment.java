@@ -225,23 +225,33 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
                 //retreives object updates it and sends the newly updates one back to the database
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
                 int maxCount = alarmManager.getMax_count();
+                int currentCount = alarmManager.getCurrent_count();
 
                 switch(action) {
                     case "add":
-                        if (maxCount < 1)
+                        if (maxCount < 1) {
                             alarmManager.setHas_alarm(true);
-
+                        }
+                        if(currentCount == 0) {
+                            currentCount = 1;
+                            alarmManager.setCurrent_count(currentCount);
+                        }
                         maxCount = maxCount + 1;
+
                         alarmManager.setMax_count(maxCount);
                         break;
                     case "delete":
                         maxCount = maxCount - 1;
                         alarmManager.setMax_count(maxCount);
-//                        if(alarmManager.getCurrent_count() > maxCount)
-//                            alarmManager.setCurrent_count(0);
-                        if (maxCount < 1)
+                        Log.d(TAG, "max count after set: " + alarmManager.getMax_count());
+                        if(currentCount > maxCount) {
+                            currentCount = currentCount - 1;
+                            alarmManager.setCurrent_count(currentCount);
+                        }
+                        if (maxCount < 1) {
                             alarmManager.setHas_alarm(false);
-
+                            alarmManager.setCurrent_alarm("none");
+                        }
                         break;
                 }
                 databaseReference.setValue(alarmManager);
