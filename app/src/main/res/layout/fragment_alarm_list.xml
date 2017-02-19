@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     tools:context="com.medtracker.Fragments.Alarm.AlarmListFragment">
 
-    <!-- TODO: Update blank fragment adapter_item_alarm_manager -->
+
 
     <ListView
         android:id="@+id/listView"

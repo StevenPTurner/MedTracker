@@ -42,11 +42,11 @@ public class TestActivity extends Activity implements View.OnClickListener {
         fifthteenSecondsButton.setOnClickListener(this);
     }
 
-    private void scheduleNotification(Notification notification) {
+    private void scheduleNotification(Notification notification, int id) {
         Intent notificationIntent = new Intent(this, TestReceiver.class);
-        notificationIntent.putExtra(TestReceiver.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(TestReceiver.NOTIFICATION_ID, id);
         notificationIntent.putExtra(TestReceiver.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         //long futureInMillis = SystemClock.elapsedRealtime() + delay;
         AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
@@ -67,17 +67,17 @@ public class TestActivity extends Activity implements View.OnClickListener {
             case R.id.button_5_seconds:
                 calendar = Calendar.getInstance();
                 calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 5));
-                scheduleNotification(getNotification("5 second delay"));
+                scheduleNotification(getNotification("5 second delay"),1);
                 break;
             case R.id.button_10_seconds:
                 calendar = Calendar.getInstance();
                 calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 10));
-                scheduleNotification(getNotification("10 second delay"));
+                scheduleNotification(getNotification("10 second delay"),2);
                 break;
             case R.id.button_15_seconds:
                 calendar = Calendar.getInstance();
                 calendar.set(Calendar.SECOND, (calendar.get(Calendar.SECOND) + 15));
-                scheduleNotification(getNotification("15 second delay"));
+                scheduleNotification(getNotification("15 second delay"),3);
                 break;
         }
     }
