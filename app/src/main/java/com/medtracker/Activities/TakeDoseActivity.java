@@ -55,6 +55,7 @@ public class TakeDoseActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "take dose button pressed");
                 writeRecord();
+                setNextAlarmInManager();
             }
         });
 
@@ -79,7 +80,51 @@ public class TakeDoseActivity extends Activity {
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    public void setNextAlarmInManager() {
+        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+                child(medicationKey);
+
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retreives object updates it and sends the newly updates one back to the database
+                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                int currentCount = alarmManager.getCurrent_count();
+                currentCount = currentCount + 1;
+                if(currentCount > alarmManager.getMax_count()) {
+                    currentCount = 1;
+                }
+                alarmManager.setCurrent_count(currentCount);
+                String alarmKey = medicationKey + "_" + currentCount;
+                alarmManager.setCurrent_alarm(alarmKey);
+
+                databaseReference.setValue(alarmManager);
+                setNextAlarm(alarmKey);
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
+    }
+
+    public void setNextAlarm(String alarmKey) {
+        final DatabaseReference databaseReference = mDatabase.child("alarm").child(userUID).
+                child(medicationKey).child(alarmKey);
+
+        databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //retreives object updates it and sends the newly updates one back to the database
+                Alarm alarm = dataSnapshot.getValue(Alarm.class);
+                NotificationManager.enableNextAlarm(alarm, getApplicationContext());
+            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
+        });
 
 
     }
+
+
+
+
 }
