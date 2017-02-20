@@ -55,7 +55,7 @@ public class TakeDoseActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "take dose button pressed");
                 writeRecord();
-                setNextAlarmInManager();
+                updateAlarmManager();
             }
         });
 
@@ -82,7 +82,7 @@ public class TakeDoseActivity extends Activity {
         });
     }
 
-    public void setNextAlarmInManager() {
+    public void updateAlarmManager() {
         final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
@@ -98,8 +98,8 @@ public class TakeDoseActivity extends Activity {
                 }
                 alarmManager.setCurrent_count(currentCount);
                 String alarmKey = medicationKey + "_" + currentCount;
+                Log.d(TAG, "alarmKey, " + alarmKey); //Get logged in user info
                 alarmManager.setCurrent_alarm(alarmKey);
-
                 databaseReference.setValue(alarmManager);
                 setNextAlarm(alarmKey);
             }
@@ -108,20 +108,21 @@ public class TakeDoseActivity extends Activity {
     }
 
     public void setNextAlarm(String alarmKey) {
-        final DatabaseReference databaseReference = mDatabase.child("alarm").child(userUID).
+        final DatabaseReference databaseReference = mDatabase.child("alarms").child(userUID).
                 child(medicationKey).child(alarmKey);
+        Log.d(TAG, "alarmKey, " + alarmKey); //Get logged in user info
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
                 Alarm alarm = dataSnapshot.getValue(Alarm.class);
-                NotificationManager.enableNextAlarm(alarm, getApplicationContext());
+                Log.d(TAG, "medKey, " + alarm.getMedication_key()); //Get logged in user info
+                NotificationManager.enableNextAlarm(alarm, TakeDoseActivity.this);
+                //NOTE add 24 hours to alarm
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
-
-
     }
 
 
