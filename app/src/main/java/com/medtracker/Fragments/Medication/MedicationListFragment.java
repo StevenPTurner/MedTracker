@@ -39,10 +39,10 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     private String userUID;
 
     private ArrayList<Medication> medications = new ArrayList<>();
+    private ArrayList<String> medicationKeys = new ArrayList<>();
     private ListView listView;
     private Button addMedication;
     private MedicationAdapter adapter;
-
 
     public MedicationListFragment() {
         // Required empty public constructor
@@ -64,8 +64,8 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("medications").child(userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("medications").
+                child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
         addMedication = (Button) getView().findViewById(R.id.button_add_medication);
@@ -80,11 +80,8 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
             }
         });
 
-        if(listView == null) {
+        if(listView == null)
             Log.d(TAG, "ListView is null");
-        } else {
-            Log.d(TAG, "ListVIew is not null");
-        }
 
         listView.setOnItemClickListener(this);
     }
@@ -93,35 +90,37 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     public void onStart() {
         super.onStart();
 
-        adapter = new MedicationAdapter
-                (getActivity().getApplicationContext(),
-                medications);
-//        final ArrayAdapter<String> adapter = new ArrayAdapter<String>
-//                (getActivity().getApplicationContext(),
-//                        R.adapter_item_alarm_manager.list_item_medication,
-//                        medicationID);
-
+        adapter = new MedicationAdapter(getActivity().getApplicationContext(),medications);
         listView.setAdapter(adapter);
 
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Medication medication = dataSnapshot.getValue(Medication.class);
                 medications.add(medication);
+                medicationKeys.add(dataSnapshot.getKey());
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-                Medication medication = dataSnapshot.getValue(Medication.class);
+                String keyToRemove = dataSnapshot.getKey();
+                int index = medicationKeys.indexOf(keyToRemove);
+
+                if (index > -1){
+                    medications.remove(index);
+                    medicationKeys.remove(index);
+                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                } else {
+                    Log.d(TAG, "Index: " + index + " is an invalid index");
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -159,19 +158,17 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     }
 
 
-
     //when the user returns to this fragment from another
     @Override
     public void onResume() {
         Log.d(TAG, "Fragment resumed");
-        adapter.clear();
         super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
     }
-
 
 }
