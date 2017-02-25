@@ -30,11 +30,10 @@ import java.util.ArrayList;
 public class AlarmListFragment extends Fragment implements AdapterView.OnItemClickListener{
     private static final String TAG = LogTag.alarmListFragment;
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference database;
     private String userUID;
-
     private ArrayList<AlarmManager> alarmManagers = new ArrayList<>();
     private ListView listView;
     private AlarmManagerAdapter adapter;
@@ -55,12 +54,12 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        userUID = mFirebaseUser.getUid();
-        Log.d(TAG, mFirebaseUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("alarm_manager").child(userUID);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userUID = firebaseUser.getUid();
+        Log.d(TAG, firebaseUser.getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("alarm_manager").
+                child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
         if(listView == null) {
@@ -110,7 +109,7 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
         };
-        mDatabase.addChildEventListener(childEventListener);
+        database.addChildEventListener(childEventListener);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {

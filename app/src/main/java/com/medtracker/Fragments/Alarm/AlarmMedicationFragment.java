@@ -25,12 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.TimePickerFragment;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
-import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.AlarmAdapter;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.NotificationManager;
 import com.medtracker.Utilities.RC;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -45,15 +43,15 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     private final int RC_TIME_PICKER_ADD = RC.TIME_PICKER_ADD;
     private final int RC_TIME_PICKER_EDIT = RC.TIME_PICKER_EDIT;
 
-    private DatabaseReference mDatabase;
-    private ArrayList<Alarm> alarms = new ArrayList<>();
-    private AlarmAdapter adapter;
-    private ListView listView;
+    private DatabaseReference database;
     private String medicationKey;
     private String userUID;
     private int currentEdit;
     private int alarmCount;
-    private Switch alarmSwitch;
+    private ArrayList<Alarm> alarms = new ArrayList<>();
+    private ArrayList<String> alarmKeys = new ArrayList<>();
+    private AlarmAdapter adapter;
+    private ListView listView;
     private int RCID;
 
 
@@ -76,8 +74,8 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.d(TAG, mFirebaseUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference();
 
+        database = FirebaseDatabase.getInstance().getReference();
         listView = (ListView) getView().findViewById(R.id.listView);
 
         //button listener
@@ -91,7 +89,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             }
         });
 
-        alarmSwitch = (Switch) getView().findViewById(R.id.alarm_switch);
+        Switch alarmSwitch = (Switch) getView().findViewById(R.id.alarm_switch);
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(alarmCount > 0) {
@@ -106,7 +104,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             }
         });
 
-        final DatabaseReference databaseReference = mDatabase.child("system").child("RCNOT");
+        final DatabaseReference databaseReference = database.child("system").child("RCNOT");
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,20 +130,41 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 Alarm alarm = dataSnapshot.getValue(Alarm.class);
                 alarms.add(alarm);
+                alarmKeys.add(dataSnapshot.getKey());
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                Alarm changedAlarm = dataSnapshot.getValue(Alarm.class);
+                String alarmKey = dataSnapshot.getKey();
+                int index = alarmKeys.indexOf(alarmKey);
+
+                if (index > -1) {
+                    alarms.set(index, changedAlarm);
+                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                } else {
+                    Log.w(TAG, "onChildChanged:unknown_child:" + alarmKey);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                String keyToRemove = dataSnapshot.getKey();
+                int index = alarmKeys.indexOf(keyToRemove);
+
+                if (index > -1){
+                    alarms.remove(index);
+                    alarmKeys.remove(index);
+                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                } else {
+                    Log.d(TAG, "Index: " + index + " is an invalid index");
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -157,7 +176,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
-        }; mDatabase.child("alarms").child(userUID).child(medicationKey).
+        }; database.child("alarms").child(userUID).child(medicationKey).
                 addChildEventListener(childEventListener);
     }
 
@@ -188,10 +207,10 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         //increment id input by one as this is a new alarm
         Alarm toAdd = alarmBuilder(hour,minute, alarms.size()+1,medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
-        mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
+        database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         RCID = RCID + 1;
-        mDatabase.child("system").child("RCNOT").setValue(RCID);
+        database.child("system").child("RCNOT").setValue(RCID);
         Log.d(TAG, alarmKey + " added to database");
         //make sure to update the manager
         updateAlarmManager(toAdd.getMedication_key(), "add");
@@ -212,7 +231,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
         Log.d(TAG, "AlarmKey to delete:" + toDelete.getMedication_key());
         String alarmKey = toDelete.getMedication_key() + "_" + toDelete.getId();
 
-        mDatabase.child("alarms").child(userUID).child(toDelete.getMedication_key()).
+        database.child("alarms").child(userUID).child(toDelete.getMedication_key()).
                 child(alarmKey).removeValue();
         updateAlarmManager(toDelete.getMedication_key(), "delete");
         Log.d(TAG, "Alarm deleted from the database");
@@ -222,7 +241,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     public void applyEdit(int hourOfDay, int minute) {
         Alarm toAdd = alarmBuilder(hourOfDay, minute, currentEdit, medicationKey);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
-        mDatabase.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
+        database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
         Log.d(TAG, alarmKey + " edited");
     }
@@ -231,7 +250,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     private void updateAlarmManager(String medicationKey, String method){
         //reference to object location
         final String action = method;
-        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+        final DatabaseReference databaseReference = database.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
@@ -292,7 +311,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
 
     //if the user enables the alarms for a medication
     private void enableAlarms() {
-        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+        final DatabaseReference databaseReference = database.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
@@ -313,7 +332,7 @@ public class AlarmMedicationFragment extends Fragment implements AlarmAdapter.Al
     }
 
     private void disableAlarms() {
-        final DatabaseReference databaseReference = mDatabase.child("alarm_manager").child(userUID).
+        final DatabaseReference databaseReference = database.child("alarm_manager").child(userUID).
                 child(medicationKey);
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {

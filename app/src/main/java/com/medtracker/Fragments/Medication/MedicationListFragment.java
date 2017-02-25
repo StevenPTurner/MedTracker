@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.MedicationAdapter;
+import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
@@ -31,23 +32,19 @@ import java.util.ArrayList;
 //used to list fragments and some basic details that the user can click to get more info
 //mainly used to house a listView
 public class MedicationListFragment extends Fragment implements AdapterView.OnItemClickListener {
-    private static final String TAG = "MedicationListFragment";
+    private static final String TAG = LogTag.medicationListFragment;
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase;
+    //objects used to preform actions
     private String userUID;
-
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference database;
     private ArrayList<Medication> medications = new ArrayList<>();
     private ArrayList<String> medicationKeys = new ArrayList<>();
-    private ListView listView;
-    private Button addMedication;
     private MedicationAdapter adapter;
+    private ListView listView;
 
-    public MedicationListFragment() {
-        // Required empty public constructor
-    }
-
+    public MedicationListFragment() { /* Required empty public constructor */ }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,15 +57,16 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        userUID = mFirebaseUser.getUid();
-        Log.d(TAG, mFirebaseUser.getUid());
-        mDatabase = FirebaseDatabase.getInstance().getReference().child("medications").
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userUID = firebaseUser.getUid();
+        Log.d(TAG, firebaseUser.getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("medications").
                 child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
-        addMedication = (Button) getView().findViewById(R.id.button_add_medication);
+        //button listener for adding a new medication, opens new fragment
+        Button addMedication = (Button) getView().findViewById(R.id.button_add_medication);
         addMedication.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Fragment newFragment = new MedicationAddFragment();
@@ -93,6 +91,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         adapter = new MedicationAdapter(getActivity().getApplicationContext(),medications);
         listView.setAdapter(adapter);
 
+        //handles database calls in realtime
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
@@ -105,7 +104,17 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                Medication changedMedication = dataSnapshot.getValue(Medication.class);
+                String medicationKey = dataSnapshot.getKey();
+                int index = medicationKeys.indexOf(medicationKey);
+
+                if (index > -1) {
+                    medications.set(index, changedMedication);
+                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                } else {
+                    Log.w(TAG, "onChildChanged:unknown_child:" + medicationKey);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -133,7 +142,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
         };
-        mDatabase.addChildEventListener(childEventListener);
+        database.addChildEventListener(childEventListener);
     }
 
     public void onItemClick(AdapterView<?> l, View v, int position, long id) {
@@ -163,6 +172,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     public void onResume() {
         Log.d(TAG, "Fragment resumed");
         super.onResume();
+        adapter.clear();
         adapter.notifyDataSetChanged();
     }
 

@@ -11,6 +11,7 @@ public final class LogTag {
     public static final String signInActivity = "LogSignInActivity";
     public static final String takeDoseActivity = "LogTakeDoseActivity";
 
+    public static final String medicationListFragment = "LogMedListFragment";
     public static final String recordListFragment = "LogRecordListFragment";
     public static final String alarmListFragment = "LogAlarmListFragment";
     public static final String alarmMedicationFragment = "LogAlarmMedFragment";
