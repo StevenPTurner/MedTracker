@@ -129,6 +129,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
                 } else {
                     Log.d(TAG, "Index: " + index + " is an invalid index");
                 }
+                Log.d(TAG, "adapterNotified");
                 adapter.notifyDataSetChanged();
             }
 
@@ -171,9 +172,9 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
     @Override
     public void onResume() {
         Log.d(TAG, "Fragment resumed");
+        medications.clear();
+        medicationKeys.clear();
         super.onResume();
-        adapter.clear();
-        adapter.notifyDataSetChanged();
     }
 
     @Override
