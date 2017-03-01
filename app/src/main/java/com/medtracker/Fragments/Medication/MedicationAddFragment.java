@@ -2,6 +2,7 @@ package com.medtracker.Fragments.Medication;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 
 import android.util.Log;
@@ -63,7 +64,12 @@ public class MedicationAddFragment extends Fragment {
             public void onClick(View v) {
             Log.d(TAG, "Save medication button pressed");
             addToDatabase(buildMedication());
-            getFragmentManager().popBackStackImmediate();
+            MedicationListFragment medicationListFragment = new MedicationListFragment();
+            FragmentTransaction transaction = getFragmentManager().beginTransaction();
+            Log.d(TAG, "starting add medications fragment");
+            transaction.replace(R.id.content_frame, medicationListFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
             }
         });
     }

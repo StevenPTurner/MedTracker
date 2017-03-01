@@ -1,6 +1,7 @@
 package com.medtracker.Fragments.Medication;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -69,11 +70,11 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         Button addMedication = (Button) getView().findViewById(R.id.button_add_medication);
         addMedication.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Fragment newFragment = new MedicationAddFragment();
+                MedicationAddFragment medicationAddFragment = new MedicationAddFragment();
                 FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.content_frame, newFragment);
-                transaction.addToBackStack(null);
                 Log.d(TAG, "starting add medications fragment");
+                transaction.replace(R.id.content_frame, medicationAddFragment);
+                transaction.addToBackStack(null);
                 transaction.commit();
             }
         });

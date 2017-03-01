@@ -227,9 +227,7 @@ public class HomeActivity extends FragmentActivity {
 
         // Insert the fragment by replacing any existing fragment
         fragment.setArguments(args);
-        fragmentManager.beginTransaction()
-                .replace(R.id.content_frame, fragment)
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // Highlight the selected item, update the title, and close the drawer
         mDrawerList.setItemChecked(position, true);
