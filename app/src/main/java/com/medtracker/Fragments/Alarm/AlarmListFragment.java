@@ -35,6 +35,7 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     private DatabaseReference database;
     private String userUID;
     private ArrayList<AlarmManager> alarmManagers = new ArrayList<>();
+    private ArrayList<String> alarmManagerKeys = new ArrayList<>();
     private ListView listView;
     private AlarmManagerAdapter adapter;
 
@@ -81,22 +82,42 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
                 alarmManagers.add(alarmManager);
+                alarmManagerKeys.add(dataSnapshot.getKey());
+                Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
-//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                AlarmManager changedAlarmManager = dataSnapshot.getValue(AlarmManager.class);
+                String alarmManagerKey = dataSnapshot.getKey();
+                int index = alarmManagerKeys.indexOf(alarmManagerKey);
+
+                if (index > -1) {
+                    alarmManagers.set(index, changedAlarmManager);
+                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                } else {
+                    Log.w(TAG, "onChildChanged:unknown_child:" + alarmManagerKey);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
-//                AlarmManager alarmManager = dataSnapshot.getValue(AlarmManager.class);
+                String keyToRemove = dataSnapshot.getKey();
+                int index = alarmManagerKeys.indexOf(keyToRemove);
+
+                if (index > -1){
+                    alarmManagers.remove(index);
+                    alarmManagerKeys.remove(index);
+                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                } else {
+                    Log.d(TAG, "Index: " + index + " is an invalid index");
+                }
+                Log.d(TAG, "adapterNotified");
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -133,7 +154,8 @@ public class AlarmListFragment extends Fragment implements AdapterView.OnItemCli
     @Override
     public void onResume() {
         Log.d(TAG, "Fragment resumed");
-        adapter.clear();
+        alarmManagers.clear();
+        alarmManagerKeys.clear();
         super.onResume();
     }
 

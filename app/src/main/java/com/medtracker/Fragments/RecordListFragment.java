@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,7 +17,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Adapters.RecordAdapter;
-import com.medtracker.Models.Medication;
 import com.medtracker.Models.Record;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
@@ -31,19 +29,16 @@ import java.util.ArrayList;
 public class RecordListFragment extends Fragment {
     private static final String TAG = LogTag.recordListFragment;
 
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference database;
     private String userUID;
-
-
     private ArrayList<Record> records = new ArrayList<>();
+    private ArrayList<String> recordKeys = new ArrayList<>();
     private RecordAdapter adapter;
     private ListView listView;
 
-    public RecordListFragment() {
-        // Required empty public constructor
-    }
+    public RecordListFragment() { /* Required empty public constructor*/}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,20 +53,15 @@ public class RecordListFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        userUID = mFirebaseUser.getUid();
-        Log.d(TAG, mFirebaseUser.getUid());
-
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("records").child(userUID);
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userUID = firebaseUser.getUid();
+        Log.d(TAG, firebaseUser.getUid());
+        database = FirebaseDatabase.getInstance().getReference().child("records").child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
-        if(listView == null) {
+        if(listView == null)
             Log.d(TAG, "ListView is null");
-        } else {
-            Log.d(TAG, "ListView is not null");
-        }
     }
 
     @Override
@@ -84,20 +74,42 @@ public class RecordListFragment extends Fragment {
         ChildEventListener childEventListener = new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
+                Record medication = dataSnapshot.getValue(Record.class);
+                records.add(medication);
+                recordKeys.add(dataSnapshot.getKey());
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
-                Record record = dataSnapshot.getValue(Record.class);
-                records.add(record);
                 adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
-                Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                Record changedRecord = dataSnapshot.getValue(Record.class);
+                String recordKey = dataSnapshot.getKey();
+                int index = recordKeys.indexOf(recordKey);
+
+                if (index > -1) {
+                    records.set(index, changedRecord);
+                    Log.d(TAG, "onChildChanged:" + dataSnapshot.getKey());
+                } else {
+                    Log.w(TAG, "onChildChanged:unknown_child:" + recordKey);
+                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                String keyToRemove = dataSnapshot.getKey();
+                int index = recordKeys.indexOf(keyToRemove);
+
+                if (index > -1){
+                    records.remove(index);
+                    recordKeys.remove(index);
+                    Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
+                } else {
+                    Log.d(TAG, "Index: " + index + " is an invalid index");
+                }
+                Log.d(TAG, "adapterNotified");
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -110,7 +122,7 @@ public class RecordListFragment extends Fragment {
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
         };
-        mDatabase.addChildEventListener(childEventListener);
+        database.addChildEventListener(childEventListener);
     }
 
 

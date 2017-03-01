@@ -2,6 +2,7 @@ package com.medtracker.Fragments.Medication;
 
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 /**
@@ -32,9 +32,9 @@ public class MedicationEditFragment extends Fragment {
     private String medicationInstructions;
 
     //user and database variables
-    private FirebaseAuth mFirebaseAuth;
-    private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseUser firebaseUser;
+    private DatabaseReference database;
     private String userUID;
 
     //input fields
@@ -51,7 +51,6 @@ public class MedicationEditFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         //gathers medication info and sets it
         Bundle args = getArguments();
         medicationKey = args.getString("medicationKey");
@@ -73,13 +72,12 @@ public class MedicationEditFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
         //Get logged in user info
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
-        userUID = mFirebaseUser.getUid();
-        Log.d(TAG, mFirebaseUser.getUid());
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+        userUID = firebaseUser.getUid();
+        Log.d(TAG, firebaseUser.getUid());
         //get database object
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("medications").child(userUID);
+        database = FirebaseDatabase.getInstance().getReference();
         Log.d(TAG, "Setup complete");
 
         //setting up input fields
@@ -94,7 +92,7 @@ public class MedicationEditFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "apply edit button pressed");
                 updateDatabase(buildMedication(), medicationKey);
-                getFragmentManager().popBackStackImmediate();
+                returnToList();
             }
         });
 
@@ -102,8 +100,8 @@ public class MedicationEditFragment extends Fragment {
         deleteMedication.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "delete medication button pressed");
-                deleteMedication(medicationKey);
-                getFragmentManager().popBackStackImmediate();
+                deleteMedicationPressed(medicationKey);
+                returnToList();
             }
         });
     }
@@ -138,17 +136,46 @@ public class MedicationEditFragment extends Fragment {
     //updates medication in database
     private void updateDatabase(Medication medication, String medicationKey) {
         Log.d(TAG, "Database Key:" + medicationKey);
-        mDatabase.child(medicationKey).setValue(medication);
+        database.child("medications").child(userUID).child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication updated in the database");
     }
 
     //deletes medication
     private void deleteMedication(String medicationKey) {
-        Log.d(TAG, "Database Key:" + medicationKey);
-        mDatabase.child(medicationKey).removeValue();
-        //delete alarms
-        //delete alarm manager
+        Log.d(TAG, "Medication Key:" + medicationKey);
+        database.child("medications").child(userUID).child(medicationKey).removeValue();
         Log.d(TAG, "Medication deleted from the database");
+    }
+
+    //deletes alarm manager
+    private void deleteAlarmManager(String medicationKey) {
+        Log.d(TAG, "Alarm manager key: " + medicationKey);
+        database.child("alarm_manager").child(userUID).child(medicationKey).removeValue();
+        Log.d(TAG, "Alarm manager key: " + medicationKey);
+    }
+
+    //deletes all the alarms
+    private void deleteAlarms(String medicationKey) {
+        Log.d(TAG, "Alarm key: " + medicationKey);
+        database.child("alarms").child(userUID).child(medicationKey).removeValue();
+        Log.d(TAG, "Alarm key: " + medicationKey);
+    }
+
+    //compisite method
+    private void deleteMedicationPressed(String medicationKey) {
+        deleteMedication(medicationKey);
+        deleteAlarmManager(medicationKey);
+        deleteAlarms(medicationKey);
+    }
+
+    //returns to previous fragment
+    private void returnToList() {
+        MedicationListFragment medicationListFragment = new MedicationListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Log.d(TAG, "returning to list fragment");
+        transaction.replace(R.id.content_frame, medicationListFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 

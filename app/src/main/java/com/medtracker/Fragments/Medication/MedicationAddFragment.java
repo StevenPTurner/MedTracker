@@ -33,9 +33,7 @@ public class MedicationAddFragment extends Fragment {
     private String userUID;
     private Button saveMedication;
 
-    public MedicationAddFragment() {
-        // Required empty public constructor
-    }
+    public MedicationAddFragment() {/*Required empty public constructor*/}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -63,13 +61,7 @@ public class MedicationAddFragment extends Fragment {
         saveMedication.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
             Log.d(TAG, "Save medication button pressed");
-            addToDatabase(buildMedication());
-            MedicationListFragment medicationListFragment = new MedicationListFragment();
-            FragmentTransaction transaction = getFragmentManager().beginTransaction();
-            Log.d(TAG, "starting add medications fragment");
-            transaction.replace(R.id.content_frame, medicationListFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            savedMedicationClicked();
             }
         });
     }
@@ -113,7 +105,16 @@ public class MedicationAddFragment extends Fragment {
         mDatabase.child("alarm_manager").child(userUID).child(medicationKey)
                 .setValue(getNewManager(medicationKey));
         Log.d(TAG, "Alarm manager added to database");
+    }
 
+    private void savedMedicationClicked() {
+        addToDatabase(buildMedication());
+        MedicationListFragment medicationListFragment = new MedicationListFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Log.d(TAG, "returning to medications list fragment");
+        transaction.replace(R.id.content_frame, medicationListFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
 }

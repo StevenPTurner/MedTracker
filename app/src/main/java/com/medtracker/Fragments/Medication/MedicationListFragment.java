@@ -70,12 +70,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         Button addMedication = (Button) getView().findViewById(R.id.button_add_medication);
         addMedication.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                MedicationAddFragment medicationAddFragment = new MedicationAddFragment();
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                Log.d(TAG, "starting add medications fragment");
-                transaction.replace(R.id.content_frame, medicationAddFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                addMedicationClicked();
             }
         });
 
@@ -168,7 +163,6 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         transaction.commit();
     }
 
-
     //when the user returns to this fragment from another
     @Override
     public void onResume() {
@@ -176,6 +170,15 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         medications.clear();
         medicationKeys.clear();
         super.onResume();
+    }
+
+    private void addMedicationClicked() {
+        MedicationAddFragment medicationAddFragment = new MedicationAddFragment();
+        FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        Log.d(TAG, "starting add medications fragment");
+        transaction.replace(R.id.content_frame, medicationAddFragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     @Override
