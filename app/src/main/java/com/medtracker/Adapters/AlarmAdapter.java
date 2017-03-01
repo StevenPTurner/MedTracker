@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -12,6 +13,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 
+import com.medtracker.Fragments.Alarm.AlarmListFragment;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.Utility;
@@ -26,7 +28,7 @@ import java.util.Calendar;
  */
 
 //used to hold a list of card objects for alarms
-public class AlarmAdapter extends ArrayAdapter<Alarm> {
+public class AlarmAdapter extends ArrayAdapter<Alarm>  {
     private static final String TAG = LogTag.alarmAdapter;
 
     private AlarmAdapterCallback callback;
@@ -93,6 +95,10 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         return convertView;
     }
 
+    public void setAlarmCount(int alarmCount) {
+        this.alarmCount = alarmCount;
+    }
+
     //initalises the callbacks
     public void setCallback(AlarmAdapterCallback callback){
         this.callback = callback;
@@ -103,4 +109,5 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         void deleteAlarm(Alarm toDelete);
         void editAlarm(Alarm toEdit);
     }
+
 }

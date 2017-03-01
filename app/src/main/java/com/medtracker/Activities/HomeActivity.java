@@ -1,6 +1,5 @@
 package com.medtracker.Activities;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
@@ -30,7 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.medtracker.Fragments.Alarm.AlarmListFragment;
+import com.medtracker.Fragments.Alarm.AlarmManagerListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;
@@ -211,7 +210,7 @@ public class HomeActivity extends FragmentActivity {
                 Log.w(TAG, "Prescription fragment selected");
                 break;
             case 2:
-                fragment = new AlarmListFragment();
+                fragment = new AlarmManagerListFragment();
                 Log.w(TAG, "Alarms fragment selected");
                 Log.w(TAG, Utility.keyToName("sodium_valproate"));
                 break;

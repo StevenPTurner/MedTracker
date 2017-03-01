@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context="com.medtracker.Fragments.Alarm.AlarmMedicationFragment">
+    tools:context="com.medtracker.Fragments.Alarm.AlarmListFragment">
 
     <RelativeLayout
         android:id="@+id/alarm_switch_container"
