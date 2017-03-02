@@ -13,6 +13,8 @@
         <item>Prescriptions</item>
         <item>Alarms</item>
         <item>Records</item>
+        <item>Pharmacies</item>
+        <item>About</item>
         <item>Testing</item>
     </string-array>
 

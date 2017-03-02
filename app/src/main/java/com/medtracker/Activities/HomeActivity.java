@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.MapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Fragments.Alarm.AlarmManagerListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
+import com.medtracker.Fragments.PharmacyMapFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;
 import com.medtracker.Models.User;
@@ -196,7 +198,7 @@ public class HomeActivity extends FragmentActivity {
     /** Swaps fragments in the main content view */
     private void selectItem(int position) {
         // Create a new fragment and specify the fragment to show
-        Fragment fragment = new Fragment();
+        Fragment fragment = null;
         FragmentManager fragmentManager = getFragmentManager();
         Bundle args = new Bundle();
 
@@ -219,6 +221,10 @@ public class HomeActivity extends FragmentActivity {
                 Log.w(TAG, "Records fragment selected");
                 break;
             case 4:
+                fragment = new PharmacyMapFragment();
+                Log.w(TAG, "Pharmacy map fragment selected");
+                break;
+            case 5:
                 Intent testActivityIntent = new Intent(this, TestActivity.class);
                 startActivity(testActivityIntent);
                 break;
