@@ -16,6 +16,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -26,8 +33,12 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,6 +107,8 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
         mMap = googleMap;
         updateLocationUI(); //updates the UI, called first incase of previous sessions
         getDeviceLocation(); //get current device location
+        getPharmaciesFromAPI();
+        Log.d(TAG,"Lat: " + mLastKnownLocation.getLatitude() + " Long: " + mLastKnownLocation.getLongitude());
     }
 
     private void updateLocationUI() {
@@ -153,8 +166,7 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
@@ -167,6 +179,62 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
             }
         }
         updateLocationUI();
+    }
+
+    public void getPharmaciesFromAPI(){
+        // Instantiate the RequestQueue.
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
+                "location=" + mLastKnownLocation.getLatitude() + "," + mLastKnownLocation.getLongitude() +
+                "&radius=5000&type=pharmacy&key=AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw";
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Display the first 500 characters of the response string.
+                        parseJSON(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, error.toString());
+            }
+        });
+// Add the request to the RequestQueue.
+        queue.add(jsObjRequest);
+    }
+
+    private void parseJSON(JSONObject response){
+        double lat;
+        double lng;
+        String title;
+
+        try {
+            JSONArray results = response.getJSONArray("results");
+
+            for(int i=0; i<results.length();i++) {
+                JSONObject location = results.getJSONObject(i).
+                        getJSONObject("geometry").
+                        getJSONObject("location");
+                lat = location.getDouble("lat");
+                lng = location.getDouble("lng");
+                title = results.getJSONObject(i).getString("name");
+                addMapMarker(lat,lng,title);
+                //Log.d(TAG, lat  + " " + lng);
+            }
+        }catch(Exception e) {
+            Log.d(TAG, e.toString());
+        }
+
+
+    }
+
+    private void addMapMarker(double lat, double lng, String title) {
+        mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lng))
+                .title(title));
     }
 
     @Override
