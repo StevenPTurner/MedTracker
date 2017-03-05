@@ -14,11 +14,10 @@ public class Record {
     private int month;
     private int year;
 
-    public Record() {
+    public Record() {}
 
-    }
-
-    public Record(String medication_key, int dose, int second, int minute, int hour, int day, int month, int year) {
+    public Record(String medication_key, int dose, int second, int minute, int hour, int day,
+                  int month, int year) {
         this.medication_key = medication_key;
         this.dose = dose;
         this.second = second;
@@ -33,60 +32,60 @@ public class Record {
         return month;
     }
 
-    public void setMonth(int month) {
-        this.month = month;
-    }
-
     public String getMedication_key() {
         return medication_key;
-    }
-
-    public void setMedication_key(String medication_key) {
-        this.medication_key = medication_key;
     }
 
     public int getDose() {
         return dose;
     }
 
-    public void setDose(int dose) {
-        this.dose = dose;
-    }
-
     public int getSecond() {
         return second;
-    }
-
-    public void setSecond(int second) {
-        this.second = second;
     }
 
     public int getMinute() {
         return minute;
     }
 
-    public void setMinute(int minute) {
-        this.minute = minute;
-    }
-
     public int getHour() {
         return hour;
-    }
-
-    public void setHour(int hour) {
-        this.hour = hour;
     }
 
     public int getDay() {
         return day;
     }
 
-    public void setDay(int day) {
-        this.day = day;
-    }
-
     public int getYear() {
         return year;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public void setMedication_key(String medication_key) {
+        this.medication_key = medication_key;
+    }
+
+    public void setDose(int dose) {
+        this.dose = dose;
+    }
+
+    public void setSecond(int second) {
+        this.second = second;
+    }
+
+    public void setMinute(int minute) {
+        this.minute = minute;
+    }
+
+    public void setHour(int hour) {
+        this.hour = hour;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
     }
 
     public void setYear(int year) {
