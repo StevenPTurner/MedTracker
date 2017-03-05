@@ -1,7 +1,7 @@
 package com.medtracker.Models;
 
 /**
- * Created by spt10 on 11/02/2017.
+ * Model for the record object
  */
 
 public class Record {
