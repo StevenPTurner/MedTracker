@@ -1,5 +1,6 @@
 package com.medtracker.Fragments;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -203,6 +204,7 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                     public void onResponse(JSONObject response) {
                         parseJSON(response); //parse the json response into pharmacy objects
                         addMapMarkers(pharmacies);
+                        //showDialog(pharmacies.get(0));
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -228,7 +230,6 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                 pharmacy.setLat(location.getDouble("lat"));
                 pharmacy.setLng(location.getDouble("lng"));
                 pharmacy.setName(current.getString("name"));
-                pharmacy.setOpenNow(current.getJSONObject("opening_hours").getBoolean("open_now"));
                 pharmacy.setInfo(current.getString("vicinity"));
                 pharmacies.add(pharmacy);
             }
@@ -238,31 +239,34 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
         }
     }
 
+    //adds markers for pharmacies onto the map
     private void addMapMarkers(ArrayList<Pharmacy> pharmacies) {
-        double nearestLat = pharmacies.get(0).getLat();
-        double nearestLng = pharmacies.get(0).getLng();
-        String nearestName = pharmacies.get(0).getName();
-        String address = pharmacies.get(0).getInfo();
-        String isOpen = "closed";
-
-        if(pharmacies.get(0).isOpenNow()) {
-            isOpen = "open";
-        }
-
-        String nearestTitle = nearestName + "\t"
-                + address
-                + "Currently: " + isOpen;
-
-        map.addMarker(new MarkerOptions().position(new LatLng(nearestLat, nearestLng))
-                .title(nearestTitle)
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
-        for(int i=1;i<pharmacies.size();i++) {
+        for(int i=0;i<pharmacies.size();i++) {
             double lat = pharmacies.get(i).getLat();
             double lng = pharmacies.get(i).getLng();
             String title = pharmacies.get(i).getName();
-            map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title));
+
+            if(i==0) {
+                map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title)
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.
+                                HUE_AZURE)));
+            } else {
+                map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title));
+            }
         }
+    }
+
+    private void showDialog(Pharmacy pharmacy) {
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = NearestPharmacyFragment.newInstance(pharmacy);
+        newFragment.show(ft, "dialog");
     }
 
     /*

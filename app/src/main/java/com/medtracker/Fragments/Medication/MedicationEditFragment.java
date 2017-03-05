@@ -71,13 +71,13 @@ public class MedicationEditFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
-        //Get logged in user info
-        firebaseAuth = FirebaseAuth.getInstance();
+
+        firebaseAuth = FirebaseAuth.getInstance(); //Get logged in user info
         firebaseUser = firebaseAuth.getCurrentUser();
         userUID = firebaseUser.getUid();
         Log.d(TAG, firebaseUser.getUid());
-        //get database object
-        database = FirebaseDatabase.getInstance().getReference();
+
+        database = FirebaseDatabase.getInstance().getReference(); //get database object
         Log.d(TAG, "Setup complete");
 
         //setting up input fields

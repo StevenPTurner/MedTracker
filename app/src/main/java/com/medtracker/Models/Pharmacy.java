@@ -9,11 +9,11 @@ public class Pharmacy {
     private double lng;
     private String name;
     private String info;
-    private boolean openNow;
+    private String openNow;
 
     public Pharmacy() {}
 
-    public Pharmacy(double lat, double lng, String name, String info, boolean openNow) {
+    public Pharmacy(double lat, double lng, String name, String info, String openNow) {
         this.lat = lat;
         this.lng = lng;
         this.name = name;
@@ -37,7 +37,7 @@ public class Pharmacy {
         return info;
     }
 
-    public boolean isOpenNow() {
+    public String getOpenNow() {
         return openNow;
     }
 
@@ -57,7 +57,7 @@ public class Pharmacy {
         this.info = info;
     }
 
-    public void setOpenNow(boolean openNow) {
+    public void setOpenNow(String openNow) {
         this.openNow = openNow;
     }
 }
