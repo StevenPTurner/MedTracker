@@ -1,6 +1,5 @@
 package com.medtracker.Fragments;
 
-
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -21,7 +20,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -34,65 +32,73 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.medtracker.Models.Pharmacy;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
- * A simple {@link Fragment} subclass.
- * https://github.com/googlemaps/android-samples/blob/master/tutorials/CurrentPlaceDetailsOnMap/app/
- *  src/main/java/com/example/currentplacedetailsonmap/MapsActivityCurrentPlace.java#
- * https://developers.google.com/maps/documentation/android-api/current-place-tutorial
- * https://developers.google.com/maps/documentation/android-api/hiding-features
+ * Fragment used to display a map of the current location with the nearest pharmacies and other
+ * nearby pharmacies
+ *
+ * References -------------------------------------------------------------------------------------/
+ *  https://github.com/googlemaps/android-samples/blob/master/tutorials/CurrentPlaceDetailsOnMap/app
+ *  /src/main/java/com/example/currentplacedetailsonmap/MapsActivityCurrentPlace.java#
+ *  https://developers.google.com/maps/documentation/android-api/current-place-tutorial
+ *  https://developers.google.com/maps/documentation/android-api/hiding-features
  */
 public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
-        GoogleApiClient.OnConnectionFailedListener,  GoogleApiClient.ConnectionCallbacks {
+        GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
+    //static/default values for settings
     private static final String TAG = LogTag.pharmacyLogFragment;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
     private static final int DEFAULT_ZOOM = 15;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
 
-    private GoogleMap mMap;
-    private GoogleApiClient mGoogleApiClient;
-    private boolean mLocationPermissionGranted;
-    private Location mLastKnownLocation;
-    private CameraPosition mCameraPosition;
+    //used objects
+    private GoogleMap map;
+    private GoogleApiClient googleApiClient;
+    private boolean locationPermission;
+    private Location lastLocation;
+    private CameraPosition cameraPosition;
+    private ArrayList<Pharmacy> pharmacies = new ArrayList<>();
 
     public PharmacyMapFragment() {/* Required empty public constructor */}
 
-    @Override
+    @Override //generates layout
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_pharmacy_map, container, false);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Override
+    @Override //setup method
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //used for smoother transistions if this is not the first state
+        //used for smoother transitions if this is not the first state
         if (savedInstanceState != null) {
-            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+            lastLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
+            Log.d(TAG,"Previous state loaded");
         }
 
         //set up api client for api calls
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
+        googleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
                 .enableAutoManage((FragmentActivity) getActivity(), this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
-        mGoogleApiClient.connect();
+        googleApiClient.connect();
+        Log.d(TAG,"API client created");
 
         //used to enable the use of a custom map marker
         FragmentManager manager = getFragmentManager();
@@ -104,22 +110,24 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override //when map is read to be loaded
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        updateLocationUI(); //updates the UI, called first incase of previous sessions
+        map = googleMap;
+        updateLocationUI(); //updates the UI, called first in case of previous sessions
         getDeviceLocation(); //get current device location
-        getPharmaciesFromAPI();
-        Log.d(TAG,"Lat: " + mLastKnownLocation.getLatitude() + " Long: " + mLastKnownLocation.getLongitude());
+        //gets pharmacies from google places search api
+        getPharmaciesFromAPI(lastLocation.getLatitude(), lastLocation.getLongitude());
     }
 
+    //Used to update the UI
     private void updateLocationUI() {
-        if (mMap == null) {
+        if (map == null) { //if map is null exit method
             return;
         }
 
+        //if we have locations permission set permission to true
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mLocationPermissionGranted = true;
+            locationPermission = true;
             Log.d(TAG, "permission set to true");
         } else {
             ActivityCompat.requestPermissions(getActivity(),
@@ -128,73 +136,71 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
             Log.d(TAG, "permission set to false");
         }
 
-        if (mLocationPermissionGranted) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+        //if we have location permissions update the ui
+        if (locationPermission) {
+            map.setMyLocationEnabled(true);
+            map.getUiSettings().setMyLocationButtonEnabled(true);
         } else {
-            mMap.setMyLocationEnabled(false);
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
-            mLastKnownLocation = null;
+            map.setMyLocationEnabled(false);
+            map.getUiSettings().setMyLocationButtonEnabled(false);
+            lastLocation = null;
         }
     }
 
+    //used to get hte device's current location
     private void getDeviceLocation() {
-    /*
-     * Before getting the device location, you must check location
-     * permission, as described earlier in the tutorial. Then:
-     * Get the best and most recent location of the device, which may be
-     * null in rare cases when a location is not available.
-     */
+        //Get location permissions and try to locate current position
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION )
+                 android.Manifest.permission.ACCESS_COARSE_LOCATION )
                 == PackageManager.PERMISSION_GRANTED) {
-            mLastKnownLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+            Log.d(TAG,"Lat: "+lastLocation.getLatitude()+" Lng: "+lastLocation.getLongitude());
         }
 
         // Set the map's camera position to the current location of the device.
-        if (mCameraPosition != null) {
-            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
-        } else if (mLastKnownLocation != null) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(mLastKnownLocation.getLatitude(),
-                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
+        if (cameraPosition != null) {
+            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        } else if (lastLocation != null) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(lastLocation.getLatitude(),
+                            lastLocation.getLongitude()), DEFAULT_ZOOM));
         } else {
             Log.d(TAG, "Current location is null. Using defaults.");
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
-            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
+            map.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
 
-    @Override
+    @Override //used when the premission result comes back
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        mLocationPermissionGranted = false;
+        locationPermission = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mLocationPermissionGranted = true;
+                    locationPermission = true;
                 }
             }
         }
         updateLocationUI();
     }
 
-    public void getPharmaciesFromAPI(){
+    //gets list of pharmacies as a json object from the api
+    public void getPharmaciesFromAPI(double lat, double lng){
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
-        String url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?" +
-                "location=" + mLastKnownLocation.getLatitude() + "," + mLastKnownLocation.getLongitude() +
-                "&radius=5000&type=pharmacy&key=AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw";
+        String API_KEY = getString(R.string.API_KEY);
+        String url ="https://maps.googleapis.com/maps/api/place/nearbysearch/json?"
+                + "location=" + lat + "," + lng + "&rankby=distance&type=pharmacy&key=" + API_KEY;
 
         // Request a string response from the provided URL.
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        // Display the first 500 characters of the response string.
-                        parseJSON(response);
+                        parseJSON(response); //parse the json response into pharmacy objects
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -202,10 +208,11 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                 Log.d(TAG, error.toString());
             }
         });
-// Add the request to the RequestQueue.
+        // Add the request to the RequestQueue.
         queue.add(jsObjRequest);
     }
 
+    //parses the json
     private void parseJSON(JSONObject response){
         double lat;
         double lng;
@@ -215,8 +222,7 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
             JSONArray results = response.getJSONArray("results");
 
             for(int i=0; i<results.length();i++) {
-                JSONObject location = results.getJSONObject(i).
-                        getJSONObject("geometry").
+                JSONObject location = results.getJSONObject(i).getJSONObject("geometry").
                         getJSONObject("location");
                 lat = location.getDouble("lat");
                 lng = location.getDouble("lng");
@@ -232,42 +238,36 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void addMapMarker(double lat, double lng, String title) {
-        mMap.addMarker(new MarkerOptions()
+        map.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lng))
                 .title(title));
     }
-
-    @Override
-    public void onDetach() {super.onDetach();}
 
     /*
      *  API and connection call methods
      */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (mMap != null) {
-            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
-            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
+        if (map != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, map.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, lastLocation);
             super.onSaveInstanceState(outState);
         }
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult result) {
-        // Refer to the reference doc for ConnectionResult to see what error codes might
-        // be returned in onConnectionFailed.
         Log.d(TAG, "Play services connection failed: ConnectionResult.getErrorCode() = "
                 + result.getErrorCode());
     }
 
     @Override
     public void onConnectionSuspended(int cause) {
-        Log.d(TAG, "Play services connection suspended");
+        Log.d(TAG, "Play services connection suspended. Error code: " + cause);
     }
 
-    @Override
+    @Override // Build the map.
     public void onConnected(Bundle connectionHint) {
-        // Build the map.
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
