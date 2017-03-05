@@ -1,7 +1,7 @@
 package com.medtracker.Models;
 
 /**
- * Created by spt10 on 02/12/2016.
+ * Model for medication object
  */
 
 public class Medication {
@@ -11,8 +11,7 @@ public class Medication {
     private boolean has_alarm;
     private int dosage;
 
-    public Medication() {
-    }
+    public Medication() {}
 
     public Medication(String instructions, String medication_name, boolean has_prescription,
                       boolean has_alarm, int dosage) {
@@ -27,36 +26,36 @@ public class Medication {
         return medication_name;
     }
 
-    public void setMedication_name(String medication_name) {
-        this.medication_name = medication_name;
-    }
-
     public String getInstructions() {
         return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
     }
 
     public boolean isHas_prescription() {
         return has_prescription;
     }
 
-    public void setHas_prescription(boolean has_prescription) {
-        this.has_prescription = has_prescription;
-    }
-
     public boolean isHas_alarm() {
         return has_alarm;
     }
 
-    public void setHas_alarm(boolean has_alarm) {
-        this.has_alarm = has_alarm;
-    }
-
     public int getDosage() {
         return dosage;
+    }
+
+    public void setMedication_name(String medication_name) {
+        this.medication_name = medication_name;
+    }
+
+    public void setInstructions(String instructions) {
+        this.instructions = instructions;
+    }
+
+    public void setHas_prescription(boolean has_prescription) {
+        this.has_prescription = has_prescription;
+    }
+
+    public void setHas_alarm(boolean has_alarm) {
+        this.has_alarm = has_alarm;
     }
 
     public void setDosage(int dosage) {
