@@ -65,6 +65,12 @@
             android:divider="@null"
             android:dividerHeight="0dp"/>
 
+        <Button
+            android:id="@+id/email_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Email" />
+
     </LinearLayout>
 
 </FrameLayout>

@@ -2,11 +2,13 @@ package com.medtracker.Fragments;
 
 
 import android.app.Fragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,8 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Adapters.RecordAdapter;
 import com.medtracker.Models.Record;
 import com.medtracker.Utilities.LogTag;
+import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -43,13 +47,10 @@ public class RecordListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the adapter_item_alarm_manager for this fragment
         return inflater.inflate(R.layout.fragment_record_list, container, false);
     }
 
-    // This event is triggered soon after onCreateView().
-    // Any view setup should occur here.  E.g., view lookups and attaching view listeners.
-    @Override
+    @Override //used for setting up variables
     public void onViewCreated(View view, Bundle savedInstanceState) {
         Log.d(TAG, "loadedFragment");
 
@@ -59,6 +60,14 @@ public class RecordListFragment extends Fragment {
         Log.d(TAG, firebaseUser.getUid());
         database = FirebaseDatabase.getInstance().getReference().child("records").child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
+
+        //button listener to preform actions when pressed
+        Button test = (Button) getView().findViewById(R.id.email_test);
+        test.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                createCSV();
+            }
+        });
 
         if(listView == null)
             Log.d(TAG, "ListView is null");
@@ -101,7 +110,7 @@ public class RecordListFragment extends Fragment {
                 String keyToRemove = dataSnapshot.getKey();
                 int index = recordKeys.indexOf(keyToRemove);
 
-                if (index > -1){
+                if (index > -1) {
                     records.remove(index);
                     recordKeys.remove(index);
                     Log.d(TAG, "onChildRemoved:" + dataSnapshot.getKey());
@@ -124,6 +133,33 @@ public class RecordListFragment extends Fragment {
         };
         database.addChildEventListener(childEventListener);
     }
+
+    private String createCSV() {
+        String titles = "Medication Name,Dose,Time,Date \n";
+        String content = titles;
+
+        for(int i=0;i<records.size();i++) {
+            Record record = records.get(i);
+            String name = Utility.keyToName(record.getMedication_key());
+            int dose = record.getDose();
+
+            String time = record.getHour() + ":" +
+                    record.getMinute() + ":" +
+                    record.getSecond();
+
+            String date = record.getDay() + "/" +
+                    record.getMonth() + "/" +
+                    record.getYear();
+
+            content = content + name + "," + dose + "," + time + "," + date + "\n";
+        }
+
+        Log.d(TAG,content);
+        return content;
+    }
+
+
+
 
 
 }
