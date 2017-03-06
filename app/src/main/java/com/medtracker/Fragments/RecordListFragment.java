@@ -3,7 +3,10 @@ package com.medtracker.Fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +27,13 @@ import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
+ * https://developer.android.com/training/basics/data-storage/files.html
  */
 public class RecordListFragment extends Fragment {
     private static final String TAG = LogTag.recordListFragment;
@@ -42,7 +47,7 @@ public class RecordListFragment extends Fragment {
     private RecordAdapter adapter;
     private ListView listView;
 
-    public RecordListFragment() { /* Required empty public constructor*/}
+    public RecordListFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +70,8 @@ public class RecordListFragment extends Fragment {
         Button test = (Button) getView().findViewById(R.id.email_test);
         test.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                createCSV();
+                saveFile(createCSV());
+                emailRecords();
             }
         });
 
@@ -78,10 +84,11 @@ public class RecordListFragment extends Fragment {
         super.onStart();
 
         adapter = new RecordAdapter(getActivity().getApplicationContext(), records);
-
         listView.setAdapter(adapter);
+
         ChildEventListener childEventListener = new ChildEventListener() {
-            @Override
+
+            @Override //when a new item is added
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Record medication = dataSnapshot.getValue(Record.class);
                 records.add(medication);
@@ -90,7 +97,7 @@ public class RecordListFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
 
-            @Override
+            @Override // when an item is edited
             public void onChildChanged(DataSnapshot dataSnapshot, String previousChildName) {
                 Record changedRecord = dataSnapshot.getValue(Record.class);
                 String recordKey = dataSnapshot.getKey();
@@ -105,7 +112,7 @@ public class RecordListFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
 
-            @Override
+            @Override //when an item is removed
             public void onChildRemoved(DataSnapshot dataSnapshot) {
                 String keyToRemove = dataSnapshot.getKey();
                 int index = recordKeys.indexOf(keyToRemove);
@@ -121,12 +128,12 @@ public class RecordListFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
 
-            @Override
+            @Override //when a child is moved
             public void onChildMoved(DataSnapshot dataSnapshot, String previousChildName) {
                 Log.d(TAG, "onChildMoved:" + dataSnapshot.getKey());
             }
 
-            @Override
+            @Override //when it is canceled
             public void onCancelled(DatabaseError databaseError) {
                 Log.w(TAG, "MedicationsActivity:onCancelled", databaseError.toException());
             }
@@ -134,6 +141,16 @@ public class RecordListFragment extends Fragment {
         database.addChildEventListener(childEventListener);
     }
 
+    //when the user returns to this fragment from another
+    @Override
+    public void onResume() {
+        Log.d(TAG, "Fragment resumed");
+        records.clear();
+        recordKeys.clear();
+        super.onResume();
+    }
+
+    //Generates the records into a CSV format
     private String createCSV() {
         String titles = "Medication Name,Dose,Time,Date \n";
         String content = titles;
@@ -156,6 +173,34 @@ public class RecordListFragment extends Fragment {
 
         Log.d(TAG,content);
         return content;
+    }
+
+    private void saveFile(String contentToWrite) {
+        String filename = "records.csv";
+        FileOutputStream outputStream;
+
+        try {
+            outputStream = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
+            outputStream.write(contentToWrite.getBytes());
+            outputStream.close();
+            Log.d(TAG, "records.csv has been written");
+        } catch (Exception e) {
+            Log.d(TAG, e.toString());
+        }
+    }
+
+    private void emailRecords() {
+        //File file = new File(getActivity().getFilesDir(), "records.csv");
+        //Uri path = Uri.fromFile(file);
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Record of Doses Taken");
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"spt10pd@msn.com"});
+        intent.putExtra(Intent.EXTRA_TEXT, "Please find a csv attached.");
+        //intent.putExtra(Intent.EXTRA_STREAM, path);
+
+        startActivity(Intent.createChooser(intent, "Send mail"));
     }
 
 
