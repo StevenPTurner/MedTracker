@@ -18,4 +18,6 @@ public final class LogTag {
     public static final String pharmacyLogFragment = "LogPharmacyMapFragment";
 
     public static final String alarmAdapter = "LogAlarmAdapter";
+
+    public static final String emailHelper = "LogEmailHelper";
 }
