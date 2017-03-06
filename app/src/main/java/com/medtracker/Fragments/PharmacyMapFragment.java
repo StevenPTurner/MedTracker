@@ -204,7 +204,7 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                     public void onResponse(JSONObject response) {
                         parseJSON(response); //parse the json response into pharmacy objects
                         addMapMarkers(pharmacies);
-                        //showDialog(pharmacies.get(0));
+                        showDialog(pharmacies.get(0));
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -257,16 +257,14 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     private void showDialog(Pharmacy pharmacy) {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
+        // Supply num input as an argument.
+        Bundle args = new Bundle();
+        args.putString("name", pharmacy.getName());
+        args.putString("info", pharmacy.getInfo());
 
-        // Create and show the dialog.
-        DialogFragment newFragment = NearestPharmacyFragment.newInstance(pharmacy);
-        newFragment.show(ft, "dialog");
+        DialogFragment nearestPharmacy = new NearestPharmacyFragment();
+        nearestPharmacy.setArguments(args);
+        nearestPharmacy.show(getFragmentManager().beginTransaction(), "dialog");
     }
 
     /*

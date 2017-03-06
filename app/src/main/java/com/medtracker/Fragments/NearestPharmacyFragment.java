@@ -23,21 +23,7 @@ public class NearestPharmacyFragment extends DialogFragment {
     String name;
     String info;
 
-    /**
-     * Create a new instance of MyDialogFragment, providing "num"
-     * as an argument.
-     */
-    public static NearestPharmacyFragment newInstance(Pharmacy pharmacy) {
-        NearestPharmacyFragment fragment = new NearestPharmacyFragment();
-
-        // Supply num input as an argument.
-        Bundle args = new Bundle();
-        args.putString("name", pharmacy.getName());
-        args.putString("info", pharmacy.getInfo());
-        fragment.setArguments(args);
-
-        return fragment;
-    }
+    public NearestPharmacyFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -45,29 +31,28 @@ public class NearestPharmacyFragment extends DialogFragment {
         Bundle args = getArguments();
         name = args.getString("name");
         info = args.getString("info");
+        getDialog().setTitle("Nearest Pharmacy");
 
-        View v = inflater.inflate(R.layout.fragment_nearest_pharmacy, container, false);
-
-        // Watch for button clicks.
-        Button button = (Button)v.findViewById(R.id.okay);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // When button is clicked, call up to owning activity.
-                //((FragmentDialog)getActivity()).showDialog();
-            }
-        });
-        return v;
+        return inflater.inflate(R.layout.fragment_nearest_pharmacy, container, false);
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
+    public void onViewCreated(View view, Bundle savedInstanceState) {
         TextView textName = (TextView) getView().findViewById(R.id.pharmacy_name);
-        TextView textInfo = (TextView) getView().findViewById(R.id.pharmacy_name);
+        TextView textInfo = (TextView) getView().findViewById(R.id.pharmacy_info);
+        String nameField = "Your nearest pharmacy is " + name;
+        String infoField = "Located at " + info;
 
-        textName.setText(name);
-        textInfo.setText(info);
+        textName.setText(nameField);
+        textInfo.setText(infoField);
+
+        // Watch for button clicks.
+        Button button = (Button) getView().findViewById(R.id.okay);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                getDialog().dismiss();
+            }
+        });
 
     }
 

@@ -1,36 +1,46 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context="com.medtracker.Fragments.NearestPharmacyFragment">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Nearest Pharmacy" />
-
-        <TextView
             android:id="@+id/pharmacy_name"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text_material_light"
             android:text="Your nearest pharmacy is" />
 
         <TextView
             android:id="@+id/pharmacy_info"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:textColor="@color/secondary_text_material_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pharmacy_name"
             android:text="address" />
 
         <Button
             android:id="@+id/okay"
+            style="@style/Widget.AppCompat.Button.ButtonBar.AlertDialog"
             android:layout_width="wrap_content"
+            android:textColor="@color/colorAccent"
             android:layout_height="wrap_content"
-            android:text="Okay" />
+            android:text="Okay"
+            android:layout_below="@id/pharmacy_info"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_alignParentEnd="true"/>
 
     </RelativeLayout>
 
