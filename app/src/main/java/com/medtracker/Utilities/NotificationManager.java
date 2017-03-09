@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 
 import com.medtracker.Activities.TakeDoseActivity;
 import com.medtracker.Models.Alarm;
@@ -20,8 +21,11 @@ import java.util.Calendar;
  */
 
 public class NotificationManager {
+    public static final String TAG = LogTag.notificationManager;
 
-    public static Notification getNotification(String content, Context context, String alarmKey, String medicationKey) {
+    public static Notification getNotification(String content, Context context, String alarmKey,
+                                               String medicationKey) {
+        Log.d(TAG, medicationKey);
         Intent intent = new Intent(context, TakeDoseActivity.class);
         intent.putExtra("alarmKey", alarmKey);
         intent.putExtra("medicationKey", medicationKey);

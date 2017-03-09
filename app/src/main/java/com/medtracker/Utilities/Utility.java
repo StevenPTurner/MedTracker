@@ -57,9 +57,8 @@ public class Utility {
         return calendar;
     }
 
-    public static Record alarmToRecord(Alarm alarm) {
+    public static Record alarmToRecord(Alarm alarm, int dose) {
         int day = alarm.getDay();
-        int dose = 80;
         int hour = alarm.getHour();
         String medicationKey = alarm.getMedication_key();
         int minute = alarm.getMinute();

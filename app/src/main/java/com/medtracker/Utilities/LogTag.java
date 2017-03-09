@@ -19,5 +19,7 @@ public final class LogTag {
 
     public static final String alarmAdapter = "LogAlarmAdapter";
 
+    public static final String notificationManager = "LogNotificationManager";
+
     public static final String emailHelper = "LogEmailHelper";
 }

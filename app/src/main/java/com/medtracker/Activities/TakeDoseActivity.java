@@ -61,18 +61,24 @@ public class TakeDoseActivity extends Activity {
 
         alarmKey = getIntent().getStringExtra("alarmKey");
         medicationKey = getIntent().getStringExtra("medicationKey");
+        Log.d(TAG, medicationKey);
     }
 
     public void writeRecord() {
-        final DatabaseReference databaseReference = mDatabase.child("alarms").child(userUID).
-                child(medicationKey).child(alarmKey);
+        final DatabaseReference databaseReference = mDatabase;
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
-                Alarm alarm = dataSnapshot.getValue(Alarm.class);
-                Record record = Utility.alarmToRecord(alarm);
+                Alarm alarm = dataSnapshot.child("alarms").child(userUID)
+                        .child(medicationKey).child(alarmKey).getValue(Alarm.class);
+                long doseValue = dataSnapshot.child("medications").child(userUID).
+                        child(medicationKey).child("dosage").getValue(Long.class);
+
+                int dose = (int) doseValue;
+
+                Record record = Utility.alarmToRecord(alarm, dose);
                 String recordKey = 0 + "" + record.getMinute() + record.getHour() + "-" + record.getDay()
                         + record.getMonth() + record.getYear();
 
