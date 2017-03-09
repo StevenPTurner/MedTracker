@@ -22,7 +22,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.MapFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -30,11 +29,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.medtracker.Fragments.AboutFragment;
 import com.medtracker.Fragments.Alarm.AlarmManagerListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
-import com.medtracker.Fragments.PharmacyMapFragment;
+import com.medtracker.Fragments.Pharmacy.PharmacyMapFragment;
 import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;
+import com.medtracker.Fragments.StatisticsFragment;
 import com.medtracker.Models.User;
 import com.medtracker.TestingClasses.TestActivity;
 import com.medtracker.Utilities.LogTag;
@@ -225,6 +226,14 @@ public class HomeActivity extends FragmentActivity {
                 Log.w(TAG, "Pharmacy map fragment selected");
                 break;
             case 5:
+                fragment = new StatisticsFragment();
+                Log.w(TAG, "Statistics fragment selected");
+                break;
+            case 6:
+                fragment = new AboutFragment();
+                Log.w(TAG, "About fragment selected");
+                break;
+            case 7:
                 Intent testActivityIntent = new Intent(this, TestActivity.class);
                 startActivity(testActivityIntent);
                 break;

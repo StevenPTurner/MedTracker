@@ -1,4 +1,4 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Alarm;
 
 import android.app.Activity;
 import android.app.Dialog;

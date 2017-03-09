@@ -1,4 +1,4 @@
-package com.medtracker.Fragments;
+package com.medtracker.Fragments.Pharmacy;
 
 
 import android.app.AlertDialog;
