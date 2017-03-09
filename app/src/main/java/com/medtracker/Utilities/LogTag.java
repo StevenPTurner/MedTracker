@@ -16,10 +16,10 @@ public final class LogTag {
     public static final String alarmListFragment = "LogAlarmListFragment";
     public static final String alarmMedicationFragment = "LogAlarmMedFragment";
     public static final String pharmacyLogFragment = "LogPharmacyMapFragment";
+    public static final String statisticsFragment = "LogStatisticsFragment";
 
     public static final String alarmAdapter = "LogAlarmAdapter";
 
     public static final String notificationManager = "LogNotificationManager";
-
     public static final String emailHelper = "LogEmailHelper";
 }

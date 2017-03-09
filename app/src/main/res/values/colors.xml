@@ -10,6 +10,9 @@
     <color name="primary_text_material_light">#de000000</color>
     <color name="secondary_text_material_light">#8a000000</color>
     <color name="table_highlight">#90CAF9</color>
+    <color name="green">#66BB6A</color>
+    <color name="yellow">#FFEE58</color>
+    <color name="red">#ef5350</color>
     <!--<color name="buttonColor"></color>-->
 
     <!--https://www.materialui.co/colors resource for colour palettes-->
