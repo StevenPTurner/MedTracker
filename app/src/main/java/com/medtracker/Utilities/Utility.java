@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by spt10 on 01/02/2017.
+ * used as a bunch of utility methods for purposes such as converting times or object factories
  */
 
 public class Utility {
@@ -58,14 +58,28 @@ public class Utility {
     }
 
     public static Record alarmToRecord(Alarm alarm, int dose) {
-        int day = alarm.getDay();
-        int hour = alarm.getHour();
-        String medicationKey = alarm.getMedication_key();
-        int minute = alarm.getMinute();
-        int month = alarm.getMonth();
-        int year = alarm.getYear();
+        Calendar calendar = Calendar.getInstance();
+        final long tenMinutes = 600000;
+        final long oneHour = 3600000;
+        final long alarmTime = alarmToCalendar(alarm).getTimeInMillis();
+        final long currentTime = calendar.getTimeInMillis();
+        boolean late = false;
+        boolean missed = false;
 
-        return new Record(medicationKey, dose, 0, minute, hour, day, month, year);
+        if(isTimeLongerThan(oneHour, alarmTime, currentTime)) {
+            missed = true;
+        } else if ( isTimeLongerThan(tenMinutes, alarmTime, currentTime)) {
+            late = true;
+        }
+
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        String medicationKey = alarm.getMedication_key();
+        int minute = calendar.get(Calendar.MINUTE);
+        int month = (calendar.get(Calendar.MONTH) + 1);
+        int year = calendar.get(Calendar.YEAR);
+
+        return new Record(medicationKey, dose, 0, minute, hour, day, month, year, late, missed);
     }
 
     public static String calendarToString(Calendar calendar) {
@@ -96,6 +110,10 @@ public class Utility {
 
         String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
         return timeTillDose;
+    }
+
+    public static boolean isTimeLongerThan(long timeDiff, long initalTime, long finalTime) {
+        return ((finalTime - initalTime) >= timeDiff);
     }
 
 

@@ -13,11 +13,13 @@ public class Record {
     private int day;
     private int month;
     private int year;
+    private boolean missed;
+    private boolean late;
 
     public Record() {}
 
     public Record(String medication_key, int dose, int second, int minute, int hour, int day,
-                  int month, int year) {
+                  int month, int year, boolean missed, boolean late) {
         this.medication_key = medication_key;
         this.dose = dose;
         this.second = second;
@@ -26,6 +28,16 @@ public class Record {
         this.day = day;
         this.month = month;
         this.year = year;
+        this.missed = missed;
+        this.late = late;
+    }
+
+    public boolean isMissed() {
+        return missed;
+    }
+
+    public boolean isLate() {
+        return late;
     }
 
     public int getMonth() {
@@ -58,6 +70,14 @@ public class Record {
 
     public int getYear() {
         return year;
+    }
+
+    public void setMissed(boolean missed) {
+        this.missed = missed;
+    }
+
+    public void setLate(boolean late) {
+        this.late = late;
     }
 
     public void setMonth(int month) {
