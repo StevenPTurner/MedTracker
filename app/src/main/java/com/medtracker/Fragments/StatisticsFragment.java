@@ -1,5 +1,6 @@
 package com.medtracker.Fragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -10,10 +11,12 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +49,7 @@ public class StatisticsFragment extends Fragment {
     private RecordAdapter adapter;
     private ListView listView;
     private PieChart pieChart;
+    PieDataSet set;
 
     private int totalOnTime;
     private int totalLate;
@@ -73,7 +77,27 @@ public class StatisticsFragment extends Fragment {
         database = FirebaseDatabase.getInstance().getReference().child("records").child(userUID);
 
         pieChart = (PieChart) getView().findViewById(R.id.chart);
+        pieChart.getDescription().setEnabled(false);
+        set = new PieDataSet(entries, "Medication statistics");
 
+        // add many colors
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        colors.add(ColorTemplate.rgb("#66BB6A"));
+        colors.add(ColorTemplate.rgb("#FFA726"));
+        colors.add(ColorTemplate.rgb("#ef5350"));
+        colors.add(ColorTemplate.getHoloBlue());
+        set.setColors(colors);
+        set.setSliceSpace(3f);
+
+        Legend l = pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(15f);
     }
 
     @Override
@@ -158,11 +182,13 @@ public class StatisticsFragment extends Fragment {
         float latePercentage = calcPercentage(totalRecords, totalLate);
         float missedPercentage = calcPercentage(totalRecords, totalMissed);
 
-        PieDataSet set = new PieDataSet(entries, "Election Results");
-        set.setColors(new int[] {R.color.green, R.color.yellow, R.color.red});
-        set.setSliceSpace(3f);
+
         PieData data = new PieData(set);
+
         pieChart.setData(data);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
         pieChart.invalidate(); // refresh
 
         setChartValues(onTimePercentage, latePercentage, missedPercentage);
