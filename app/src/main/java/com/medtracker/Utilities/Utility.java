@@ -2,6 +2,7 @@ package com.medtracker.Utilities;
 
 
 
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.Record;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Utility {
+
 
     public static String nameToKey(String name) {
         String key = name.toLowerCase();

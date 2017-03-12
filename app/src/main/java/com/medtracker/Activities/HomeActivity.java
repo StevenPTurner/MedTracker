@@ -1,5 +1,6 @@
 package com.medtracker.Activities;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;

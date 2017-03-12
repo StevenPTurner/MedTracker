@@ -7,8 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -25,10 +24,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.medtracker.Adapters.RecordAdapter;
 import com.medtracker.Models.Record;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,15 +46,12 @@ public class StatisticsFragment extends Fragment {
     private String userUID;
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<String> recordKeys = new ArrayList<>();
-    private RecordAdapter adapter;
-    private ListView listView;
     private PieChart pieChart;
     PieDataSet set;
 
     private int totalOnTime;
     private int totalLate;
     private int totalMissed;
-
     List<PieEntry> entries = new ArrayList<>();
 
     public StatisticsFragment() {}
@@ -79,32 +76,12 @@ public class StatisticsFragment extends Fragment {
         pieChart = (PieChart) getView().findViewById(R.id.chart);
         pieChart.getDescription().setEnabled(false);
         set = new PieDataSet(entries, "Medication statistics");
-
-        // add many colors
-        ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        colors.add(ColorTemplate.rgb("#66BB6A"));
-        colors.add(ColorTemplate.rgb("#FFA726"));
-        colors.add(ColorTemplate.rgb("#ef5350"));
-        colors.add(ColorTemplate.getHoloBlue());
-        set.setColors(colors);
-        set.setSliceSpace(3f);
-
-        Legend l = pieChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(15f);
+        initialisePieChartStyle();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-
 
         ChildEventListener childEventListener = new ChildEventListener() {
 
@@ -182,9 +159,8 @@ public class StatisticsFragment extends Fragment {
         float latePercentage = calcPercentage(totalRecords, totalLate);
         float missedPercentage = calcPercentage(totalRecords, totalMissed);
 
-
         PieData data = new PieData(set);
-
+        pieChart.setCenterText(getCenterText(latePercentage,missedPercentage));
         pieChart.setData(data);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
@@ -192,6 +168,41 @@ public class StatisticsFragment extends Fragment {
         pieChart.invalidate(); // refresh
 
         setChartValues(onTimePercentage, latePercentage, missedPercentage);
+    }
+
+
+    private void initialisePieChartStyle() {
+        ArrayList<Integer> colors = new ArrayList<Integer>();
+
+        colors.add(ColorTemplate.rgb("#66BB6A"));
+        colors.add(ColorTemplate.rgb("#FFA726"));
+        colors.add(ColorTemplate.rgb("#ef5350"));
+        colors.add(ColorTemplate.getHoloBlue());
+        set.setColors(colors);
+        set.setSliceSpace(3f);
+
+        Legend l = pieChart.getLegend();
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+        l.setDrawInside(false);
+        l.setXEntrySpace(7f);
+        l.setYEntrySpace(0f);
+        l.setYOffset(15f);
+    }
+
+    private String getCenterText(float late, float missed) {
+        if(missed > 25) {
+            return "Medication will not be effective at current \usage rates";
+        } else if (missed > 10) {
+            return "Usage rates will effect medications effectiveness";
+        } else if (late > 50) {
+            return "Majority of doses are late, change dosage time";
+        } else if (late  > 25) {
+            return "Consider changing dosage time";
+        } else {
+            return "";
+        }
     }
 
     //when the user returns to this fragment from another
