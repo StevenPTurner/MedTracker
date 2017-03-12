@@ -16,6 +16,9 @@ import com.medtracker.medtracker.R;
 
 /**
  * A simple {@link Fragment} subclass.
+ * https://github.com/PhilJay/MPAndroidChart
+ * icons
+ * firebase
  */
 public class AboutFragment extends Fragment {
 

@@ -193,7 +193,7 @@ public class StatisticsFragment extends Fragment {
 
     private String getCenterText(float late, float missed) {
         if(missed > 25) {
-            return "Medication will not be effective at current \usage rates";
+            return "Medication will not be effective at current usage rates";
         } else if (missed > 10) {
             return "Usage rates will effect medications effectiveness";
         } else if (late > 50) {
