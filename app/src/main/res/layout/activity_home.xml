@@ -23,7 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="160dp"
-            android:background="@drawable/image_nav_header"
+            android:background="@drawable/image_nav_header2"
             android:paddingLeft="15dp"
             android:orientation="vertical"
             android:layout_gravity="bottom">

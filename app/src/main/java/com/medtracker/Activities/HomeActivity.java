@@ -281,6 +281,7 @@ public class HomeActivity extends FragmentActivity {
 
     //updates sidebar display
     private void updateSideBar(String displayName, String email) {
+        displayName = Utility.keyToName(displayName);
         TextView textViewDisplayName = (TextView) findViewById(R.id.text_display_name);
         TextView textViewEmail = (TextView) findViewById(R.id.text_email);
 

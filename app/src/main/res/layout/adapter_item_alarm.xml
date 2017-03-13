@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text_material_light"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:layout_marginStart="30dp"
                 android:layout_below="@id/alarm_number"
                 android:text="text"/>
@@ -47,7 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text_material_light"
-                android:textSize="13sp"
+                android:textSize="16sp"
                 android:layout_below="@id/alarm_time"
                 android:layout_alignStart="@id/alarm_time"
                 android:text="text"/>
