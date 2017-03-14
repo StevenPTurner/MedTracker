@@ -31,7 +31,7 @@
         android:id="@+id/edit_email"
         android:hint="Email"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content"
+        android:layout_width="117dp"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
@@ -41,7 +41,7 @@
     <EditText
         android:id="@+id/edit_password"
         android:hint="Password"
-        android:layout_width="wrap_content"
+        android:layout_width="117dp"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -51,6 +51,7 @@
 
     <Button
         android:id="@+id/button_sign_in"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:text="Sign In"
         android:layout_width="117dp"
         android:layout_height="wrap_content"
