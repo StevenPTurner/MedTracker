@@ -140,6 +140,7 @@ public class AlarmManagerListFragment extends Fragment implements AdapterView.On
 
         Bundle args = new Bundle();
         AlarmManager current = adapter.getItem(position);
+        args.putString("currentAlarm", current.getCurrent_alarm());
         args.putInt("maxCount", current.getMax_count());
         args.putString("medicationKey", current.getMedication_key());
 

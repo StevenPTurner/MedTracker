@@ -52,6 +52,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
     private AlarmAdapter adapter;
     private ListView listView;
     private int RCID;
+    private String currentAlarm;
 
 
     public AlarmListFragment() {}
@@ -62,6 +63,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         Bundle args = getArguments();
         this.alarmCount = args.getInt("maxCount");
         this.medicationKey = args.getString("medicationKey");
+        this.currentAlarm = args.getString("currentAlarm");
         // Inflate the UI
         return inflater.inflate(R.layout.fragment_alarm_medication, container, false);
     }
@@ -89,6 +91,9 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         });
 
         Switch alarmSwitch = (Switch) getView().findViewById(R.id.alarm_switch);
+        if(!currentAlarm.equals("none")) {
+            alarmSwitch.setChecked(true);
+        }
         alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
                 if(alarmCount > 0) {
