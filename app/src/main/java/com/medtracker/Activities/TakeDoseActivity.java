@@ -1,12 +1,13 @@
 package com.medtracker.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -34,6 +35,8 @@ public class TakeDoseActivity extends Activity {
     private Button takeDose;
     private String alarmKey;
     private String medicationKey;
+    private Medication medication;
+    private Alarm alarm;
 
 
     @Override
@@ -51,41 +54,48 @@ public class TakeDoseActivity extends Activity {
 
         //button listener to preform actions when pressed
         takeDose = (Button) findViewById(R.id.button_take_dose);
+        final Intent intent = new Intent(this, HomeActivity.class);
         takeDose.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Log.d(TAG, "take dose button pressed");
                 writeRecord();
                 updateAlarmManager();
+                startActivity(intent);
             }
         });
 
         alarmKey = getIntent().getStringExtra("alarmKey");
         medicationKey = getIntent().getStringExtra("medicationKey");
+
+        getData();
         Log.d(TAG, medicationKey);
     }
 
-    public void writeRecord() {
+    public void getData() {
         final DatabaseReference databaseReference = mDatabase;
 
         databaseReference.addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //retreives object updates it and sends the newly updates one back to the database
-                Alarm alarm = dataSnapshot.child("alarms").child(userUID)
-                        .child(medicationKey).child(alarmKey).getValue(Alarm.class);
-                long doseValue = dataSnapshot.child("medications").child(userUID).
-                        child(medicationKey).child("dosage").getValue(Long.class);
-
-                int dose = (int) doseValue;
-
-                Record record = Utility.alarmToRecord(alarm, dose);
-                String recordKey = 0 + "" + record.getMinute() + record.getHour() + "-" + record.getDay()
-                        + record.getMonth() + record.getYear();
-
-                mDatabase.child("records").child(userUID).child(recordKey).setValue(record);
+                alarm = dataSnapshot.child("alarms").child(userUID).child(medicationKey)
+                        .child(alarmKey).getValue(Alarm.class);
+                medication = dataSnapshot.child("medications").child(userUID).child(medicationKey)
+                        .getValue(Medication.class);
+                TextView messageText = (TextView) findViewById(R.id.medication_info);
+                messageText.setText(medication.getDosage() + "mg of " + medication.getMedication_name());
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+    }
+
+    public void writeRecord() {
+        int dose = medication.getDosage();
+        Record record = Utility.alarmToRecord(alarm, dose);
+        String recordKey = 0 + "" + record.getMinute() + record.getHour() + "-" + record.getDay()
+                + record.getMonth() + record.getYear();
+
+        mDatabase.child("records").child(userUID).child(recordKey).setValue(record);
     }
 
     public void updateAlarmManager() {
@@ -130,6 +140,8 @@ public class TakeDoseActivity extends Activity {
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+
 
 
 

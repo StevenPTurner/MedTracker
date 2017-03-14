@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_take_dose"
     android:layout_width="match_parent"
@@ -11,19 +12,44 @@
     tools:context="com.medtracker.Activities.TakeDoseActivity">
 
     <TextView
-        android:text="TextView"
+        android:id="@+id/medication_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="139dp" />
+        android:text="200mg of medication"
+        android:textColor="@color/primary_text_material_light"
+        android:textSize="24sp"
+        android:layout_above="@+id/button_take_dose"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Alert Details"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textColor="@color/primary_text_material_light"
+        android:layout_alignTop="@+id/imageView"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="Take Dose"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:textColor="@color/textLight"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:id="@+id/button_take_dose"
+        android:layout_below="@+id/imageView"
         android:layout_centerHorizontal="true"
-        android:id="@+id/button_take_dose" />
+        android:layout_marginTop="40dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="130dp"
+        android:layout_height="200dp"
+        android:src="@drawable/ic_import_contacts_black_36dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="93dp" />
+
 </RelativeLayout>
