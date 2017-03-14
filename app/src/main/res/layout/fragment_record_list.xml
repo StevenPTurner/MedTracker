@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     tools:context="com.medtracker.Fragments.RecordListFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:id="@+id/title_row"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#1E88E5"
@@ -59,6 +60,7 @@
 
         <ListView
             android:id="@+id/listView"
+            android:layout_below="@id/title_row"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/primary_text_material_light"
@@ -66,11 +68,15 @@
             android:dividerHeight="0dp"/>
 
         <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:textColor="@color/textLight"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
             android:id="@+id/email_test"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Email" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>
