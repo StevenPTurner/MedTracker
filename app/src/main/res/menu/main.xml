@@ -21,4 +21,8 @@
         android:title="@string/action_websearch"
         android:textColor="#111"
         app:showAsAction="ifRoom|withText" />
+    <item android:id="@+id/action_signOut"
+        android:title="Sign Out"
+        android:textColor="#111"
+        app:showAsAction="ifRoom|withText" />
 </menu>

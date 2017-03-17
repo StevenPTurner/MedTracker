@@ -13,13 +13,11 @@
     <string name="ok">Okay</string>
     <string-array name="menu_titles_array">
         <item>Medications</item>
-        <item>Prescriptions</item>
         <item>Alarms</item>
         <item>Records</item>
         <item>Pharmacies</item>
         <item>Statistics</item>
         <item>About</item>
-        <item>Testing</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

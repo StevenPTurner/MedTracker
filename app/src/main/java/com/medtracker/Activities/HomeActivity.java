@@ -184,6 +184,11 @@ public class HomeActivity extends FragmentActivity {
                     Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
                 }
                 return true;
+            case R.id.action_signOut:
+                FirebaseAuth.getInstance().signOut();
+                Intent startScreenIntent = new Intent(this,StartActivity.class);
+                startActivity(startScreenIntent);
+                Log.w(TAG, "userSignedOut");
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -209,34 +214,30 @@ public class HomeActivity extends FragmentActivity {
                 fragment = new MedicationListFragment();
                 Log.w(TAG, "Medications fragment selected");
                 break;
+//            case 1:
+//                fragment = new PrescriptionListFragment();
+//                Log.w(TAG, "Prescription fragment selected");
+//                break;
             case 1:
-                fragment = new PrescriptionListFragment();
-                Log.w(TAG, "Prescription fragment selected");
-                break;
-            case 2:
                 fragment = new AlarmManagerListFragment();
                 Log.w(TAG, "Alarms fragment selected");
                 Log.w(TAG, Utility.keyToName("sodium_valproate"));
                 break;
-            case 3:
+            case 2:
                 fragment = new RecordListFragment();
                 Log.w(TAG, "Records fragment selected");
                 break;
-            case 4:
+            case 3:
                 fragment = new PharmacyMapFragment();
                 Log.w(TAG, "Pharmacy map fragment selected");
                 break;
-            case 5:
+            case 4:
                 fragment = new StatisticsFragment();
                 Log.w(TAG, "Statistics fragment selected");
                 break;
-            case 6:
+            case 5:
                 fragment = new AboutFragment();
                 Log.w(TAG, "About fragment selected");
-                break;
-            case 7:
-                Intent testActivityIntent = new Intent(this, TestActivity.class);
-                startActivity(testActivityIntent);
                 break;
         }
 

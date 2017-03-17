@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -45,12 +46,16 @@ public class StartActivity extends FragmentActivity implements
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String displayName;
+    private ProgressBar spinner;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         findViewById(R.id.button_sign_in_with_google).setOnClickListener(this);
+        spinner = (ProgressBar)findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
 
         // Configure Google Sign In
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -114,10 +119,11 @@ public class StartActivity extends FragmentActivity implements
         startActivityForResult(signInWithGoogleIntent, RC_SIGN_IN_GOOGLE);
     }
 
-    //starts intent to gather user input for e-mail sign in
+    //starts intent to gather user input for e-mail sign ie
     public void signInEmail(View view) {
         Intent signInWithEmailIntent = new Intent(this, SignInActivity.class);
         startActivityForResult(signInWithEmailIntent, RC_SIGN_IN_EMAIL);
+        spinner.setVisibility(View.VISIBLE);
     }
 
     //starts intent to gather user input for email create an account
@@ -125,6 +131,7 @@ public class StartActivity extends FragmentActivity implements
         Log.d(TAG, "creatingAccount");
         Intent createAccountWithEmailIntent = new Intent(this, CreateAccountActivity.class);
         startActivityForResult(createAccountWithEmailIntent, RC_CREATE_ACCOUNT_EMAIL);
+        spinner.setVisibility(View.VISIBLE);
     }
 
 

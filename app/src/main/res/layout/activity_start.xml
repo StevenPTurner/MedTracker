@@ -12,10 +12,13 @@
     tools:context="com.medtracker.Activities.StartActivity">
 
     <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@android:style/Widget.ProgressBar.Small"
-        android:layout_marginRight="5dp" />
+        android:layout_below="@+id/button_create_account"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/text_title"
@@ -41,6 +44,7 @@
     <Button
         android:id="@+id/button_create_account"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:textColor="@color/textLight"
         android:text="Create Account"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +57,7 @@
     <Button
         android:id="@+id/button_Sign_In"
         style="@style/Widget.AppCompat.Button.Colored"
+        android:textColor="@color/textLight"
         android:text="Sign In"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

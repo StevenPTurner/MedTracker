@@ -10,14 +10,17 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text = "Legal Notices"/>
+            android:text = "about"
+            android:textSize="16dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/open_source"/>
+            android:id="@+id/technologies"
+            android:textSize="16dp"/>
 
     </LinearLayout>
 
