@@ -368,4 +368,13 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+    //when the user returns to this fragment from another
+    @Override
+    public void onResume() {
+        Log.d(TAG, "Fragment resumed");
+        alarms.clear();
+        alarmKeys.clear();
+        super.onResume();
+    }
 }
