@@ -40,7 +40,8 @@
             android:layout_marginStart="11dp"
             android:layout_alignTop="@+id/text_name"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="18dp" />
+            android:layout_marginTop="18dp"
+            android:maxLines="1"/>
 
         <TextView
             android:text="Dose (mg)"
@@ -66,7 +67,8 @@
             android:layout_alignTop="@+id/text_dose"
             android:layout_alignParentStart="true"
             android:layout_marginTop="18dp"
-            android:inputType="number" />
+            android:inputType="number"
+            android:maxLines="1"/>
 
         <TextView
             android:text="Instructions"
@@ -91,7 +93,8 @@
             android:layout_marginStart="11dp"
             android:layout_alignTop="@+id/text_instructions"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="18dp"/>
+            android:layout_marginTop="18dp"
+            android:maxLines="1"/>
 
         <TextView
             android:text="Edit Medication"
