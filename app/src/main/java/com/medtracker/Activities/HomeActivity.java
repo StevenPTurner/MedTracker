@@ -77,8 +77,7 @@ public class HomeActivity extends FragmentActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         userUID = mFirebaseUser.getUid();
         Log.w(TAG, "User Uid: " + userUID);
-        mDatabase = FirebaseDatabase.getInstance().getReference()
-                .child("users").child(userUID);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users").child(userUID);
 
         //set up event listener to detect user account changes
         ValueEventListener userListener = new ValueEventListener() {
@@ -96,10 +95,7 @@ public class HomeActivity extends FragmentActivity {
                     Log.w(TAG, "new user " + userUID + "created");
                 }
             }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "getUser:onCancelled", databaseError.toException());
-            }
+            @Override public void onCancelled(DatabaseError databaseError) {}
         };
 
         //setting up navigation drawer objects
@@ -160,7 +156,7 @@ public class HomeActivity extends FragmentActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerLinearLayout);
-        menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
+        //menu.findItem(R.id.action_websearch).setVisible(!drawerOpen);
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -171,27 +167,23 @@ public class HomeActivity extends FragmentActivity {
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-        // Handle action buttons on menu top left of screen
-        switch(item.getItemId()) {
-            case R.id.action_websearch:
-                // create intent to perform web search for this planet
-                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
-                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
-                // catch event that there's no activity to handle intent
-                if (intent.resolveActivity(getPackageManager()) != null) {
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
-                }
-                return true;
-            case R.id.action_signOut:
-                FirebaseAuth.getInstance().signOut();
-                Intent startScreenIntent = new Intent(this,StartActivity.class);
-                startActivity(startScreenIntent);
-                Log.w(TAG, "userSignedOut");
-            default:
-                return super.onOptionsItemSelected(item);
-        }
+//        // Handle action buttons on menu top left of screen
+//        switch(item.getItemId()) {
+//            case R.id.action_websearch:
+//                // create intent to perform web search for this planet
+//                Intent intent = new Intent(Intent.ACTION_WEB_SEARCH);
+//                intent.putExtra(SearchManager.QUERY, getActionBar().getTitle());
+//                // catch event that there's no activity to handle intent
+//                if (intent.resolveActivity(getPackageManager()) != null) {
+//                    startActivity(intent);
+//                } else {
+//                    Toast.makeText(this, R.string.app_not_available, Toast.LENGTH_LONG).show();
+//                }
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+        return true;
     }
 
     /* The click listner for ListView in the navigation drawer */
@@ -206,43 +198,53 @@ public class HomeActivity extends FragmentActivity {
     private void selectItem(int position) {
         // Create a new fragment and specify the fragment to show
         Fragment fragment = null;
-        FragmentManager fragmentManager = getFragmentManager();
-        Bundle args = new Bundle();
 
-        switch(position) {
+        switch (position) {
             case 0:
                 fragment = new MedicationListFragment();
                 Log.w(TAG, "Medications fragment selected");
+                callFragment(fragment,position);
                 break;
-//            case 1:
-//                fragment = new PrescriptionListFragment();
-//                Log.w(TAG, "Prescription fragment selected");
-//                break;
             case 1:
                 fragment = new AlarmManagerListFragment();
                 Log.w(TAG, "Alarms fragment selected");
                 Log.w(TAG, Utility.keyToName("sodium_valproate"));
+                callFragment(fragment,position);
                 break;
             case 2:
                 fragment = new RecordListFragment();
                 Log.w(TAG, "Records fragment selected");
+                callFragment(fragment,position);
                 break;
             case 3:
                 fragment = new PharmacyMapFragment();
                 Log.w(TAG, "Pharmacy map fragment selected");
+                callFragment(fragment,position);
                 break;
             case 4:
                 fragment = new StatisticsFragment();
                 Log.w(TAG, "Statistics fragment selected");
+                callFragment(fragment,position);
                 break;
             case 5:
                 fragment = new AboutFragment();
                 Log.w(TAG, "About fragment selected");
+                callFragment(fragment,position);
+                break;
+            case 6:
+                FirebaseAuth.getInstance().signOut();
+                Intent startScreenIntent = new Intent(this,StartActivity.class);
+                startActivity(startScreenIntent);
+                Log.w(TAG, "userSignedOut");
                 break;
         }
 
+
+    }
+
+    public void callFragment(Fragment fragment, int position){
+        FragmentManager fragmentManager = getFragmentManager();
         // Insert the fragment by replacing any existing fragment
-        fragment.setArguments(args);
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // Highlight the selected item, update the title, and close the drawer

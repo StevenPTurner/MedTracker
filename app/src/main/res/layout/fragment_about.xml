@@ -7,20 +7,38 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/about"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text = "about"
-            android:textSize="16dp"/>
+            android:text="about"
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text_material_light"/>
+
+        <View
+            android:id="@+id/separator"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="#90909090"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/technologies_title"
+            android:textSize="16sp"
+            android:textColor="@color/primary_text_material_light"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/technologies"
-            android:textSize="16dp"/>
+            android:textSize="16sp"
+            android:textColor="@color/secondary_text_material_light"/>
 
     </LinearLayout>
 
