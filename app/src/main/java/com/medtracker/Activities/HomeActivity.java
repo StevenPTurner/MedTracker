@@ -235,6 +235,8 @@ public class HomeActivity extends FragmentActivity {
                 FirebaseAuth.getInstance().signOut();
                 Intent startScreenIntent = new Intent(this,StartActivity.class);
                 startActivity(startScreenIntent);
+                Toast toast = Toast.makeText(this, "You have been signed out", Toast.LENGTH_SHORT);
+                toast.show();
                 Log.w(TAG, "userSignedOut");
                 break;
         }
