@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -138,6 +139,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 alarms.add(alarm);
                 alarmKeys.add(dataSnapshot.getKey());
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
+                alarmCount = alarms.size();
+                adapter.setAlarmCount(alarmCount);
                 adapter.notifyDataSetChanged();
             }
 
@@ -168,6 +171,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 } else {
                     Log.d(TAG, "Index: " + index + " is an invalid index");
                 }
+                alarmCount = alarms.size();
+                adapter.setAlarmCount(alarmCount);
                 adapter.notifyDataSetChanged();
             }
 
@@ -333,6 +338,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+        Toast toast = Toast.makeText(getActivity(), "Alarms Enabled", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void disableAlarms() {
@@ -350,6 +357,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+        Toast toast = Toast.makeText(getActivity(), "Alarms Disabled", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     private void updateAlarmCount() {

@@ -33,8 +33,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
 
     private AlarmAdapterCallback callback;
     private int alarmCount;
-    private Button editAlarm;
-    private Button deleteAlarm;
     private Alarm alarm;
 
     //constructor mainly used to get arguments passed in
@@ -61,8 +59,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
         TextView timeTillAlarm = (TextView) convertView.findViewById(R.id.time_till_alarm);
 
         //get buttons
-        editAlarm = (Button) convertView.findViewById(R.id.button_edit_alarm);
-        deleteAlarm = (Button) convertView.findViewById(R.id.button_delete_alarm);
+        Button editAlarm = (Button) convertView.findViewById(R.id.button_edit_alarm);
+        Button deleteAlarm = (Button) convertView.findViewById(R.id.button_delete_alarm);
 
         //collects raw data and parses into useable formats
         Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
