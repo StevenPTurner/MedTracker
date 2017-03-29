@@ -33,7 +33,7 @@ public class TimePickerFragment extends DialogFragment
 
         // Create a new instance of TimePickerDialog and return it
         return new TimePickerDialog(getActivity(),AlertDialog.THEME_HOLO_LIGHT, this, hour, minute,
-                DateFormat.is24HourFormat(getActivity()));
+                false);
     }
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {

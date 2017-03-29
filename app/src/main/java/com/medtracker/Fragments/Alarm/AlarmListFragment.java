@@ -88,6 +88,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.setTargetFragment(AlarmListFragment.this, RC_TIME_PICKER_ADD);
                 timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
+                Toast toast = Toast.makeText(getActivity(), "Alarm added", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -101,9 +103,15 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                     if (isChecked) {
                         Log.d(TAG, "Switch enabled");
                         enableAlarms();
+                        Toast toast = Toast.makeText(getActivity(), "Alarms Enabled",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
                     } else {
                         Log.d(TAG, "Switch disabled");
                         disableAlarms();
+                        Toast toast = Toast.makeText(getActivity(), "Alarms Disabled",
+                                Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 }
             }
@@ -233,6 +241,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         DialogFragment timePicker = new TimePickerFragment();
         timePicker.setTargetFragment(AlarmListFragment.this, RC_TIME_PICKER_EDIT);
         timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
+        Toast toast = Toast.makeText(getActivity(), "Alarm edited", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     @Override //interface to editing alarms
@@ -244,6 +254,8 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 child(alarmKey).removeValue();
         updateAlarmManager(toDelete.getMedication_key(), "delete");
         Log.d(TAG, "Alarm deleted from the database");
+        Toast toast = Toast.makeText(getActivity(), "Alarm Deleted", Toast.LENGTH_SHORT);
+        toast.show();
     }
 
     //this method preforms the actual database edit, no need to edit alarmManager
@@ -338,8 +350,6 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
-        Toast toast = Toast.makeText(getActivity(), "Alarms Enabled", Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     private void disableAlarms() {
@@ -357,8 +367,6 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
-        Toast toast = Toast.makeText(getActivity(), "Alarms Disabled", Toast.LENGTH_SHORT);
-        toast.show();
     }
 
     private void updateAlarmCount() {

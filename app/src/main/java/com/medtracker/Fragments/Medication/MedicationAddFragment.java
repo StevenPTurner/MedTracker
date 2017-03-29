@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,6 +63,8 @@ public class MedicationAddFragment extends Fragment {
             public void onClick(View v) {
             Log.d(TAG, "Save medication button pressed");
             savedMedicationClicked();
+                Toast toast = Toast.makeText(getActivity(), "Medication added", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }

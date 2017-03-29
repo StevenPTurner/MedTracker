@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -93,6 +94,9 @@ public class MedicationEditFragment extends Fragment {
                 Log.d(TAG, "apply edit button pressed");
                 updateDatabase(buildMedication(), medicationKey);
                 returnToList();
+                Toast toast = Toast.makeText(getActivity(), "Medication Edited",
+                        Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
 
@@ -102,6 +106,9 @@ public class MedicationEditFragment extends Fragment {
                 Log.d(TAG, "delete medication button pressed");
                 deleteMedicationPressed(medicationKey);
                 returnToList();
+                Toast toast = Toast.makeText(getActivity(), "Medication Deleted",
+                        Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }
