@@ -10,6 +10,7 @@ public final class LogTag {
     public static final String homeActivity = "LogHomeActivity";
     public static final String signInActivity = "LogSignInActivity";
     public static final String takeDoseActivity = "LogTakeDoseActivity";
+    public static final String passwordResetActivity = "LogPassResetActivity";
 
     public static final String medicationListFragment = "LogMedListFragment";
     public static final String recordListFragment = "LogRecordListFragment";

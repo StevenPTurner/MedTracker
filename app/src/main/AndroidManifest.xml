@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.medtracker.medtracker">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <user-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <user-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,10 +18,12 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="	AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw"/>
+            android:value=" AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw" />
+
         <activity android:name="com.medtracker.Activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -38,7 +44,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name="com.medtracker.Activities.TakeDoseActivity"></activity>
+        <activity android:name="com.medtracker.Activities.TakeDoseActivity" />
+        <activity android:name="com.medtracker.Activities.PasswordResetActivity"></activity>
     </application>
 
 </manifest>
