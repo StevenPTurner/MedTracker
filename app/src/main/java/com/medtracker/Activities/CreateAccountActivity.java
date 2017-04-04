@@ -3,9 +3,11 @@ package com.medtracker.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
@@ -43,6 +45,24 @@ public class CreateAccountActivity extends Activity {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
         displayName = editForename.getText().toString() + " " + editSurname.getText().toString();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Please enter an email address",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Please enter a password",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (password.length() < 6) {
+            Toast.makeText(getApplicationContext(),
+                    "Passwords must be at lest 6 characters long", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         //return this as the result to the start activity
         Intent resultIntent = getIntent();

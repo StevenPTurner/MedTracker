@@ -11,7 +11,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:background="@drawable/image_start_background"
     android:gravity="center"
-    tools:context="com.medtracker.Activities.SignInActivity">
+    tools:context="com.medtracker.Activities.SignInActivity"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/text_title"
@@ -31,7 +32,7 @@
         android:id="@+id/edit_email"
         android:hint="Email"
         android:layout_height="wrap_content"
-        android:minWidth="117dp"
+        android:minWidth="133dp"
         android:layout_width="wrap_content"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -42,7 +43,7 @@
     <EditText
         android:id="@+id/edit_password"
         android:hint="Password"
-        android:minWidth="117dp"
+        android:minWidth="133dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
@@ -56,7 +57,7 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:textColor="@color/textLight"
         android:text="Sign In"
-        android:layout_width="117dp"
+        android:layout_width="133dp"
         android:layout_height="wrap_content"
         android:textAllCaps="false" />
 
@@ -64,9 +65,10 @@
         android:id="@+id/button_forgot_password"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_height="wrap_content"
-        android:layout_width="117dp"
+        android:layout_width="wrap_content"
         android:text="Forget Password"
         android:textAllCaps="false"
-        android:textColor="@color/textLight" />
+        android:textColor="@color/textLight"
+        android:layout_weight="0.02" />
 
 </LinearLayout>

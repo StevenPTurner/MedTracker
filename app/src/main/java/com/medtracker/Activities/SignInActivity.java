@@ -3,6 +3,7 @@ package com.medtracker.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -48,9 +49,22 @@ public class SignInActivity extends Activity {
     }
 
     //gathers are returns data when button is pressed
+    //http://www.androidhive.info/2016/06/android-getting-started-firebase-simple-login-registration-auth/
     public void signInDetails() {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
+
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(getApplicationContext(), "Please enter an e-mail address",
+                    Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            Toast.makeText(getApplicationContext(), "Please enter a password", Toast.LENGTH_SHORT)
+                    .show();
+            return;
+        }
 
         //returns data to sign in activity
         Intent resultIntent = getIntent();
