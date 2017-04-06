@@ -47,12 +47,14 @@ public class StatisticsFragment extends Fragment {
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<String> recordKeys = new ArrayList<>();
     private PieChart pieChart;
-    PieDataSet set;
+    private PieDataSet set;
 
     private int totalOnTime;
     private int totalLate;
     private int totalMissed;
     List<PieEntry> entries = new ArrayList<>();
+
+    private TextView alertBox;
 
     public StatisticsFragment() {}
 
@@ -76,6 +78,7 @@ public class StatisticsFragment extends Fragment {
         pieChart = (PieChart) getView().findViewById(R.id.chart);
         pieChart.getDescription().setEnabled(false);
         set = new PieDataSet(entries, "Medication statistics");
+        alertBox = (TextView) getActivity().findViewById(R.id.alert_box);
         initialisePieChartStyle();
     }
 
@@ -160,7 +163,7 @@ public class StatisticsFragment extends Fragment {
         float missedPercentage = calcPercentage(totalRecords, totalMissed);
 
         PieData data = new PieData(set);
-        pieChart.setCenterText(getCenterText(latePercentage,missedPercentage));
+        alertBox.setText(getCenterText(latePercentage,missedPercentage));
         pieChart.setData(data);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);

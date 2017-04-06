@@ -4,9 +4,27 @@
     android:layout_height="match_parent"
     tools:context="com.medtracker.Fragments.StatisticsFragment">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/alert_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test"
+            android:textSize="18sp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingStart="8dp"
+            android:textColor="@color/textLight"
+            android:background="@color/colorAccent" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/alert_box"/>
+
+    </RelativeLayout>
 
 </FrameLayout>
