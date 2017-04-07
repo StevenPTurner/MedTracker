@@ -81,7 +81,7 @@ public class StatisticsFragment extends Fragment {
         pieChart.getDescription().setEnabled(false);
         pieChart.setDrawHoleEnabled(true);
 
-        set = new PieDataSet(entries, "Medication statistics");
+        set = new PieDataSet(entries, "");
         lateAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_late);
         missedAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_missed);
         initialisePieChartStyle();
@@ -170,11 +170,13 @@ public class StatisticsFragment extends Fragment {
         if(latePercentage >15) {
             lateAlertBox.setVisibility(View.VISIBLE);
             lateAlertBox.setText(getLateText(latePercentage));
+            lateAlertBox.setBackgroundColor(getAlertColour(latePercentage,50));
         }
 
         if(missedPercentage >10) {
             missedAlertBox.setVisibility(View.VISIBLE);
-            missedAlertBox.setText(getLateText(latePercentage));
+            missedAlertBox.setText(getMissedText(missedPercentage));
+            missedAlertBox.setBackgroundColor(getAlertColour(missedPercentage,25));
         }
 
         PieData data = new PieData(set);
@@ -189,7 +191,7 @@ public class StatisticsFragment extends Fragment {
 
 
     private void initialisePieChartStyle() {
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
 
         colors.add(ColorTemplate.rgb("#66BB6A"));
         colors.add(ColorTemplate.rgb("#FFA726"));
@@ -198,14 +200,14 @@ public class StatisticsFragment extends Fragment {
         set.setColors(colors);
         set.setSliceSpace(3f);
 
-        Legend l = pieChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-        l.setXEntrySpace(7f);
-        l.setYEntrySpace(0f);
-        l.setYOffset(15f);
+        Legend legend = pieChart.getLegend();
+        legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
+        legend.setDrawInside(false);
+        legend.setTextSize(16f);
+        legend.setXEntrySpace(7f);
+        legend.setYEntrySpace(0f);
+        legend.setYOffset(7f);
     }
 
     private String getLateText(float late) {
