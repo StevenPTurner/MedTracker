@@ -232,8 +232,15 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
-    public int getAlertColour() {
+    public int getAlertColour(float percentage, float limit) {
+        float threshhold = limit/7;
         int[] colours = getActivity().getResources().getIntArray(R.array.alert_box_colours);
+        int alertSeverity = (int) (percentage/threshhold);
+
+        if (alertSeverity > (colours.length-1))
+            alertSeverity = (colours.length-1);
+
+        return colours[alertSeverity];
     }
 
     public String genRandomPhrase(String type, String severity){
