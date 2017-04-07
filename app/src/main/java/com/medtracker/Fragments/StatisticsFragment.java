@@ -3,9 +3,6 @@ package com.medtracker.Fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.support.annotation.IntegerRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.IntentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,7 +55,8 @@ public class StatisticsFragment extends Fragment {
     private int totalMissed;
     List<PieEntry> entries = new ArrayList<>();
 
-    private TextView alertBox;
+    private TextView lateAlertBox;
+    private TextView missedAlertBox;
 
     public StatisticsFragment() {}
 
@@ -84,7 +82,8 @@ public class StatisticsFragment extends Fragment {
         pieChart.setDrawHoleEnabled(true);
 
         set = new PieDataSet(entries, "Medication statistics");
-        alertBox = (TextView) getActivity().findViewById(R.id.alert_box);
+        lateAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_late);
+        missedAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_missed);
         initialisePieChartStyle();
     }
 
@@ -168,8 +167,17 @@ public class StatisticsFragment extends Fragment {
         float latePercentage = calcPercentage(totalRecords, totalLate);
         float missedPercentage = calcPercentage(totalRecords, totalMissed);
 
+        if(latePercentage >15) {
+            lateAlertBox.setVisibility(View.VISIBLE);
+            lateAlertBox.setText(getLateText(latePercentage));
+        }
+
+        if(missedPercentage >10) {
+            missedAlertBox.setVisibility(View.VISIBLE);
+            missedAlertBox.setText(getLateText(latePercentage));
+        }
+
         PieData data = new PieData(set);
-        alertBox.setText(getLateText(latePercentage));
         pieChart.setData(data);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
@@ -214,14 +222,18 @@ public class StatisticsFragment extends Fragment {
 
     private String getMissedText(float missed) {
         if(missed >25){
-            return genRandomPhrase("late","high");
+            return genRandomPhrase("missed","high");
         } else if (missed > 20) {
-            return genRandomPhrase("late","med");
+            return genRandomPhrase("missed","med");
         } else if (missed  > 10) {
-            return genRandomPhrase("late","low");
+            return genRandomPhrase("missed","low");
         } else {
             return null;
         }
+    }
+
+    public int getAlertColour() {
+        int[] colours = getActivity().getResources().getIntArray(R.array.alert_box_colours);
     }
 
     public String genRandomPhrase(String type, String severity){
@@ -231,8 +243,7 @@ public class StatisticsFragment extends Fragment {
                 getActivity().getPackageName());
 
         String phrases[] = getResources().getStringArray(arrayId);
-
-       return phrases[random.nextInt(2)];
+        return phrases[random.nextInt(3)];
     }
 
     //when the user returns to this fragment from another

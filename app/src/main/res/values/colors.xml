@@ -20,4 +20,16 @@
     <color name="orange">#FFA726</color>
     <color name="deep_orange">#FF7043</color>
     <color name="red">#EF5350</color>
+
+    <!--alert colours-->
+    <array name="alert_box_colours">
+        <item>@color/green</item>
+        <item>@color/light_green</item>
+        <item>@color/lime</item>
+        <item>@color/amber</item>
+        <item>@color/orange</item>
+        <item>@color/deep_orange</item>
+        <item>@color/red</item>
+    </array>
+
 </resources>
