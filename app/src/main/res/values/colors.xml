@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--https://www.materialui.co/colors resource for colour palettes-->
+<!--https://material.io/guidelines/style/color.html#color-color-palette-->
 <resources>
     <color name="colorPrimary">#305b9f</color>
     <color name="colorPrimaryDark">#305b9f</color>
@@ -11,9 +13,11 @@
     <color name="secondary_text_material_light">#8a000000</color>
     <color name="table_highlight">#90CAF9</color>
     <color name="green">#66BB6A</color>
+    <color name="light_green">#9CCC65</color>
+    <color name="lime">#D4E157</color>
     <color name="yellow">#FFEE58</color>
-    <color name="red">#ef5350</color>
-    <!--<color name="buttonColor"></color>-->
-
-    <!--https://www.materialui.co/colors resource for colour palettes-->
+    <color name="amber">#FFCA28</color>
+    <color name="orange">#FFA726</color>
+    <color name="deep_orange">#FF7043</color>
+    <color name="red">#EF5350</color>
 </resources>

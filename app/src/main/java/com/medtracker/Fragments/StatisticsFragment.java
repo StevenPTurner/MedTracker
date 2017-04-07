@@ -3,6 +3,9 @@ package com.medtracker.Fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.support.annotation.IntegerRes;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.IntentCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,6 +80,8 @@ public class StatisticsFragment extends Fragment {
 
         pieChart = (PieChart) getView().findViewById(R.id.chart);
         pieChart.getDescription().setEnabled(false);
+        pieChart.setDrawHoleEnabled(true);
+
         set = new PieDataSet(entries, "Medication statistics");
         alertBox = (TextView) getActivity().findViewById(R.id.alert_box);
         initialisePieChartStyle();
@@ -163,7 +168,7 @@ public class StatisticsFragment extends Fragment {
         float missedPercentage = calcPercentage(totalRecords, totalMissed);
 
         PieData data = new PieData(set);
-        alertBox.setText(getCenterText(latePercentage,missedPercentage));
+        alertBox.setText(getLateText(latePercentage));
         pieChart.setData(data);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
@@ -179,7 +184,7 @@ public class StatisticsFragment extends Fragment {
 
         colors.add(ColorTemplate.rgb("#66BB6A"));
         colors.add(ColorTemplate.rgb("#FFA726"));
-        colors.add(ColorTemplate.rgb("#ef5350"));
+        colors.add(ColorTemplate.rgb("#EF5350"));
         colors.add(ColorTemplate.getHoloBlue());
         set.setColors(colors);
         set.setSliceSpace(3f);
@@ -194,14 +199,24 @@ public class StatisticsFragment extends Fragment {
         l.setYOffset(15f);
     }
 
-    private String getCenterText(float late, float missed) {
-        if(missed > 25) {
-            return "Medication will not be effective at current usage rates";
-        } else if (missed > 10) {
-            return "Usage rates will effect medications effectiveness";
+    private String getLateText(float late) {
+        if(late >15){
+            return "Majority of doses are late, change dosage time";
         } else if (late > 50) {
             return "Majority of doses are late, change dosage time";
         } else if (late  > 25) {
+            return "Consider changing dosage time";
+        } else {
+            return "";
+        }
+    }
+
+    private String getMissedText(float missed) {
+        if(missed >15){
+            return "Majority of doses are late, change dosage time";
+        } else if (missed > 50) {
+            return "Majority of doses are late, change dosage time";
+        } else if (missed  > 25) {
             return "Consider changing dosage time";
         } else {
             return "";
