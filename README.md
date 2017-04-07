@@ -1,7 +1,13 @@
 # MedTracker
+## ToDo
+  - [x] Reset password
+  - [x] Improve UX (Add toasts to inform the user of actions)
+  - [x] Re-design and implement statistics functionality
+  - [ ] Re-impliment map fragment due to crashing
+  - [ ] Look at small bugs in alarm system concerning negative times
 ## Refactoring & Commenting
 ### Fragments
-  - [ ] Statistics
+  - [x] Statistics
   - [ ] Record List
   - [ ] About Fragment
   - [ ] Nearest Pharmacy

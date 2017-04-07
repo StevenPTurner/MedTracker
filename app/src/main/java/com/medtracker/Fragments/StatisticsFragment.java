@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -28,8 +27,6 @@ import com.medtracker.Models.Record;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -40,21 +37,21 @@ import java.util.Random;
  */
 public class StatisticsFragment extends Fragment {
     private static final String TAG = LogTag.statisticsFragment;
-
+    //firebase components
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
     private DatabaseReference database;
     private String userUID;
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<String> recordKeys = new ArrayList<>();
+    //pie chart
     private PieChart pieChart;
     private PieDataSet set;
-
+    private List<PieEntry> entries = new ArrayList<>();
     private int totalOnTime;
     private int totalLate;
     private int totalMissed;
-    List<PieEntry> entries = new ArrayList<>();
-
+    //UI views
     private TextView lateAlertBox;
     private TextView missedAlertBox;
 
@@ -88,7 +85,7 @@ public class StatisticsFragment extends Fragment {
         initialiseLegend();
     }
 
-    @Override
+    @Override //used mainly to get data from database
     public void onStart() {
         super.onStart();
 
@@ -99,6 +96,7 @@ public class StatisticsFragment extends Fragment {
                 Record record = dataSnapshot.getValue(Record.class);
                 records.add(record);
                 recordKeys.add(dataSnapshot.getKey());
+
                 if (record.isLate()) {
                     totalLate++;
                 } else if(record.isMissed()) {
@@ -106,6 +104,7 @@ public class StatisticsFragment extends Fragment {
                 } else {
                     totalOnTime ++;
                 }
+
                 updateStats(records.size());
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
             }
@@ -152,6 +151,23 @@ public class StatisticsFragment extends Fragment {
         database.addChildEventListener(childEventListener);
     }
 
+    //get's stats and sets up other components with them
+    private void updateStats(int totalRecords) {
+        float onTimePercentage = calcPercentage(totalRecords, totalOnTime);
+        float latePercentage = calcPercentage(totalRecords, totalLate);
+        float missedPercentage = calcPercentage(totalRecords, totalMissed);
+
+        setChartValues(onTimePercentage, latePercentage, missedPercentage);
+        initialiseAlertBox(latePercentage, missedPercentage);
+
+        PieData data = new PieData(set);
+        pieChart.setData(data);
+        data.setValueFormatter(new PercentFormatter());
+        data.setValueTextSize(11f);
+        data.setValueTextColor(Color.WHITE);
+        pieChart.invalidate(); // refresh
+    }
+
     private void setChartValues(float onTime, float late, float missed) {
         entries.clear();
         entries.add(new PieEntry(onTime, "On Time"));
@@ -159,13 +175,8 @@ public class StatisticsFragment extends Fragment {
         entries.add(new PieEntry(missed, "Missed"));
     }
 
-
-
-    private void updateStats(int totalRecords) {
-        float onTimePercentage = calcPercentage(totalRecords, totalOnTime);
-        float latePercentage = calcPercentage(totalRecords, totalLate);
-        float missedPercentage = calcPercentage(totalRecords, totalMissed);
-
+    //sets up alert box colour and text
+    private void initialiseAlertBox(float latePercentage, float missedPercentage) {
         if(latePercentage >15) {
             lateAlertBox.setVisibility(View.VISIBLE);
             lateAlertBox.setText(getLateText(latePercentage));
@@ -177,31 +188,20 @@ public class StatisticsFragment extends Fragment {
             missedAlertBox.setText(getMissedText(missedPercentage));
             missedAlertBox.setBackgroundColor(getAlertColour(missedPercentage,25));
         }
-
-        PieData data = new PieData(set);
-        pieChart.setData(data);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
-        pieChart.invalidate(); // refresh
-
-        setChartValues(onTimePercentage, latePercentage, missedPercentage);
     }
 
-
+    //sets up the style of the pie chart
     private void initialisePieChartStyle() {
         ArrayList<Integer> colors = new ArrayList<>();
-
         colors.add(ColorTemplate.rgb("#66BB6A"));
         colors.add(ColorTemplate.rgb("#FFA726"));
         colors.add(ColorTemplate.rgb("#EF5350"));
         colors.add(ColorTemplate.getHoloBlue());
         set.setColors(colors);
         set.setSliceSpace(3f);
-
-
     }
 
+    //sets up the legend
     private void initialiseLegend() {
         Legend legend = pieChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -213,6 +213,7 @@ public class StatisticsFragment extends Fragment {
         legend.setYOffset(7f);
     }
 
+    //used to define the severity ratings of an issue and get a message
     private String getLateText(float late) {
         if(late >50){
             return genRandomPhrase("late","high");
@@ -225,6 +226,7 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
+    //used to define the severity ratings of an issue and get a message
     private String getMissedText(float missed) {
         if(missed >25){
             return genRandomPhrase("missed","high");
@@ -241,15 +243,16 @@ public class StatisticsFragment extends Fragment {
         return ((current * 100.0f) / total);
     }
 
+    //Gets the colour for the alert bar based on percentage of issue compared to the limit
     private int getAlertColour(float percentage, float limit) {
-        float threshhold = limit/7;
         int[] colours = getActivity().getResources().getIntArray(R.array.alert_box_colours);
-        int alertSeverity = (int) (percentage/threshhold);
+        float threshold = limit/colours.length; //divides limits to work out colour for each stage
+        int alertSeverity = (int) (percentage/threshold); //works out current stage
 
-        if (alertSeverity > (colours.length-1))
+        if (alertSeverity > (colours.length-1)) //used to prevent going over max stage (red)
             alertSeverity = (colours.length-1);
 
-        return colours[alertSeverity];
+        return colours[alertSeverity]; //returns correct colour for stage
     }
 
     //Picks a random phrase from an array of strings based on type of issue and severity
@@ -259,8 +262,8 @@ public class StatisticsFragment extends Fragment {
         int arrayId = getResources().getIdentifier(arrayName, "array", //converts to id
                 getActivity().getPackageName());
 
-        String phrases[] = getResources().getStringArray(arrayId);
-        return phrases[random.nextInt(3)];
+        String phrases[] = getResources().getStringArray(arrayId); //gets resource into an array
+        return phrases[random.nextInt(phrases.length)]; //return random phrase between 0 and length
     }
 
     //when the user returns to this fragment from another
