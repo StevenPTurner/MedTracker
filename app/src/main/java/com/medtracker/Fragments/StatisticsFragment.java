@@ -35,6 +35,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -200,27 +201,38 @@ public class StatisticsFragment extends Fragment {
     }
 
     private String getLateText(float late) {
-        if(late >15){
-            return "Majority of doses are late, change dosage time";
-        } else if (late > 50) {
-            return "Majority of doses are late, change dosage time";
-        } else if (late  > 25) {
-            return "Consider changing dosage time";
+        if(late >50){
+            return genRandomPhrase("late","high");
+        } else if (late > 25) {
+            return genRandomPhrase("late","med");
+        } else if (late  > 15) {
+            return genRandomPhrase("late","low");
         } else {
-            return "";
+            return null;
         }
     }
 
     private String getMissedText(float missed) {
-        if(missed >15){
-            return "Majority of doses are late, change dosage time";
-        } else if (missed > 50) {
-            return "Majority of doses are late, change dosage time";
-        } else if (missed  > 25) {
-            return "Consider changing dosage time";
+        if(missed >25){
+            return genRandomPhrase("late","high");
+        } else if (missed > 20) {
+            return genRandomPhrase("late","med");
+        } else if (missed  > 10) {
+            return genRandomPhrase("late","low");
         } else {
-            return "";
+            return null;
         }
+    }
+
+    public String genRandomPhrase(String type, String severity){
+        Random random = new Random();
+        String arrayName = type + "_alerts_" + severity + "_array";
+        int arrayId = getResources().getIdentifier(arrayName, "array",
+                getActivity().getPackageName());
+
+        String phrases[] = getResources().getStringArray(arrayId);
+
+       return phrases[random.nextInt(2)];
     }
 
     //when the user returns to this fragment from another

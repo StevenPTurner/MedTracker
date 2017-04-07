@@ -21,7 +21,17 @@
         <item>About</item>
         <item>Sign Out</item>
     </string-array>
-    <string-array name="late_alerts_array">
+    <string-array name="late_alerts_low_array">
+        <item>A few late doses, consider amending the time you take doses.</item>
+        <item>A small amount of late doses, delaying doses can effect effectiveness.</item>
+        <item>A couple of late doses, try to take doses closer to alarm times.</item>
+    </string-array>
+    <string-array name="late_alerts_med_array">
+        <item>Some late doses, consider amending the time you take each dose.</item>
+        <item>Increasing amount of late doses, consider discussing with your doctor.</item>
+        <item>A couple of late doses, try to take doses closer to alarm times</item>
+    </string-array>
+    <string-array name="late_alerts_high_array">
         <item>High amount of late doses, consider amending the time you take each dose.</item>
         <item>Excessive amount of late doses, consider discussing with your doctor.</item>
         <item>Too many missed doses, try to take doses closer to alarm times</item>
