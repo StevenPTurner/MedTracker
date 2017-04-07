@@ -85,6 +85,7 @@ public class StatisticsFragment extends Fragment {
         lateAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_late);
         missedAlertBox = (TextView) getActivity().findViewById(R.id.alert_box_missed);
         initialisePieChartStyle();
+        initialiseLegend();
     }
 
     @Override
@@ -158,9 +159,7 @@ public class StatisticsFragment extends Fragment {
         entries.add(new PieEntry(missed, "Missed"));
     }
 
-    private float calcPercentage(float total, float current){
-        return ((current * 100.0f) / total);
-    }
+
 
     private void updateStats(int totalRecords) {
         float onTimePercentage = calcPercentage(totalRecords, totalOnTime);
@@ -200,6 +199,10 @@ public class StatisticsFragment extends Fragment {
         set.setColors(colors);
         set.setSliceSpace(3f);
 
+
+    }
+
+    private void initialiseLegend() {
         Legend legend = pieChart.getLegend();
         legend.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         legend.setHorizontalAlignment(Legend.LegendHorizontalAlignment.LEFT);
@@ -234,7 +237,11 @@ public class StatisticsFragment extends Fragment {
         }
     }
 
-    public int getAlertColour(float percentage, float limit) {
+    private float calcPercentage(float total, float current){
+        return ((current * 100.0f) / total);
+    }
+
+    private int getAlertColour(float percentage, float limit) {
         float threshhold = limit/7;
         int[] colours = getActivity().getResources().getIntArray(R.array.alert_box_colours);
         int alertSeverity = (int) (percentage/threshhold);
@@ -245,10 +252,11 @@ public class StatisticsFragment extends Fragment {
         return colours[alertSeverity];
     }
 
-    public String genRandomPhrase(String type, String severity){
+    //Picks a random phrase from an array of strings based on type of issue and severity
+    private String genRandomPhrase(String type, String severity){
         Random random = new Random();
-        String arrayName = type + "_alerts_" + severity + "_array";
-        int arrayId = getResources().getIdentifier(arrayName, "array",
+        String arrayName = type + "_alerts_" + severity + "_array"; //builds array name
+        int arrayId = getResources().getIdentifier(arrayName, "array", //converts to id
                 getActivity().getPackageName());
 
         String phrases[] = getResources().getStringArray(arrayId);
