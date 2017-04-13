@@ -9,19 +9,21 @@ import android.util.Log;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
+import com.medtracker.Models.Record;
 import com.medtracker.medtracker.R;
 
 import java.util.Calendar;
 
 /**
- * Created by home on 13/04/2017.
+ * Used to centralise the creation of objects for easy maintenance
  */
 
 public class Factory {
+    private final static String TAG = LogTag.factory;
 
     public static Medication medication(String medicationName, String dose, String instructions) {
         int medicationDoseValue = Integer.parseInt(dose);
-        //Log.d(TAG, "Medication has been built");
+        Log.d(TAG, "A new medication has been built");
         return new Medication(instructions, medicationName, false, false, medicationDoseValue);
     }
 
@@ -35,11 +37,19 @@ public class Factory {
         if (currentHour > hour)
             currentDay = currentDay + 1;
 
+        Log.d(TAG, "A new alarm has been built");
         return new Alarm(id, minute, hour, currentDay, currentMonth, currentYear, medicationKey, RCID);
     }
 
     public static AlarmManager alarmManager(String medicationKey) {
+        Log.d(TAG, "A new alarm manager has been built");
         return new AlarmManager(medicationKey, false, "none", 0, 0);
+    }
+
+    public static Record record(String key, int dose, int minute, int hour, int day, int month,
+                                int year, boolean late, boolean missed) {
+        Log.d(TAG, "A new record has been built");
+        return new Record(key, dose, 0, minute, hour, day, month, year, late, missed);
     }
 
     public static Notification notification(Context context, String title, String content,
@@ -51,6 +61,7 @@ public class Factory {
         builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
         builder.setLights(Color.RED, 3000, 3000);
         builder.setContentIntent(intent);
+        Log.d(TAG, "A new notification has been built");
         return builder.build();
     }
 }

@@ -63,4 +63,4 @@
   - [ ] Notification Manager
   - [ ] Notification Receiver
   - [ ] RC
-  - [ ] Utility
+  - [x] Utility

@@ -21,6 +21,7 @@ import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by spt10 on 08/02/2017.
@@ -65,14 +66,14 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
         //collects raw data and parses into useable formats
         Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
         String dateToDisplay = Utility.calendarToString(alarmCalendar);
-        String timeTillAlarmText = Utility.calcTimeDif(alarmCalendar);
-        Log.d(TAG, "parsed all data, alarm time: " + timeTillAlarmText);
+        long timeTillAlarmInMillis = Utility.calcTimeDiff(alarmCalendar);
+        Log.d(TAG, "parsed all data, alarm time: " + timeTillAlarmInMillis);
 
 
         // Populate the data into the template view using the data object
         alarmNumber.setText("Alarm " + alarm.getId() + " of " + alarmCount);
         alarmTime.setText(dateToDisplay);
-        timeTillAlarm.setText(timeTillAlarmText);
+        timeTillAlarm.setText(createNextAlarmText(timeTillAlarmInMillis));
 
         //setup onclick listeners for each cards buttons
         editAlarm.setOnClickListener(new View.OnClickListener() {
@@ -91,6 +92,12 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    private String createNextAlarmText(long timeTillNextAlarm) {
+        long hours = TimeUnit.MILLISECONDS.toHours(timeTillNextAlarm);
+        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeTillNextAlarm - (hours * 60 * 60 * 1000));
+        return Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
     }
 
     public void setAlarmCount(int alarmCount) {

@@ -89,8 +89,6 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.setTargetFragment(AlarmListFragment.this, RC_TIME_PICKER_ADD);
                 timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
-                Toast toast = Toast.makeText(getActivity(), "Alarm added", Toast.LENGTH_SHORT);
-                toast.show();
             }
         });
 
@@ -223,7 +221,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
     //method to add an alarm to the database
     private void addAlarm(int hour, int minute) {
         //increment id input by one as this is a new alarm
-        Alarm toAdd = Factory.alarm(hour,minute, alarms.size()+1,medicationKey,RCID);
+        Alarm toAdd = Factory.alarm(alarms.size()+1, minute, hour, medicationKey, RCID);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
@@ -232,6 +230,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         Log.d(TAG, alarmKey + " added to database");
         //make sure to update the manager
         updateAlarmManager(toAdd.getMedication_key(), "add");
+        Toast.makeText(getActivity(), "Alarm added", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -242,8 +241,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         DialogFragment timePicker = new TimePickerFragment();
         timePicker.setTargetFragment(AlarmListFragment.this, RC_TIME_PICKER_EDIT);
         timePicker.show(getFragmentManager().beginTransaction(), "timePicker");
-        Toast toast = Toast.makeText(getActivity(), "Alarm edited", Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getActivity(), "Alarm edited", Toast.LENGTH_SHORT).show();
     }
 
     @Override //interface to editing alarms
@@ -255,13 +253,12 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                 child(alarmKey).removeValue();
         updateAlarmManager(toDelete.getMedication_key(), "delete");
         Log.d(TAG, "Alarm deleted from the database");
-        Toast toast = Toast.makeText(getActivity(), "Alarm Deleted", Toast.LENGTH_SHORT);
-        toast.show();
+        Toast.makeText(getActivity(), "Alarm Deleted", Toast.LENGTH_SHORT).show();
     }
 
     //this method preforms the actual database edit, no need to edit alarmManager
     public void applyEdit(int hourOfDay, int minute) {
-        Alarm toAdd = Factory.alarm(hourOfDay, minute, currentEdit, medicationKey, RCID);
+        Alarm toAdd = Factory.alarm(alarms.size()+1, minute, hourOfDay, medicationKey, RCID);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);

@@ -54,7 +54,7 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         String medicationName = Utility.keyToName(record.getMedication_key());
         Calendar calendar = Utility.recordToCalendar(record);
         String time = Utility.calendarToTime(calendar);
-        String date = Utility.calendarToSDate(calendar);
+        String date = Utility.calendarToDate(calendar);
 
         // Populate the data into the template view using the data object
         recordName.setText(medicationName);

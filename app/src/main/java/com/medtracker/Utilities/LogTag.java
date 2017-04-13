@@ -23,4 +23,5 @@ public final class LogTag {
 
     public static final String notificationManager = "LogNotificationManager";
     public static final String emailHelper = "LogEmailHelper";
+    public static final String factory = "LogFactory";
 }

@@ -1,8 +1,5 @@
 package com.medtracker.Utilities;
 
-
-
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.Record;
 
@@ -11,19 +8,19 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * used as a bunch of utility methods for purposes such as converting times or object factories
+ * Used as a bunch of utility methods for purposes such as converting times
  */
 
 public class Utility {
 
-
+    //converts names (Sodium Valproate) to medication keys (sodium_valproate)
     public static String nameToKey(String name) {
         String key = name.toLowerCase();
         key = key.replaceAll(" ","_");
-
         return key;
     }
 
+    //converts keys (sodium_valproate) to medication names (Sodium Valproate)
     public static String keyToName(String key) {
         String name = "";
         String[] toUpCase = key.split("_");
@@ -33,10 +30,12 @@ public class Utility {
                     toUpCase[i].substring(1).toLowerCase() +
                     " ";
         }
+
         name = name.trim();
         return name;
     }
 
+    //Converts alarm objects into alarm objects for time manipulation
     public static Calendar alarmToCalendar(Alarm alarm) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
@@ -48,6 +47,7 @@ public class Utility {
         return calendar;
     }
 
+    //Converts records to calendar objects for time manipulation
     public static Calendar recordToCalendar(Record record) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.SECOND, 0);
@@ -59,15 +59,17 @@ public class Utility {
         return calendar;
     }
 
+    //Coverts alarm to record for saving to database
     public static Record alarmToRecord(Alarm alarm, int dose) {
         Calendar calendar = Calendar.getInstance();
-        final long tenMinutes = 600000;
-        final long oneHour = 3600000;
+        final long tenMinutes = 600000; //used to determine if the dose was missed
+        final long oneHour = 3600000;   //used to determine if the dose was late
         final long alarmTime = alarmToCalendar(alarm).getTimeInMillis();
         final long currentTime = calendar.getTimeInMillis();
         boolean late = false;
         boolean missed = false;
 
+        //works out if a dose is either, missed, late or on time
         if(isTimeLongerThan(oneHour, alarmTime, currentTime)) {
             missed = true;
         } else if ( isTimeLongerThan(tenMinutes, alarmTime, currentTime)) {
@@ -81,37 +83,33 @@ public class Utility {
         int month = (calendar.get(Calendar.MONTH) + 1);
         int year = calendar.get(Calendar.YEAR);
 
-        return new Record(medicationKey, dose, 0, minute, hour, day, month, year, late, missed);
+        return Factory.record(medicationKey, dose, minute, hour, day, month, year, late, missed);
     }
 
+    //Converts a calendar object to a displayable string
     public static String calendarToString(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm EEE dd MMM");
-        String formattedDate = sdf.format(calendar.getTime());
-        return formattedDate;
+        return sdf.format(calendar.getTime());
     }
 
+    //converts a calendar object to a displayable time only
     public static String calendarToTime(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         String formattedDate = sdf.format(calendar.getTime());
         return formattedDate;
     }
 
-    public static String calendarToSDate(Calendar calendar) {
+    //converts a calendar object to a displayable date only
+    public static String calendarToDate(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM");
-        String formattedDate = sdf.format(calendar.getTime());
-        return formattedDate;
+        return sdf.format(calendar.getTime());
     }
 
-    public static String calcTimeDif(Calendar alarm) {
-        long alarmTime = alarm.getTimeInMillis();
+    //calculates the difference in time(in milli seconds) between a calendar object and current time
+    public static long calcTimeDiff(Calendar calendar) {
+        long startTime = calendar.getTimeInMillis();
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timeDiff = alarmTime - currentTime;
-
-        long hours = TimeUnit.MILLISECONDS.toHours(timeDiff);
-        long minutes = TimeUnit.MILLISECONDS.toMinutes(timeDiff - (hours * 60 * 60 * 1000));
-
-        String timeTillDose = Long.toString(hours) + " Hours & " + Long.toString(minutes) + " Minutes from now";
-        return timeTillDose;
+        return (startTime - currentTime);
     }
 
     public static boolean isTimeLongerThan(long timeDiff, long initalTime, long finalTime) {
