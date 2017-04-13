@@ -15,7 +15,7 @@ import com.medtracker.medtracker.R;
 import java.util.Calendar;
 
 /**
- * Created by spt10 on 19/02/2017.
+ * Links of websites used
  * http://www.vogella.com/tutorials/AndroidNotifications/article.html
  * https://gist.github.com/BrandonSmith/6679223
  */
@@ -23,7 +23,8 @@ import java.util.Calendar;
 public class NotificationManager {
     public static final String TAG = LogTag.notificationManager;
 
-    public static Notification getNotification(String content, Context context, String alarmKey,
+    //used to create a notification object and it's intent
+    private static Notification getNotification(String content, Context context, String alarmKey,
                                                String medicationKey) {
         Log.d(TAG, medicationKey);
         Intent intent = new Intent(context, TakeDoseActivity.class);
@@ -31,27 +32,32 @@ public class NotificationManager {
         intent.putExtra("medicationKey", medicationKey);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
         return Factory.notification(context,"MedTracker Alert!", content,pendingIntent);
     }
 
-    public static void scheduleNotification(Notification notification, int id, Context context,
+    //used to set up alarm manager service and add notification to the notification queue
+    private static void scheduleNotification(Notification notification, int id, Context context,
                                             Calendar calendar) {
         Intent notificationIntent = new Intent(context, NotificationReceiver.class);
         notificationIntent.putExtra(NotificationReceiver.NOTIFICATION_ID, id);
         notificationIntent.putExtra(NotificationReceiver.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(),pendingIntent);
     }
 
+    //used to manage the setting up of a notification to the system services
     public static void enableNextAlarm(Alarm alarm, Context context) {
         String medicationName = Utility.keyToName(alarm.getMedication_key());
         String alarmKey = alarm.getMedication_key() + "_" + alarm.getId();
         String message = "Take a dose of " + medicationName;
         Calendar currentAlarm = Utility.alarmToCalendar(alarm);
 
-        Notification notification = getNotification(message, context, alarmKey, alarm.getMedication_key());
+        Notification notification = getNotification(message, context, alarmKey,
+                alarm.getMedication_key());
         scheduleNotification(notification, alarm.getRCID(), context, currentAlarm);
     }
 

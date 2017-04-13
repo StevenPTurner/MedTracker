@@ -59,8 +59,8 @@
 
 ### Utility
   - [x] Email Helper
-  - [ ] Log Tag
-  - [ ] Notification Manager
-  - [ ] Notification Receiver
+  - [x] Log Tag
+  - [x] Notification Manager
+  - [x] Notification Receiver
   - [x] RC
   - [x] Utility
