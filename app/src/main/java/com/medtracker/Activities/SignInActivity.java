@@ -13,7 +13,7 @@ import android.widget.Toast;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
-//used to gather and return user info sign in to the starting activitiy
+//used to gather and return user info sign in to the starting activity
 //used for e-mail sign in
 public class SignInActivity extends Activity {
     private final String TAG = LogTag.signInActivity;
@@ -27,6 +27,7 @@ public class SignInActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+
         Log.d(TAG, "Activity loaded");
         editEmail = (EditText) findViewById(R.id.edit_email);
         editPassword = (EditText) findViewById(R.id.edit_password);
@@ -38,6 +39,7 @@ public class SignInActivity extends Activity {
             }
         });
 
+        //starts process for resetting password
         Button resetPassword = (Button) findViewById(R.id.button_forgot_password);
         resetPassword.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -54,6 +56,7 @@ public class SignInActivity extends Activity {
         email = editEmail.getText().toString();
         password = editPassword.getText().toString();
 
+        //handles user errors
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please enter an e-mail address",
                     Toast.LENGTH_SHORT).show();

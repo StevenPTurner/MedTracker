@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.medtracker.R;
 
+//used to reset the users password
 public class PasswordResetActivity extends Activity {
     private final String TAG = LogTag.passwordResetActivity;
     private EditText editEmail;
@@ -46,6 +47,7 @@ public class PasswordResetActivity extends Activity {
     private void resetUserPassword(String email) {
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
+        //authenticates and sends reset token and request to firebase
         auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

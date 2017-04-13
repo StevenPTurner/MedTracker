@@ -39,12 +39,14 @@ import com.medtracker.Fragments.RecordListFragment;
 import com.medtracker.Fragments.StatisticsFragment;
 import com.medtracker.Models.User;
 import com.medtracker.TestingClasses.TestActivity;
+import com.medtracker.Utilities.Factory;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
-//Home activity used to switch between fragments that house functioanlity, also used to manage
-// the navigation bar and navigation drawer along with action bar.
+//Home activity used to switch between fragments that contain functionality, also used to manage
+//the navigation bar and navigation drawer along with action bar.
+
 //These docs were used to help the creation of this app:
 //  https://developer.android.com/training/implementing-navigation/nav-drawer.html
 public class HomeActivity extends FragmentActivity {
@@ -89,7 +91,9 @@ public class HomeActivity extends FragmentActivity {
                     updateSideBar(user.getDisplay_name(),user.getEmail());
                 } else {
                     //if not create user account and update side bar
-                    User user = createUser();
+                    Intent lastIntent = getIntent();
+                    User user = Factory.user(mFirebaseUser.getEmail(),
+                            lastIntent.getStringExtra("displayName"));
                     mDatabase.setValue(user);
                     updateSideBar(user.getDisplay_name(),user.getEmail());
                     Log.w(TAG, "new user " + userUID + "created");
@@ -257,15 +261,6 @@ public class HomeActivity extends FragmentActivity {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
         mDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    //creates a new user
-    private User createUser() {
-        Intent lastIntent = getIntent();
-        User user = new User(mFirebaseUser.getEmail(),
-                lastIntent.getStringExtra("displayName"),
-                1111);
-        return user;
     }
 
     //updates sidebar display

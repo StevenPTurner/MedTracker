@@ -24,6 +24,7 @@ import com.medtracker.Utilities.NotificationManager;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
+// This activity appears after user slects a notification
 // //https://gist.github.com/BrandonSmith/6679223
 public class TakeDoseActivity extends Activity {
     private static final String TAG = LogTag.takeDoseActivity;

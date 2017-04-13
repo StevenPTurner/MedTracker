@@ -10,6 +10,7 @@ import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Models.Record;
+import com.medtracker.Models.User;
 import com.medtracker.medtracker.R;
 
 import java.util.Calendar;
@@ -20,6 +21,11 @@ import java.util.Calendar;
 
 public class Factory {
     private final static String TAG = LogTag.factory;
+
+    //creates a new user
+    public static User user(String email, String displayName) {
+        return new User(email, displayName, 1111);
+    }
 
     public static Medication medication(String medicationName, String dose, String instructions) {
         int medicationDoseValue = Integer.parseInt(dose);

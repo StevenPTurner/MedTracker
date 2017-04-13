@@ -3,7 +3,8 @@
   - [x] Reset password
   - [x] Improve UX (Add toasts to inform the user of actions)
   - [x] Re-design and implement statistics functionality
-  - [ ] Impliment a Factory Pattern
+  - [x] Impliment a Factory Pattern
+  - [ ] Add 24 hours to Alarm in TakeDoseActivity
   - [ ] Re-impliment map fragment due to crashing
   - [ ] Look at small bugs in alarm system concerning negative times
 ## Refactoring & Commenting
@@ -22,11 +23,11 @@
   - [ ] Statistics
 
 ### Activities
-  - [ ] Create Account
+  - [x] Create Account
   - [ ] Home Activity
-  - [ ] Password Reset
-  - [ ] Sign In
-  - [ ] Start
+  - [x] Password Reset
+  - [x] Sign In
+  - [x] Start
   - [ ] Take Dose
 
 ### Adapters

@@ -16,6 +16,7 @@ import com.medtracker.medtracker.R;
 
 import java.util.Calendar;
 
+//activitiy is used as a place to test tutorials and new ideas
 //http://www.vogella.com/tutorials/AndroidNotifications/article.html
 //https://gist.github.com/BrandonSmith/6679223
 public class TestActivity extends Activity{

@@ -46,6 +46,7 @@ public class CreateAccountActivity extends Activity {
         password = editPassword.getText().toString();
         displayName = editForename.getText().toString() + " " + editSurname.getText().toString();
 
+        //if statements being used to prevent empty details being submitted
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please enter an email address",
                     Toast.LENGTH_SHORT).show();
