@@ -15,7 +15,7 @@ import com.medtracker.medtracker.R;
 import java.util.ArrayList;
 
 /**
- * Created by spt10 on 12/02/2017.
+ * used to display and format alarm managers
  * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
@@ -31,7 +31,8 @@ public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
         AlarmManager alarmManager = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_alarm_manager, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_alarm_manager,
+                    parent, false);
         }
 
         // Lookup view for data population
@@ -39,7 +40,7 @@ public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
         TextView alarmCount = (TextView) convertView.findViewById(R.id.no_of_alarms);
         ImageView alarmIcon = (ImageView) convertView.findViewById(R.id.alarm_icon);
 
-        //gathers raw data and convers to useable formats
+        //gathers raw data and converts to use-able formats
         String medicationNameText = Utility.keyToName(alarmManager.getMedication_key());
         boolean hasAlarms = alarmManager.isHas_alarm();
         String noOfAlarms = String.valueOf(alarmManager.getMax_count());
@@ -48,12 +49,11 @@ public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
         medicationName.setText(medicationNameText + ": ");
         alarmCount.setText(noOfAlarms + " alarms set.");
 
-        //sets alarm icon
+        //sets alarm icon to darker colour if alarms have been set
         if (hasAlarms)
             alarmIcon.setColorFilter(R.color.colorPrimary);
 
         // Return the completed view to render on screen
         return convertView;
     }
-
 }

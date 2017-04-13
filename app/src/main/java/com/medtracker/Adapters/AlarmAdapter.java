@@ -24,7 +24,7 @@ import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by spt10 on 08/02/2017.
+ * used to display alarms in list format
  * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
@@ -63,12 +63,11 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
         Button editAlarm = (Button) convertView.findViewById(R.id.button_edit_alarm);
         Button deleteAlarm = (Button) convertView.findViewById(R.id.button_delete_alarm);
 
-        //collects raw data and parses into useable formats
+        //collects raw data and parses into usable formats
         Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
         String dateToDisplay = Utility.calendarToString(alarmCalendar);
         long timeTillAlarmInMillis = Utility.calcTimeDiff(alarmCalendar);
         Log.d(TAG, "parsed all data, alarm time: " + timeTillAlarmInMillis);
-
 
         // Populate the data into the template view using the data object
         alarmNumber.setText("Alarm " + alarm.getId() + " of " + alarmCount);
@@ -104,7 +103,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
         this.alarmCount = alarmCount;
     }
 
-    //initalises the callbacks
+    //initialises the callbacks
     public void setCallback(AlarmAdapterCallback callback){
         this.callback = callback;
     }

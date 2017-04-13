@@ -13,7 +13,7 @@ import com.medtracker.medtracker.R;
 import java.util.ArrayList;
 
 /**
- * Created by spt10 on 30/01/2017.
+ * Used for displaying medications in custom list format with clickable buttons
  * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
