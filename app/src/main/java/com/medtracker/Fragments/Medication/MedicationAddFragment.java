@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.Factory;
 import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
@@ -80,22 +81,8 @@ public class MedicationAddFragment extends Fragment {
         String medicationName = editName.getText().toString();
         String medicationDoseText = editDose.getText().toString();
         String medicationInstructions = editInstructions.getText().toString();
-        int medicationDoseValue = Integer.parseInt(medicationDoseText);
 
-        //builds and returns user object
-        Medication medication = new Medication(
-                medicationInstructions,
-                medicationName,
-                false,
-                false,
-                medicationDoseValue);
-        Log.d(TAG, "Medication has been built");
-        return medication;
-    }
-
-    private AlarmManager getNewManager(String medicationKey) {
-        AlarmManager alarmManager = new AlarmManager(medicationKey, false, "none", 0, 0);
-        return alarmManager;
+        return Factory.medication(medicationName,medicationDoseText,medicationInstructions);
     }
 
     //adds medication to database
@@ -106,7 +93,7 @@ public class MedicationAddFragment extends Fragment {
         mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication added to database");
         mDatabase.child("alarm_manager").child(userUID).child(medicationKey)
-                .setValue(getNewManager(medicationKey));
+                .setValue(Factory.alarmManager(medicationKey));
         Log.d(TAG, "Alarm manager added to database");
     }
 

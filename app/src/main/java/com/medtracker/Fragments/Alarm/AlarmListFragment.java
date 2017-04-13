@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Adapters.AlarmAdapter;
+import com.medtracker.Utilities.Factory;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.NotificationManager;
 import com.medtracker.Utilities.RC;
@@ -222,7 +223,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
     //method to add an alarm to the database
     private void addAlarm(int hour, int minute) {
         //increment id input by one as this is a new alarm
-        Alarm toAdd = alarmBuilder(hour,minute, alarms.size()+1,medicationKey);
+        Alarm toAdd = Factory.alarm(hour,minute, alarms.size()+1,medicationKey,RCID);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
@@ -260,7 +261,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
 
     //this method preforms the actual database edit, no need to edit alarmManager
     public void applyEdit(int hourOfDay, int minute) {
-        Alarm toAdd = alarmBuilder(hourOfDay, minute, currentEdit, medicationKey);
+        Alarm toAdd = Factory.alarm(hourOfDay, minute, currentEdit, medicationKey, RCID);
         String alarmKey = toAdd.getMedication_key() + "_" + toAdd.getId();
         database.child("alarms").child(userUID).child(medicationKey).child(alarmKey).
                 setValue(toAdd);
@@ -315,20 +316,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         });
     }
 
-    //used to build alarm objects
-    private Alarm alarmBuilder(int hour, int minute, int id, String medicationKey){
-        Calendar calendar = Calendar.getInstance();
-        int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        int currentYear = calendar.get(Calendar.YEAR);
-        Log.d(TAG, "currentHour: " + currentHour + ":" + hour);
 
-        if (currentHour > hour)
-            currentDay = currentDay + 1;
-
-        return new Alarm(id, minute, hour, currentDay, currentMonth, currentYear, medicationKey, RCID);
-    }
 
     //if the user enables the alarms for a medication
     private void enableAlarms() {
