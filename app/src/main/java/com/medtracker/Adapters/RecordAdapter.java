@@ -17,34 +17,31 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
- * Created by spt10 on 11/02/2017.
+ * Used for displaying lists of records in a custom table like format
  * https://github.com/codepath/android_guides/wiki/Using-an-ArrayAdapter-with-ListView
  */
 
 public class RecordAdapter extends ArrayAdapter<Record> {
-    private int count;
 
     public RecordAdapter(Context context, ArrayList<Record> records) {
         super(context, 0, records);
-        count = 0;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         // Get the data item for this position
         Record record = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_record, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item_record,
+                    parent, false);
         }
 
         RelativeLayout layout = (RelativeLayout) convertView.findViewById(R.id.table_row);
-
         if(position % 2 == 0)
             layout.setBackgroundColor(Color.parseColor("#BBDEFB"));
 
-        // Lookup view for data population
+        // Lookup views for data population
         TextView recordName = (TextView) convertView.findViewById(R.id.record_name);
         TextView recordDosage = (TextView) convertView.findViewById(R.id.record_dosage);
         TextView recordTime = (TextView) convertView.findViewById(R.id.record_time);
@@ -65,5 +62,4 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         // Return the completed view to render on screen
         return convertView;
     }
-
 }
