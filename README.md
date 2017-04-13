@@ -49,12 +49,12 @@
   - [ ] Statistics
 
 ### Models
-  - [ ] Alarm
-  - [ ] Alarm Manager
-  - [ ] Medication
-  - [ ] Pharmacy
-  - [ ] Record
-  - [ ] User
+  - [x] Alarm
+  - [x] Alarm Manager
+  - [x] Medication
+  - [x] Pharmacy
+  - [x] Record
+  - [x] User
 
 ### Utility
   - [ ] Email Helper

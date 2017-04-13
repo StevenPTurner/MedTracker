@@ -62,8 +62,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         firebaseUser = firebaseAuth.getCurrentUser();
         userUID = firebaseUser.getUid();
         Log.d(TAG, firebaseUser.getUid());
-        database = FirebaseDatabase.getInstance().getReference().child("medications").
-                child(userUID);
+        database = FirebaseDatabase.getInstance().getReference().child("medications").child(userUID);
         listView = (ListView) getView().findViewById(R.id.listView);
 
         //button listener for adding a new medication, opens new fragment

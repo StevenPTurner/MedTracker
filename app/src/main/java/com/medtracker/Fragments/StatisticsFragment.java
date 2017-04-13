@@ -37,6 +37,7 @@ import java.util.Random;
  */
 public class StatisticsFragment extends Fragment {
     private static final String TAG = LogTag.statisticsFragment;
+
     //firebase components
     private FirebaseAuth firebaseAuth;
     private FirebaseUser firebaseUser;
@@ -44,6 +45,7 @@ public class StatisticsFragment extends Fragment {
     private String userUID;
     private ArrayList<Record> records = new ArrayList<>();
     private ArrayList<String> recordKeys = new ArrayList<>();
+
     //pie chart
     private PieChart pieChart;
     private PieDataSet set;
@@ -51,6 +53,7 @@ public class StatisticsFragment extends Fragment {
     private int totalOnTime;
     private int totalLate;
     private int totalMissed;
+
     //UI views
     private TextView lateAlertBox;
     private TextView missedAlertBox;

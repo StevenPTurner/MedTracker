@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.Factory;
 import com.medtracker.medtracker.R;
 
 /**
@@ -45,9 +46,7 @@ public class MedicationEditFragment extends Fragment {
     private Button applyEdit;
     private Button deleteMedication;
 
-    public MedicationEditFragment() {
-        // Required empty public constructor
-    }
+    public MedicationEditFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -94,9 +93,7 @@ public class MedicationEditFragment extends Fragment {
                 Log.d(TAG, "apply edit button pressed");
                 updateDatabase(buildMedication(), medicationKey);
                 returnToList();
-                Toast toast = Toast.makeText(getActivity(), "Medication Edited",
-                        Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(getActivity(), "Medication Edited", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -106,13 +103,10 @@ public class MedicationEditFragment extends Fragment {
                 Log.d(TAG, "delete medication button pressed");
                 deleteMedicationPressed(medicationKey);
                 returnToList();
-                Toast toast = Toast.makeText(getActivity(), "Medication Deleted",
-                        Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(getActivity(), "Medication Deleted", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
 
     //used to setup current values
     private void setupCurrentValues() {
@@ -131,44 +125,35 @@ public class MedicationEditFragment extends Fragment {
         String medicationName = editName.getText().toString();
         String medicationDoseText = editDose.getText().toString();
         String medicationInstructions = editInstructions.getText().toString();
-        int medicationDoseValue = Integer.parseInt(medicationDoseText);
 
-        //builds and returns user object
-        Medication medication = new Medication(
-                medicationInstructions, medicationName, false, false, medicationDoseValue);
         Log.d(TAG, "Medication has been built");
-        return medication;
+        return Factory.medication(medicationName, medicationDoseText, medicationInstructions);
     }
 
     //updates medication in database
     private void updateDatabase(Medication medication, String medicationKey) {
-        Log.d(TAG, "Database Key:" + medicationKey);
         database.child("medications").child(userUID).child(medicationKey).setValue(medication);
         Log.d(TAG, "Medication updated in the database");
     }
 
     //deletes medication
     private void deleteMedication(String medicationKey) {
-        Log.d(TAG, "Medication Key:" + medicationKey);
         database.child("medications").child(userUID).child(medicationKey).removeValue();
         Log.d(TAG, "Medication deleted from the database");
     }
 
     //deletes alarm manager
     private void deleteAlarmManager(String medicationKey) {
-        Log.d(TAG, "Alarm manager key: " + medicationKey);
         database.child("alarm_manager").child(userUID).child(medicationKey).removeValue();
-        Log.d(TAG, "Alarm manager key: " + medicationKey);
     }
 
     //deletes all the alarms
     private void deleteAlarms(String medicationKey) {
-        Log.d(TAG, "Alarm key: " + medicationKey);
         database.child("alarms").child(userUID).child(medicationKey).removeValue();
         Log.d(TAG, "Alarm key: " + medicationKey);
     }
 
-    //compisite method
+    //composite method
     private void deleteMedicationPressed(String medicationKey) {
         deleteMedication(medicationKey);
         deleteAlarmManager(medicationKey);

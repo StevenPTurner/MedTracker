@@ -31,14 +31,7 @@ public class NotificationManager {
         intent.putExtra("medicationKey", medicationKey);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification.Builder builder = new Notification.Builder(context);
-        builder.setContentTitle("MedTracker Alert!");
-        builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.ic_pill_black_48dp);
-        builder.setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 });
-        builder.setLights(Color.RED, 3000, 3000);
-        builder.setContentIntent(pendingIntent);
-        return builder.build();
+        return Factory.notification(context,"MedTracker Alert!", content,pendingIntent);
     }
 
     public static void scheduleNotification(Notification notification, int id, Context context,

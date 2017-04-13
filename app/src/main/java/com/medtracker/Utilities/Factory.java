@@ -1,10 +1,15 @@
 package com.medtracker.Utilities;
 
+import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
+import com.medtracker.medtracker.R;
 
 import java.util.Calendar;
 
@@ -35,5 +40,17 @@ public class Factory {
 
     public static AlarmManager alarmManager(String medicationKey) {
         return new AlarmManager(medicationKey, false, "none", 0, 0);
+    }
+
+    public static Notification notification(Context context, String title, String content,
+                                            PendingIntent intent) {
+        Notification.Builder builder = new Notification.Builder(context);
+        builder.setContentTitle(title);
+        builder.setContentText(content);
+        builder.setSmallIcon(R.drawable.ic_pill_black_48dp);
+        builder.setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+        builder.setLights(Color.RED, 3000, 3000);
+        builder.setContentIntent(intent);
+        return builder.build();
     }
 }
