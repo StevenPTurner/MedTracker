@@ -1,6 +1,5 @@
 package com.medtracker.Utilities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
@@ -12,19 +11,35 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 
-
-
 /**
  * Used for sending e-mails with attachments
  */
 
 public class EmailHelper {
     private static final String TAG = LogTag.emailHelper;
+    private final String fileName = "records.csv";
 
-    //Generates the records into a CSV format
-    public String getCSVFromRecords(ArrayList<Record> records) {
-        String titles = "Medication Name,Dose,Time,Date \n";
-        String csvFile = titles;
+    //acts as accessor to class and preforms actions to return an intent for sending the email
+    public Intent emailRecords(ArrayList<Record> records) {
+        String csvFile = getCSVFromRecords(records);
+        writeFile(csvFile);
+
+        File file = new File(Environment.getExternalStorageDirectory(), "/" + fileName);
+        Uri path = Uri.fromFile(file);
+        Log.d(TAG, "File path: " + path.toString());
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+
+        intent.putExtra(Intent.EXTRA_SUBJECT, "Record of Doses Taken");
+        intent.putExtra(Intent.EXTRA_TEXT, "Please find a csv attached.");
+        intent.putExtra(Intent.EXTRA_STREAM, path);
+        return intent;
+    }
+
+    //formats the records into a string representing a CSV file
+    private String getCSVFromRecords(ArrayList<Record> records) {
+        String columnTitles = "Medication Name,Dose,Time,Date \n";
+        String csvFile = columnTitles;
 
         for(int i=0; i<records.size(); i++) {
             Record record = records.get(i);
@@ -41,13 +56,12 @@ public class EmailHelper {
 
             csvFile = csvFile + name + "," + dose + "," + time + "," + date + "\n";
         }
-
-        Log.d(TAG, csvFile);
+        Log.d(TAG, "csv File created");
         return csvFile;
     }
 
-    //writes file to external storage
-    public void writeFile(String content) {
+    //writes file to external storage on device to be read by chosen app
+    private void writeFile(String content) {
         try {
             File file = new File(Environment.getExternalStorageDirectory(), "records.csv");
             Log.d(TAG, Environment.getExternalStorageDirectory().toString() + "/records.csv");
@@ -57,22 +71,5 @@ public class EmailHelper {
         } catch (Exception e) {
             Log.d(TAG, e.toString());
         }
-
     }
-
-    //emails file
-    public Intent emailRecords() {
-        File file = new File(Environment.getExternalStorageDirectory(), "/records.csv");
-        Uri path = Uri.fromFile(file);
-        Log.d(TAG, path.toString());
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-
-        intent.putExtra(Intent.EXTRA_SUBJECT, "Record of Doses Taken");
-        intent.putExtra(Intent.EXTRA_TEXT, "Please find a csv attached.");
-        intent.putExtra(Intent.EXTRA_STREAM, path);
-
-        return intent;
-    }
-
 }

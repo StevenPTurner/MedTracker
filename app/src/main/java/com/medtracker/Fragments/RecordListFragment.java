@@ -155,8 +155,8 @@ public class RecordListFragment extends Fragment {
 
     private void emailFiles() {
         EmailHelper emailHelper = new EmailHelper();
-        String file = emailHelper.getCSVFromRecords(records);
-        emailHelper.writeFile(file);
+        //String file = emailHelper.getCSVFromRecords(records);
+        //emailHelper.writeFile(file);
         Intent emailIntent = emailHelper.emailRecords();
         startActivity(Intent.createChooser(emailIntent, "Send mail"));
     }

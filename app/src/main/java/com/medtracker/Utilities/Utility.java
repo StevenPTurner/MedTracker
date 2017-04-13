@@ -112,9 +112,8 @@ public class Utility {
         return (startTime - currentTime);
     }
 
+    //returns true or false if the final time is longer than the speicified time diff
     public static boolean isTimeLongerThan(long timeDiff, long initalTime, long finalTime) {
         return ((finalTime - initalTime) >= timeDiff);
     }
-
-
 }
