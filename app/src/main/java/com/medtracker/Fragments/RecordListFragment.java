@@ -1,16 +1,10 @@
 package com.medtracker.Fragments;
 
-
 import android.app.Fragment;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -27,12 +21,8 @@ import com.medtracker.Adapters.RecordAdapter;
 import com.medtracker.Models.Record;
 import com.medtracker.Utilities.EmailHelper;
 import com.medtracker.Utilities.LogTag;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 /**

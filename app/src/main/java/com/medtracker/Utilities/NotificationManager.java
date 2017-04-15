@@ -5,7 +5,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 
 import com.medtracker.Activities.TakeDoseActivity;
@@ -51,10 +50,10 @@ public class NotificationManager {
 
     //used to manage the setting up of a notification to the system services
     public static void enableNextAlarm(Alarm alarm, Context context) {
-        String medicationName = Utility.keyToName(alarm.getMedication_key());
+        String medicationName = Convert.keyToName(alarm.getMedication_key());
         String alarmKey = alarm.getMedication_key() + "_" + alarm.getId();
         String message = "Take a dose of " + medicationName;
-        Calendar currentAlarm = Utility.alarmToCalendar(alarm);
+        Calendar currentAlarm = Convert.alarmToCalendar(alarm);
 
         Notification notification = getNotification(message, context, alarmKey,
                 alarm.getMedication_key());

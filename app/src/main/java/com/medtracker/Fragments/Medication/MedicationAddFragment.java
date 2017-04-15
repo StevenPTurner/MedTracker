@@ -1,6 +1,5 @@
 package com.medtracker.Fragments.Medication;
 
-
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -17,10 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.Factory;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 /**
@@ -88,7 +86,7 @@ public class MedicationAddFragment extends Fragment {
     //adds medication to database
     private void addToDatabase(Medication medication) {
         //correct json formatting for keys
-        String medicationKey = Utility.nameToKey(medication.getMedication_name());
+        String medicationKey = Convert.nameToKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
         mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
         mDatabase.child("alarm_manager").child(userUID).child(medicationKey)

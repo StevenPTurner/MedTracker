@@ -1,9 +1,7 @@
 package com.medtracker.Activities;
 
-import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.SearchManager;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -38,10 +36,9 @@ import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;
 import com.medtracker.Fragments.StatisticsFragment;
 import com.medtracker.Models.User;
-import com.medtracker.TestingClasses.TestActivity;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.Factory;
 import com.medtracker.Utilities.LogTag;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 //Home activity used to switch between fragments that contain functionality, also used to manage
@@ -196,7 +193,7 @@ public class HomeActivity extends FragmentActivity {
             case 1:
                 fragment = new AlarmManagerListFragment();
                 Log.w(TAG, "Alarms fragment selected");
-                Log.w(TAG, Utility.keyToName("sodium_valproate"));
+                Log.w(TAG, Convert.keyToName("sodium_valproate"));
                 callFragment(fragment,position);
                 break;
             case 2:
@@ -265,7 +262,7 @@ public class HomeActivity extends FragmentActivity {
 
     //updates sidebar display
     private void updateSideBar(String displayName, String email) {
-        displayName = Utility.keyToName(displayName);
+        displayName = Convert.keyToName(displayName);
         TextView textViewDisplayName = (TextView) findViewById(R.id.text_display_name);
         TextView textViewEmail = (TextView) findViewById(R.id.text_email);
 

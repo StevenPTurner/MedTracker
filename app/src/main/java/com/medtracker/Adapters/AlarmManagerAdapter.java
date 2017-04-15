@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.medtracker.Models.AlarmManager;
-import com.medtracker.Utilities.Utility;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class AlarmManagerAdapter extends ArrayAdapter<AlarmManager> {
         ImageView alarmIcon = (ImageView) convertView.findViewById(R.id.alarm_icon);
 
         //gathers raw data and converts to use-able formats
-        String medicationNameText = Utility.keyToName(alarmManager.getMedication_key());
+        String medicationNameText = Convert.keyToName(alarmManager.getMedication_key());
         boolean hasAlarms = alarmManager.isHas_alarm();
         String noOfAlarms = String.valueOf(alarmManager.getMax_count());
 

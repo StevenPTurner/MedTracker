@@ -43,7 +43,7 @@ public class EmailHelper {
 
         for(int i=0; i<records.size(); i++) {
             Record record = records.get(i);
-            String name = Utility.keyToName(record.getMedication_key());
+            String name = Convert.keyToName(record.getMedication_key());
             int dose = record.getDose();
 
             String time = record.getHour() + ":" +

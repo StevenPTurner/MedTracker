@@ -5,13 +5,12 @@ import com.medtracker.Models.Record;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
 
 /**
- * Used as a bunch of utility methods for purposes such as converting times
+ * Used to convert various objects
  */
 
-public class Utility {
+public class Convert {
 
     //converts names (Sodium Valproate) to medication keys (sodium_valproate)
     public static String nameToKey(String name) {
@@ -70,9 +69,9 @@ public class Utility {
         boolean missed = false;
 
         //works out if a dose is either, missed, late or on time
-        if(isTimeLongerThan(oneHour, alarmTime, currentTime)) {
+        if(TimeCalc.isTimeLongerThan(oneHour, alarmTime, currentTime)) {
             missed = true;
-        } else if ( isTimeLongerThan(tenMinutes, alarmTime, currentTime)) {
+        } else if (TimeCalc.isTimeLongerThan(tenMinutes, alarmTime, currentTime)) {
             late = true;
         }
 
@@ -103,17 +102,5 @@ public class Utility {
     public static String calendarToDate(Calendar calendar) {
         SimpleDateFormat sdf = new SimpleDateFormat("EEE dd MMM");
         return sdf.format(calendar.getTime());
-    }
-
-    //calculates the difference in time(in milli seconds) between a calendar object and current time
-    public static long calcTimeDiff(Calendar calendar) {
-        long startTime = calendar.getTimeInMillis();
-        long currentTime = Calendar.getInstance().getTimeInMillis();
-        return (startTime - currentTime);
-    }
-
-    //returns true or false if the final time is longer than the speicified time diff
-    public static boolean isTimeLongerThan(long timeDiff, long initalTime, long finalTime) {
-        return ((finalTime - initalTime) >= timeDiff);
     }
 }

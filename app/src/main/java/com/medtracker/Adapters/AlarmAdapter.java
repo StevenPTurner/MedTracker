@@ -5,18 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 import android.widget.TextView;
 
-
-import com.medtracker.Fragments.Alarm.AlarmListFragment;
 import com.medtracker.Models.Alarm;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.LogTag;
-import com.medtracker.Utilities.Utility;
+import com.medtracker.Utilities.TimeCalc;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -64,9 +60,9 @@ public class AlarmAdapter extends ArrayAdapter<Alarm>  {
         Button deleteAlarm = (Button) convertView.findViewById(R.id.button_delete_alarm);
 
         //collects raw data and parses into usable formats
-        Calendar alarmCalendar = Utility.alarmToCalendar(alarm);
-        String dateToDisplay = Utility.calendarToString(alarmCalendar);
-        long timeTillAlarmInMillis = Utility.calcTimeDiff(alarmCalendar);
+        Calendar alarmCalendar = Convert.alarmToCalendar(alarm);
+        String dateToDisplay = Convert.calendarToString(alarmCalendar);
+        long timeTillAlarmInMillis = TimeCalc.calcTimeDiff(alarmCalendar);
         Log.d(TAG, "parsed all data, alarm time: " + timeTillAlarmInMillis);
 
         // Populate the data into the template view using the data object

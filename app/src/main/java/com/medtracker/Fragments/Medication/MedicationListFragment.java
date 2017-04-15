@@ -1,7 +1,6 @@
 package com.medtracker.Fragments.Medication;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.medtracker.Models.Medication;
 import com.medtracker.Adapters.MedicationAdapter;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.LogTag;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class MedicationListFragment extends Fragment implements AdapterView.OnIt
         Bundle args = new Bundle();
 
         Medication current = adapter.getItem(position);
-        String medicationKey = Utility.nameToKey(current.getMedication_name());
+        String medicationKey = Convert.nameToKey(current.getMedication_name());
 
         args.putString("medicationKey", medicationKey);
         args.putString("medicationName", current.getMedication_name());

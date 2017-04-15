@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.medtracker.Models.Record;
-import com.medtracker.Utilities.Utility;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -48,10 +48,10 @@ public class RecordAdapter extends ArrayAdapter<Record> {
         TextView recordDate = (TextView) convertView.findViewById(R.id.record_date);
 
         //collects and gets dates as strings for displaying
-        String medicationName = Utility.keyToName(record.getMedication_key());
-        Calendar calendar = Utility.recordToCalendar(record);
-        String time = Utility.calendarToTime(calendar);
-        String date = Utility.calendarToDate(calendar);
+        String medicationName = Convert.keyToName(record.getMedication_key());
+        Calendar calendar = Convert.recordToCalendar(record);
+        String time = Convert.calendarToTime(calendar);
+        String date = Convert.calendarToDate(calendar);
 
         // Populate the data into the template view using the data object
         recordName.setText(medicationName);

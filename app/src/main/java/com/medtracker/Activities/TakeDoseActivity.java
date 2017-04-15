@@ -19,9 +19,9 @@ import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Models.Medication;
 import com.medtracker.Models.Record;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.NotificationManager;
-import com.medtracker.Utilities.Utility;
 import com.medtracker.medtracker.R;
 
 // This activity appears after user slects a notification
@@ -92,7 +92,7 @@ public class TakeDoseActivity extends Activity {
 
     public void writeRecord() {
         int dose = medication.getDosage();
-        Record record = Utility.alarmToRecord(alarm, dose);
+        Record record = Convert.alarmToRecord(alarm, dose);
         String recordKey = 0 + "" + record.getMinute() + record.getHour() + "-" + record.getDay()
                 + record.getMonth() + record.getYear();
 
