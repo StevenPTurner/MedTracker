@@ -379,4 +379,5 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         alarmKeys.clear();
         super.onResume();
     }
+
 }

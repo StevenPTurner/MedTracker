@@ -1,5 +1,6 @@
 package com.medtracker.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -138,19 +139,24 @@ public class StartActivity extends FragmentActivity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN_GOOGLE) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(result);
-        } else if(requestCode == RC_SIGN_IN_EMAIL) {
-            String email = data.getStringExtra("email");
-            String password = data.getStringExtra("password");
-            firebaseSignInWithEmail(email, password);
-        } else if(requestCode == RC_CREATE_ACCOUNT_EMAIL) {
-            String email = data.getStringExtra("email");
-            String password = data.getStringExtra("password");
-            displayName = data.getStringExtra("displayName");
-            firebaseRegisterAccountWithEmail(email, password);
+        if(resultCode == Activity.RESULT_OK) {
+            // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+            if (requestCode == RC_SIGN_IN_GOOGLE) {
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+                handleGoogleSignInResult(result);
+            } else if(requestCode == RC_SIGN_IN_EMAIL) {
+                String email = data.getStringExtra("email");
+                String password = data.getStringExtra("password");
+                firebaseSignInWithEmail(email, password);
+            } else if(requestCode == RC_CREATE_ACCOUNT_EMAIL) {
+                String email = data.getStringExtra("email");
+                String password = data.getStringExtra("password");
+                displayName = data.getStringExtra("displayName");
+                firebaseRegisterAccountWithEmail(email, password);
+            }
+        } else if (resultCode == Activity.RESULT_CANCELED) {
+            spinner.setVisibility(View.GONE);
+            Log.d(TAG, "Result canceled");
         }
     }
 

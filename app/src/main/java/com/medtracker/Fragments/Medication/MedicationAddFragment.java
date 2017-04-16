@@ -88,7 +88,9 @@ public class MedicationAddFragment extends Fragment {
         //correct json formatting for keys
         String medicationKey = Convert.nameToKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
+
         mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
+
         mDatabase.child("alarm_manager").child(userUID).child(medicationKey)
                 .setValue(Factory.alarmManager(medicationKey));
         Log.d(TAG, "Medication added to database");

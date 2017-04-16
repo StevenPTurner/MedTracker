@@ -20,8 +20,7 @@ public class SignInActivity extends Activity {
     //initialising input fields
     private EditText editEmail;
     private EditText editPassword;
-    private String email;
-    private String password;
+    private Intent resultIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +30,7 @@ public class SignInActivity extends Activity {
         Log.d(TAG, "Activity loaded");
         editEmail = (EditText) findViewById(R.id.edit_email);
         editPassword = (EditText) findViewById(R.id.edit_password);
+        resultIntent = getIntent();
 
         Button signIn = (Button) findViewById(R.id.button_sign_in);
         signIn.setOnClickListener(new View.OnClickListener() {
@@ -53,8 +53,8 @@ public class SignInActivity extends Activity {
     //gathers are returns data when button is pressed
     //http://www.androidhive.info/2016/06/android-getting-started-firebase-simple-login-registration-auth/
     public void signInDetails() {
-        email = editEmail.getText().toString();
-        password = editPassword.getText().toString();
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
 
         //handles user errors
         if (TextUtils.isEmpty(email)) {
@@ -70,12 +70,19 @@ public class SignInActivity extends Activity {
         }
 
         //returns data to sign in activity
-        Intent resultIntent = getIntent();
         resultIntent.putExtra("email", email);
         resultIntent.putExtra("password", password);
         setResult(Activity.RESULT_OK, resultIntent);
         Log.d(TAG, "returning data to start activity");
         finish();
+    }
+
+    //used to prevent crashed when the back button is pressed
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED, resultIntent);
+        finish();
+        super.onBackPressed();
     }
 
 }

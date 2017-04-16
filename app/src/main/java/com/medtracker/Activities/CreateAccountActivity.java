@@ -21,10 +21,7 @@ public class CreateAccountActivity extends Activity {
     private EditText editPassword;
     private EditText editForename;
     private EditText editSurname;
-
-    String email;
-    String password;
-    String displayName;
+    private Intent resultIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +33,16 @@ public class CreateAccountActivity extends Activity {
         editPassword = (EditText) findViewById(R.id.edit_password);
         editForename = (EditText) findViewById(R.id.edit_forename);
         editSurname = (EditText) findViewById(R.id.edit_surname);
+        resultIntent = getIntent();
         Log.d(TAG, "Activity initialised");
     }
 
     //When the user submits values this handles and returns them to the start activity to be
     //processed
     public void registerAccountDetails(View view) {
-        email = editEmail.getText().toString();
-        password = editPassword.getText().toString();
-        displayName = editForename.getText().toString() + " " + editSurname.getText().toString();
+        String email = editEmail.getText().toString();
+        String password = editPassword.getText().toString();
+        String displayName = editForename.getText().toString() + " " + editSurname.getText().toString();
 
         //if statements being used to prevent empty details being submitted
         if (TextUtils.isEmpty(email)) {
@@ -66,12 +64,19 @@ public class CreateAccountActivity extends Activity {
         }
 
         //return this as the result to the start activity
-        Intent resultIntent = getIntent();
         resultIntent.putExtra("email", email);
         resultIntent.putExtra("password", password);
         resultIntent.putExtra("displayName", displayName);
         setResult(Activity.RESULT_OK, resultIntent);
         Log.d(TAG, "returning results to start activity");
         finish();
+    }
+
+    //used to prevent crashed when the back button is pressed
+    @Override
+    public void onBackPressed() {
+        setResult(Activity.RESULT_CANCELED, resultIntent);
+        finish();
+        super.onBackPressed();
     }
 }
