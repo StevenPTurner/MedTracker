@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -62,17 +63,18 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     private static final int DEFAULT_ZOOM = 15;
     private static final String KEY_CAMERA_POSITION = "camera_position";
     private static final String KEY_LOCATION = "location";
-    private final LatLng defaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private final LatLng mDefaultLocation = new LatLng(56.463190, -3.038596 );
 
     //used objects
-    private GoogleMap map;
-    private GoogleApiClient googleApiClient;
-    private boolean locationPermission;
-    private Location lastLocation;
-    private CameraPosition cameraPosition;
+    private GoogleMap mMap;
+    private CameraPosition mCameraPosition;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mLocationPermissionGranted;
+    private Location mLastKnownLocation;
+
     private ArrayList<Pharmacy> pharmacies = new ArrayList<>();
 
-    public PharmacyMapFragment() {/* Required empty public constructor */}
+    public PharmacyMapFragment() {}
 
     @Override //generates layout
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,42 +88,35 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
 
         //used for smoother transitions if this is not the first state
         if (savedInstanceState != null) {
-            lastLocation = savedInstanceState.getParcelable(KEY_LOCATION);
-            cameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
-            Log.d(TAG,"Previous state loaded");
+            mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            mCameraPosition = savedInstanceState.getParcelable(KEY_CAMERA_POSITION);
         }
 
         //set up api client for api calls
-        googleApiClient = new GoogleApiClient.Builder(getActivity().getApplicationContext())
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .enableAutoManage((FragmentActivity) getActivity(), this)
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
                 .build();
-        googleApiClient.connect();
-        Log.d(TAG,"API client created");
-
-        //used to enable the use of a custom map marker
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction = manager.beginTransaction();
-        MapFragment fragment = new MapFragment();
-        transaction.add(R.id.map, fragment);
-        transaction.commit();
+        mGoogleApiClient.connect();
     }
 
-    @Override //when map is read to be loaded
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
+
+    @Override
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+
         updateLocationUI(); //updates the UI, called first in case of previous sessions
         getDeviceLocation(); //get current device location
-        //gets pharmacies from google places search api
-        getPharmaciesFromAPI(lastLocation.getLatitude(), lastLocation.getLongitude());
+        getPharmaciesFromAPI(); //gets pharmacies from google places search api
+
     }
 
     //Used to update the UI
     private void updateLocationUI() {
-        if (map == null) { //if map is null exit method
+        if (mMap == null) {  //if map is null exit method
             return;
         }
 
@@ -129,60 +124,66 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            locationPermission = true;
-            Log.d(TAG, "permission set to true");
+            mLocationPermissionGranted = true;
         } else {
             ActivityCompat.requestPermissions(getActivity(),
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-            Log.d(TAG, "permission set to false");
         }
 
         //if we have location permissions update the ui
-        if (locationPermission) {
-            map.setMyLocationEnabled(true);
-            map.getUiSettings().setMyLocationButtonEnabled(true);
+        if (mLocationPermissionGranted) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
         } else {
-            map.setMyLocationEnabled(false);
-            map.getUiSettings().setMyLocationButtonEnabled(false);
-            lastLocation = null;
+            mMap.setMyLocationEnabled(false);
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
+            mLastKnownLocation = null;
         }
     }
 
-    //used to get hte device's current location
     private void getDeviceLocation() {
         //Get location permissions and try to locate current position
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(),
-                 android.Manifest.permission.ACCESS_COARSE_LOCATION )
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            lastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
-            Log.d(TAG,"Lat: "+lastLocation.getLatitude()+" Lng: "+lastLocation.getLongitude());
+            mLocationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(getActivity(),
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+
+        if (mLocationPermissionGranted) {
+            mLastKnownLocation = LocationServices.FusedLocationApi
+                    .getLastLocation(mGoogleApiClient);
         }
 
         // Set the map's camera position to the current location of the device.
-        if (cameraPosition != null) {
-            map.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else if (lastLocation != null) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(lastLocation.getLatitude(),
-                            lastLocation.getLongitude()), DEFAULT_ZOOM));
+        if (mCameraPosition != null) {
+            mMap.moveCamera(CameraUpdateFactory.newCameraPosition(mCameraPosition));
+        } else if (mLastKnownLocation != null) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(mLastKnownLocation.getLatitude(),
+                            mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
         } else {
+            Toast.makeText(getActivity(), "Cannot get location", Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Current location is null. Using defaults.");
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(defaultLocation, DEFAULT_ZOOM));
-            map.getUiSettings().setMyLocationButtonEnabled(false);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(mDefaultLocation, DEFAULT_ZOOM));
+            mMap.getUiSettings().setMyLocationButtonEnabled(false);
         }
     }
 
     @Override //used when the premission result comes back
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[],
                                            @NonNull int[] grantResults) {
-        locationPermission = false;
+        mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    locationPermission = true;
+                    mLocationPermissionGranted = true;
                 }
             }
         }
@@ -190,7 +191,17 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     //gets list of pharmacies as a json object from the api
-    public void getPharmaciesFromAPI(double lat, double lng){
+    public void getPharmaciesFromAPI(){
+        double lat,lng;
+
+        if(mLastKnownLocation != null) {
+            lat = mLastKnownLocation.getLatitude();
+            lng = mLastKnownLocation.getLongitude();
+        } else {
+            lat = mDefaultLocation.latitude;
+            lng = mDefaultLocation.longitude;
+        }
+
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
         String API_KEY = getString(R.string.API_KEY);
@@ -203,13 +214,13 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                     @Override
                     public void onResponse(JSONObject response) {
                         parseJSON(response); //parse the json response into pharmacy objects
-                        addMapMarkers(pharmacies);
-                        showDialog(pharmacies.get(0));
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d(TAG, error.toString());
+                Toast.makeText(getActivity(), "Cannot connect to the internet", Toast.LENGTH_SHORT)
+                        .show();
             }
         });
         // Add the request to the RequestQueue.
@@ -233,7 +244,7 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
                 pharmacy.setInfo(current.getString("vicinity"));
                 pharmacies.add(pharmacy);
             }
-
+            addMapMarkers(pharmacies);
         }catch(Exception e) {
             Log.d(TAG, e.toString());
         }
@@ -247,13 +258,14 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
             String title = pharmacies.get(i).getName();
 
             if(i==0) {
-                map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title)
+                mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title)
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.
                                 HUE_AZURE)));
             } else {
-                map.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title));
+                mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lng)).title(title));
             }
         }
+        showDialog(pharmacies.get(0));
     }
 
     private void showDialog(Pharmacy pharmacy) {
@@ -268,15 +280,25 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     }
 
     /*
-     *  API and connection call methods
-     */
+    *  API and connection call methods
+    */
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        if (map != null) {
-            outState.putParcelable(KEY_CAMERA_POSITION, map.getCameraPosition());
-            outState.putParcelable(KEY_LOCATION, lastLocation);
+        if (mMap != null) {
+            outState.putParcelable(KEY_CAMERA_POSITION, mMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
             super.onSaveInstanceState(outState);
         }
+    }
+
+    @Override // Build the map.
+    public void onConnected(Bundle connectionHint) {
+        FragmentManager manager = getFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        MapFragment fragment = new MapFragment();
+        transaction.add(R.id.map, fragment);
+        transaction.commit();
+        fragment.getMapAsync(this);
     }
 
     @Override
@@ -288,12 +310,6 @@ public class PharmacyMapFragment extends Fragment implements OnMapReadyCallback,
     @Override
     public void onConnectionSuspended(int cause) {
         Log.d(TAG, "Play services connection suspended. Error code: " + cause);
-    }
-
-    @Override // Build the map.
-    public void onConnected(Bundle connectionHint) {
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
     }
 
 }

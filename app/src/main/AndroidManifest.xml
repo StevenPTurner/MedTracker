@@ -15,9 +15,14 @@
         android:label="@string/title_app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value=" AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw" />
+            android:value="AIzaSyAFK4WLnnx-G4RIV5-3wr2-Pp5LnrkmQhw" />
+
 
         <activity android:name="com.medtracker.Activities.StartActivity">
             <intent-filter>
@@ -37,14 +42,13 @@
         <activity
             android:name="com.medtracker.TestingClasses.TestActivity"
             android:label="@string/title_activity_test" />
+        <activity android:name="com.medtracker.Activities.TakeDoseActivity" />
+        <activity android:name="com.medtracker.Activities.PasswordResetActivity"></activity>
 
         <receiver
             android:name="com.medtracker.Utilities.NotificationReceiver"
             android:enabled="true"
             android:exported="true" />
-
-        <activity android:name="com.medtracker.Activities.TakeDoseActivity" />
-        <activity android:name="com.medtracker.Activities.PasswordResetActivity"></activity>
     </application>
 
 </manifest>

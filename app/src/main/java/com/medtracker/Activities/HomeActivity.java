@@ -32,7 +32,6 @@ import com.medtracker.Fragments.AboutFragment;
 import com.medtracker.Fragments.Alarm.AlarmManagerListFragment;
 import com.medtracker.Fragments.Medication.MedicationListFragment;
 import com.medtracker.Fragments.Pharmacy.PharmacyMapFragment;
-import com.medtracker.Fragments.PrescriptionListFragment;
 import com.medtracker.Fragments.RecordListFragment;
 import com.medtracker.Fragments.StatisticsFragment;
 import com.medtracker.Models.User;

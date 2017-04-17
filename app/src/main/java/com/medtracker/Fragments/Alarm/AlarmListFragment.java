@@ -102,15 +102,11 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
                     if (isChecked) {
                         Log.d(TAG, "Switch enabled");
                         enableAlarms();
-                        Toast toast = Toast.makeText(getActivity(), "Alarms Enabled",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(getActivity(), "Alarms Enabled", Toast.LENGTH_SHORT).show();
                     } else {
                         Log.d(TAG, "Switch disabled");
                         disableAlarms();
-                        Toast toast = Toast.makeText(getActivity(), "Alarms Disabled",
-                                Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(getActivity(), "Alarms Disabled", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
