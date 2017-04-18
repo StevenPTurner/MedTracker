@@ -6,7 +6,7 @@
   - [x] Implement a Factory Pattern
   - [ ] Add 24 hours to Alarm in TakeDoseActivity
   - [ ] Add 24 hours to Alarm s not taken
-  - [ ] Re-implement map fragment due to crashing
+  - [x] Re-implement map fragment due to crashing
 
 ## Refactoring & Commenting
 
