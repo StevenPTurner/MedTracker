@@ -15,6 +15,7 @@ public class Convert {
     //converts names (Sodium Valproate) to medication keys (sodium_valproate)
     public static String nameToKey(String name) {
         String key = name.toLowerCase();
+        key = key.trim();
         key = key.replaceAll(" ","_");
         return key;
     }

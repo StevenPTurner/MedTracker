@@ -22,7 +22,9 @@ import com.medtracker.Models.Record;
 import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.NotificationManager;
+import com.medtracker.Utilities.TimeCalc;
 import com.medtracker.medtracker.R;
+
 
 // This activity appears after user slects a notification
 // //https://gist.github.com/BrandonSmith/6679223
@@ -136,11 +138,14 @@ public class TakeDoseActivity extends Activity {
                 Alarm alarm = dataSnapshot.getValue(Alarm.class);
                 Log.d(TAG, "medKey, " + alarm.getMedication_key()); //Get logged in user info
                 NotificationManager.enableNextAlarm(alarm, TakeDoseActivity.this);
-                //NOTE add 24 hours to alarm
+                alarm = TimeCalc.incrementAlarm(alarm);
+                databaseReference.setValue(alarm);
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
     }
+
+
 
 
 

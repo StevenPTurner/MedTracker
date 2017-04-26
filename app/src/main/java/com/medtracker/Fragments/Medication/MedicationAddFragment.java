@@ -89,7 +89,10 @@ public class MedicationAddFragment extends Fragment {
         String medicationKey = Convert.nameToKey(medication.getMedication_name());
         Log.d(TAG, "Database Key:" + medicationKey);
 
-        mDatabase.child("medications").child(userUID).child(medicationKey).setValue(medication);
+        mDatabase.child("medications").
+                  child(userUID).
+                  child(medicationKey).
+                  setValue(medication);
 
         mDatabase.child("alarm_manager").child(userUID).child(medicationKey)
                 .setValue(Factory.alarmManager(medicationKey));
