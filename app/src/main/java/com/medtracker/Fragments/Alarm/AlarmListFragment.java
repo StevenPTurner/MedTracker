@@ -26,10 +26,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.medtracker.Models.Alarm;
 import com.medtracker.Models.AlarmManager;
 import com.medtracker.Adapters.AlarmAdapter;
+import com.medtracker.Utilities.Convert;
 import com.medtracker.Utilities.Factory;
 import com.medtracker.Utilities.LogTag;
 import com.medtracker.Utilities.NotificationManager;
 import com.medtracker.Utilities.RC;
+import com.medtracker.Utilities.TimeCalc;
 import com.medtracker.medtracker.R;
 
 import java.util.ArrayList;
@@ -139,6 +141,7 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String previousChildName) {
                 Alarm alarm = dataSnapshot.getValue(Alarm.class);
+                alarm = hasAlarmPassed(alarm);
                 alarms.add(alarm);
                 alarmKeys.add(dataSnapshot.getKey());
                 Log.d(TAG, "onChildAdded:" + dataSnapshot.getKey());
@@ -367,6 +370,22 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         });
     }
 
+    private Alarm hasAlarmPassed(Alarm alarm) {
+        Calendar alarmCalendar = Convert.alarmToCalendar(alarm);
+        long timeTillAlarmInMillis = TimeCalc.calcTimeDiff(alarmCalendar);
+
+        if (timeTillAlarmInMillis < 0){
+            alarm = TimeCalc.incrementAlarm(alarm);
+            database.child("alarms").
+                    child(userUID).
+                    child(medicationKey).
+                    child(alarm.getMedication_key() + "_" + alarm.getId()).
+                    setValue(alarm);
+        }
+
+        return alarm;
+    }
+
     //when the user returns to this fragment from another
     @Override
     public void onResume() {
@@ -375,5 +394,6 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
         alarmKeys.clear();
         super.onResume();
     }
+
 
 }
