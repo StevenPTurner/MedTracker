@@ -351,6 +351,13 @@ public class AlarmListFragment extends Fragment implements AlarmAdapter.AlarmAda
             }
             @Override public void onCancelled(DatabaseError databaseError) {}
         });
+        disableNotifications();
+    }
+
+    private void disableNotifications() {
+        for(int i=0; i<alarms.size(); i++) {
+            NotificationManager.cancelAlarm(alarms.get(i), getActivity());
+        }
     }
 
     private void updateAlarmCount() {

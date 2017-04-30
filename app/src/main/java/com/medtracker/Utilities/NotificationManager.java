@@ -60,7 +60,24 @@ public class NotificationManager {
         scheduleNotification(notification, alarm.getRCID(), context, currentAlarm);
     }
 
-    public static void cancelNotification(){
+    public static void cancelAlarm(Alarm alarm, Context context){
+        String medicationName = Convert.keyToName(alarm.getMedication_key());
+        String alarmKey = alarm.getMedication_key() + "_" + alarm.getId();
+        String message = "Take a dose of " + medicationName;
+        Calendar currentAlarm = Convert.alarmToCalendar(alarm);
+        int id = alarm.getId();
 
+        Notification notification = getNotification(message, context, alarmKey,
+                alarm.getMedication_key());
+
+
+        Intent notificationIntent = new Intent(context, NotificationReceiver.class);
+        notificationIntent.putExtra(NotificationReceiver.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(NotificationReceiver.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.cancel(pendingIntent);
     }
 }
