@@ -4,32 +4,32 @@
   - [x] Improve UX (Add toasts to inform the user of actions)
   - [x] Re-design and implement statistics functionality
   - [x] Implement a Factory Pattern
-  - [ ] Add 24 hours to Alarm in TakeDoseActivity
-  - [ ] Add 24 hours to Alarm s not taken
+  - [x] Add 24 hours to Alarm in TakeDoseActivity
+  - [x] Add 24 hours to Alarm s not taken
   - [x] Re-implement map fragment due to crashing
 
 ## Refactoring & Commenting
 
 ### Fragments
-  - [ ] Record List
-  - [ ] About Fragment
-  - [ ] Nearest Pharmacy
-  - [ ] Pharmacy Map
-  - [ ] Medication List
-  - [ ] Medication Add
-  - [ ] Medication Edit
-  - [ ] Alarm List
-  - [ ] Alarm Manager List
-  - [ ] Time Picker
+  - [x] Record List
+  - [x] About Fragment
+  - [x] Nearest Pharmacy
+  - [x] Pharmacy Map
+  - [x] Medication List
+  - [x] Medication Add
+  - [x] Medication Edit
+  - [x] Alarm List
+  - [x] Alarm Manager List
+  - [x] Time Picker
   - [x] Statistics
 
 ### Activities
   - [x] Create Account
-  - [ ] Home Activity
+  - [x] Home Activity
   - [x] Password Reset
   - [x] Sign In
   - [x] Start
-  - [ ] Take Dose
+  - [x] Take Dose
 
 ### Adapters
   - [x] Alarm
